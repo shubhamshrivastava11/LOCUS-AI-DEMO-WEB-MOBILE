@@ -2,28 +2,21 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, PageHero } from '@/components/Sections';
-import { INTEGRATIONS } from '@/lib/content';
+import { INTEGRATIONS, INTEGRATION_CATS } from '@/lib/content';
+import { IntegrationTile } from '@/components/IntegrationTile';
 
 export const metadata: Metadata = { title: 'Integrations', description: 'Slack, Gmail, Microsoft Teams, Discord, Notion, Confluence, Jira, ClickUp, Monday and GitHub, with read-only scopes.' };
-const CATS = ['Communication', 'Knowledge', 'Delivery', 'Engineering'];
 
 export default function Integrations() {
   return (
     <>
       <PageHero overline="Integrations" title="Works where decisions actually happen." lead="Ten integrations live, each connected with read-only OAuth and scopes you choose per channel, label, space or project." />
-      {CATS.map((c, i) => (
-        <section key={c} className={`section-sm ${i % 2 ? 'alt' : ''}`}>
+      {INTEGRATION_CATS.map((c, i) => (
+        <section key={c.key} className={`section-sm ${i % 2 ? 'alt' : ''}`}>
           <div className="container">
-            <h2 className="h2" style={{ marginBottom: 24 }}>{c}</h2>
-            <div className="grid g4">
-              {INTEGRATIONS.filter((x) => x.cat === c).map((x) => (
-                <Reveal key={x.name}>
-                  <div className="card card-hover row gap-12" style={{ height: '100%', alignItems: 'flex-start' }}>
-                    <span className="icon-chip" aria-hidden="true" style={{ fontWeight: 700 }}>{x.name[0]}</span>
-                    <div className="stack gap-8"><div className="row gap-8"><strong>{x.name}</strong><span className="status status-ok">Live</span></div><p className="small">{x.scope}</p></div>
-                  </div>
-                </Reveal>
-              ))}
+            <div className="int-group-head" style={{ marginBottom: 20 }}><h2 className="h2">{c.label}</h2><span className="caption">{c.note}</span></div>
+            <div className="grid g3">
+              {INTEGRATIONS.filter((x) => x.cat === c.key).map((x) => <Reveal key={x.slug}><IntegrationTile {...x} /></Reveal>)}
             </div>
           </div>
         </section>

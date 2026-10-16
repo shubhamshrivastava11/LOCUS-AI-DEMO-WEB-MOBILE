@@ -21,3 +21,10 @@ npm run dev   # http://localhost:3000/LOCUS-AI-DEMO-WEB-MOBILE
 npm run build                 # writes the static site to out/
 # then push the contents of out/ to the gh-pages branch
 ```
+
+## Integration logos
+
+Tiles show a neutral category icon until you add an official logo. Drop files from each
+vendor's brand kit into `public/integrations/` named by slug (`slack.svg`, `gmail.svg`,
+`microsoft-teams.svg`, `discord.svg`, `notion.svg`, `confluence.svg`, `jira.svg`,
+`clickup.svg`, `monday.svg`, `github.svg`), then rebuild. `.png` works too.

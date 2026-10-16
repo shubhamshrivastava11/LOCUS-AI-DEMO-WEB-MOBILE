@@ -21,17 +21,41 @@ export const STATS = [
 ];
 export const STATS_SOURCE = 'Source: Locus AI customer discovery, 15+ interviews with product and engineering teams, 2026.';
 
+// Logos: drop an official file at public/integrations/<slug>.svg (or .png) from each vendor's brand kit.
+// Tiles pick it up at build time; until then a neutral category icon is shown.
 export const INTEGRATIONS = [
-  { name: 'Slack', cat: 'Communication', scope: 'Channels you pick, public and private' },
-  { name: 'Gmail', cat: 'Communication', scope: 'Labels you pick, personal by default' },
-  { name: 'Microsoft Teams', cat: 'Communication', scope: 'Teams and channels you pick' },
-  { name: 'Discord', cat: 'Communication', scope: 'Servers and channels you pick' },
-  { name: 'Notion', cat: 'Knowledge', scope: 'Workspaces and pages you pick' },
-  { name: 'Confluence', cat: 'Knowledge', scope: 'Spaces you pick' },
-  { name: 'Jira', cat: 'Delivery', scope: 'Projects you pick' },
-  { name: 'ClickUp', cat: 'Delivery', scope: 'Spaces and lists you pick' },
-  { name: 'Monday', cat: 'Delivery', scope: 'Boards you pick' },
-  { name: 'GitHub', cat: 'Engineering', scope: 'Repositories, issues and PR discussions you pick' },
+  { name: 'Slack', slug: 'slack', cat: 'Communication', scope: 'Channels you pick, public and private' },
+  { name: 'Gmail', slug: 'gmail', cat: 'Communication', scope: 'Labels you pick, personal by default' },
+  { name: 'Microsoft Teams', slug: 'microsoft-teams', cat: 'Communication', scope: 'Teams and channels you pick' },
+  { name: 'Discord', slug: 'discord', cat: 'Communication', scope: 'Servers and channels you pick' },
+  { name: 'Notion', slug: 'notion', cat: 'Knowledge', scope: 'Workspaces and pages you pick' },
+  { name: 'Confluence', slug: 'confluence', cat: 'Knowledge', scope: 'Spaces you pick' },
+  { name: 'Jira', slug: 'jira', cat: 'Delivery', scope: 'Projects you pick' },
+  { name: 'ClickUp', slug: 'clickup', cat: 'Delivery', scope: 'Spaces and lists you pick' },
+  { name: 'Monday', slug: 'monday', cat: 'Delivery', scope: 'Boards you pick' },
+  { name: 'GitHub', slug: 'github', cat: 'Engineering', scope: 'Repositories, issues and PR discussions you pick' },
+];
+export const INTEGRATION_CATS = [
+  { key: 'Communication', label: 'Chat & email', note: 'Where decisions get made' },
+  { key: 'Knowledge', label: 'Docs & wikis', note: 'Where decisions get written down' },
+  { key: 'Delivery', label: 'Work tracking', note: 'Where decisions turn into work' },
+  { key: 'Engineering', label: 'Code', note: 'Where decisions get shipped' },
+];
+
+// Lifecycle, humans and agents
+export const LIFECYCLE = [
+  { key: 'connect', step: '01', name: 'Connect', title: 'Pick the channels, labels and spaces Locus AI can read.', body: 'One-click OAuth with read-only scopes. Nothing is posted, edited or replied to, and personal sources stay private to their owner.' },
+  { key: 'capture', step: '02', name: 'Capture', title: 'Decisions extract themselves from the conversation.', body: 'A fast triage model skips the noise. A second model pulls out the decision, owner, rationale and source, with no tagging or templates.' },
+  { key: 'govern', step: '03', name: 'Govern', title: 'Every record is classified before anyone can see it.', body: 'Public, Internal, Restricted or Confidential, plus role and scope. Raw content is purged after 30 days; only structured decisions persist.' },
+  { key: 'recall', step: '04', name: 'Recall', title: 'People ask in plain language. Agents ask over MCP.', body: 'Same memory, same permissions. A person gets an answer with receipts; an agent gets structured context before it acts.' },
+];
+
+export const AGENT_EXAMPLES = [
+  { name: 'Release agent', ask: 'What did we decide about the Q3 launch date?', gets: 'Active decision, owner, two sources' },
+  { name: 'Support agent', ask: 'Did we commit to SSO for enterprise customers?', gets: 'Decision with classification check' },
+  { name: 'Onboarding agent', ask: 'Why do we use pgvector instead of a vector DB?', gets: 'Rationale and the ADR it came from' },
+  { name: 'Code review agent', ask: 'Is this pattern something the team ruled out?', gets: 'Superseded decision and its replacement' },
+  { name: 'Your own agent', ask: 'Any MCP client: Claude, Cursor or custom', gets: 'search_decisions, get_decision_context, log_decision' },
 ];
 
 export const PILLARS = [
