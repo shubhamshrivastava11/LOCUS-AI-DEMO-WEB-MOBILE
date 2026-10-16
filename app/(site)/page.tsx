@@ -2,8 +2,8 @@ import Link from 'next/link';
 import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
-import Prism from '@/components/Prism';
-import HeroStory from '@/components/HeroStory';
+import AnswerInspector from '@/components/AnswerInspector';
+import AgentConsole from '@/components/AgentConsole';
 import IntegrationExplorer from '@/components/IntegrationExplorer';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
 import { logoFor } from '@/components/IntegrationTile';
@@ -34,7 +34,7 @@ export default function Home() {
               <div><dt>Every answer</dt><dd>Linked to the thread it came from</dd></div>
             </dl>
           </div>
-          <div className="hero2-record"><HeroStory /></div>
+          <div className="hero2-record"><AgentConsole /></div>
         </div>
       </section>
 
@@ -107,10 +107,10 @@ export default function Home() {
         <div className="container">
           <Reveal className="head">
             <p className="overline">Provenance and groundedness</p>
-            <h2 className="h1">Every tool goes in. One answer comes out, with its receipts.</h2>
-            <p className="lead">Pick a question. Locus AI pulls only the sources you’re allowed to see, checks every claim against them, and shows exactly where each one came from. When nothing backs an answer, it says so instead of guessing.</p>
+            <h2 className="h1">Every answer shows its work.</h2>
+            <p className="lead">Locus AI searches each connected tool with the asker’s access, answers only what a source backs, and links every sentence to where it came from. Select a sentence to trace it.</p>
           </Reveal>
-          <Reveal delay={80}><Prism /></Reveal>
+          <Reveal delay={80}><AnswerInspector /></Reveal>
         </div>
       </section>
 
