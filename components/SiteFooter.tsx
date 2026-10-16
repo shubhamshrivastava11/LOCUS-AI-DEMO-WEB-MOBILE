@@ -27,6 +27,8 @@ export default function SiteFooter() {
           <div>
             <h4>Company</h4>
             <ul>
+              <li><Link href="/design-partners">Design partners</Link></li>
+              <li><Link href="/use-cases">Use cases</Link></li>
               <li><Link href="/contact">Contact sales</Link></li>
               <li><Link href="/demo">Live demo</Link></li>
               <li><Link href="/signin">Sign in</Link></li>
@@ -35,6 +37,7 @@ export default function SiteFooter() {
           <div>
             <h4>Trust</h4>
             <ul>
+              <li><Link href="/trust">Trust center</Link></li>
               <li><Link href="/security">Security</Link></li>
               <li><Link href="/privacy">Privacy policy</Link></li>
               <li><Link href="/terms">Terms of service</Link></li>

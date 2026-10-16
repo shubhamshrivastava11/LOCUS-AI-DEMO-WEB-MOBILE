@@ -25,7 +25,7 @@ export function SectionHead({ overline, title, lead, centered }: { overline: str
   );
 }
 
-export function CtaBand({ title = 'Give your team a memory that doesn’t walk out the door.', lead = '40+ people on the pilot. 10 integrations live. Set up in minutes, with nothing new to learn.' }: { title?: string; lead?: string }) {
+export function CtaBand({ title = 'Give your team a memory that doesn’t walk out the door.', lead = 'In pilot with 40+ users across 10 integrations. Read-only from day one, with nothing new to learn.' }: { title?: string; lead?: string }) {
   return (
     <section className="section">
       <div className="container">

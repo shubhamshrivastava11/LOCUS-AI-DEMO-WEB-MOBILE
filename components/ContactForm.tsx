@@ -8,7 +8,7 @@ const PERSONAL = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'iclou
 
 export default function ContactForm() {
   const params = useSearchParams();
-  const topic = params.get('topic') === 'integration' ? 'integration' : 'demo';
+  const t = params.get('topic'); const topic = t === 'integration' || t === 'partner' ? t : 'demo';
   const [state, setState] = useState<'idle' | 'done' | 'error'>('idle');
   const [copied, setCopied] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -24,7 +24,7 @@ export default function ContactForm() {
     if (company.length < 2) errs.company = 'Enter your company name.';
     setErrors(errs);
     if (Object.keys(errs).length) { setState('error'); return; }
-    setSummary(`Hi, I'm ${name} from ${company} (${d.size}). I'd like ${topic === 'integration' ? 'to request an integration' : 'a Locus AI demo'}. ${(d.message || '').trim()} Reach me at ${email}.`.replace(/\s+/g, ' ').trim());
+    setSummary(`Hi, I'm ${name} from ${company} (${d.size}). I'd like ${topic === 'integration' ? 'to request an integration' : topic === 'partner' ? 'to apply to the Locus AI design partner program' : 'a Locus AI demo'}. ${(d.message || '').trim()} Reach me at ${email}.`.replace(/\s+/g, ' ').trim());
     setState('done');
   }
   if (state === 'done') return (
@@ -48,7 +48,7 @@ export default function ContactForm() {
   );
   return (
     <form className="card card-lg stack gap-12" onSubmit={submit} noValidate style={{ boxShadow: 'var(--shadow-md)', color: 'var(--text)' }}>
-      <h2 className="h3">{topic === 'integration' ? 'Request an integration' : 'Book a demo'}</h2>
+      <h2 className="h3">{topic === 'integration' ? 'Request an integration' : topic === 'partner' ? 'Apply to be a design partner' : 'Book a demo'}</h2>
       {f('name', 'Full name', { autoComplete: 'name', required: true })}
       {f('email', 'Work email', { type: 'email', autoComplete: 'email', required: true, placeholder: 'name@company.com' }, 'We’ll reply within one business day.')}
       {f('company', 'Company', { autoComplete: 'organization', required: true })}
@@ -59,11 +59,11 @@ export default function ContactForm() {
         </select>
       </div>
       <div className="field">
-        <label htmlFor="message">{topic === 'integration' ? 'Which tool, and what do you decide there?' : 'What should we cover? (optional)'}</label>
+        <label htmlFor="message">{topic === 'integration' ? 'Which tool, and what do you decide there?' : topic === 'partner' ? 'Which team would pilot it, and which tools do they decide in?' : 'What should we cover? (optional)'}</label>
         <textarea id="message" name="message" className="input" />
       </div>
       {errors.form && <p className="help err" role="alert">{errors.form}</p>}
-      <button className="btn btn-primary btn-lg btn-block" disabled={false}>{topic === 'integration' ? 'Send request' : 'Book a demo'}</button>
+      <button className="btn btn-primary btn-lg btn-block" disabled={false}>{topic === 'integration' ? 'Send request' : topic === 'partner' ? 'Send application' : 'Book a demo'}</button>
       <p className="caption">By submitting you agree to our <Link href="/privacy">Privacy Policy</Link>.</p>
     </form>
   );

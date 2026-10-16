@@ -9,7 +9,7 @@ export const metadata: Metadata = { title: 'Pricing', description: 'Individual, 
 const ROWS: [string, string, string, string][] = [
   ['Personal sources', '✓', '✓', '✓'], ['Shared team workspace', '—', '✓', '✓'], ['Context Search', '✓', '✓', '✓'], ['Memory Explorer', '—', '✓', '✓'], ['Team Pulse', 'Personal', '✓', '✓'],
   ['MCP server for agents', 'Personal', 'Team', 'Org-wide'], ['Roles', 'Owner', 'Admin, Lead, Member, Guest', 'All five'], ['Classification levels', '—', '✓', '✓ + custom rules'],
-  ['Audit log', '—', '✓', 'Unlimited + export'], ['SAML SSO and SCIM', '—', '—', '✓'], ['Data residency and custom retention', '—', '—', '✓'], ['DPA and security review', '—', '—', '✓'],
+  ['Audit log', '—', '✓', 'Unlimited + export'], ['SAML SSO and SCIM', '—', '—', '✓'], ['Custom retention', '—', '—', '✓'], ['Data residency', '—', '—', 'Roadmap'], ['DPA and security review', '—', '—', '✓'],
 ];
 const fx = (v: string) => v === '✓' ? <span style={{ color: 'var(--success)', fontWeight: 700 }} aria-label="Included">✓</span> : v === '—' ? <span className="muted" aria-label="Not included">—</span> : <span className="small">{v}</span>;
 

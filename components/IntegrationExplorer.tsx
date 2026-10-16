@@ -55,7 +55,7 @@ export default function IntegrationExplorer({ logos }: { logos: Record<string, s
               <button key={i.slug} role="tab" aria-selected={sel === i.slug} className="ix-item" onClick={() => pick(i.slug)}>
                 <Mark slug={i.slug} size={30} />
                 <span className="ix-name">{i.name}</span>
-                <span className="ix-live">Live</span>
+                <span className="ix-live">In pilot</span>
               </button>
             ))}
           </div>

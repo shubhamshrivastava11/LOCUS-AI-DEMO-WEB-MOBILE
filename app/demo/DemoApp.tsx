@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IconAgent, IconFile, IconHome, IconList, IconLock, IconMoon, IconPulse, IconRadar, IconSearch, IconSettings, IconShield, IconSun, IconUsers } from '@/components/Icons';
 
-type Screen = 'home' | 'search' | 'explorer' | 'pulse' | 'agents' | 'members' | 'security' | 'policies' | 'audit' | 'usage';
+type Screen = 'home' | 'search' | 'explorer' | 'pulse' | 'agents' | 'members' | 'security' | 'policies' | 'audit' | 'usage' | 'adoption';
 type Kind = 'Decision' | 'Action' | 'Blocker' | 'Superseded';
 type Level = 'Public' | 'Internal' | 'Restricted' | 'Confidential';
 type Rec = { id: string; kind: Kind; title: string; cls: Level; owner: string; team: string; source: string; date: string; why: string; thread: [string, string][] };
@@ -60,7 +60,7 @@ export default function DemoApp() {
 
   const ask = (q: string) => { setQuery(q); setScreen('search'); };
   const nav: [Screen, string, any, number?][] = [['home', 'Home', IconHome], ['search', 'Search', IconSearch], ['explorer', 'Memory Explorer', IconRadar, records.length], ['pulse', 'Team Pulse', IconPulse], ['agents', 'Agents', IconAgent]];
-  const admin: [Screen, string, any][] = [['members', 'Members & roles', IconUsers], ['usage', 'Models & usage', IconSettings], ['security', 'Security & SSO', IconShield], ['policies', 'Policies', IconLock], ['audit', 'Audit log', IconList]];
+  const admin: [Screen, string, any][] = [['members', 'Members & roles', IconUsers], ['adoption', 'Adoption & ROI', IconPulse], ['usage', 'Models & usage', IconSettings], ['security', 'Security & SSO', IconShield], ['policies', 'Policies', IconLock], ['audit', 'Audit log', IconList]];
 
   return (
     <>
@@ -99,6 +99,7 @@ export default function DemoApp() {
               {screen === 'security' && <Security log={log} notify={notify} />}
               {screen === 'policies' && <Policies log={log} notify={notify} />}
               {screen === 'audit' && <Audit audit={audit} />}
+              {screen === 'adoption' && <Adoption />}
               {screen === 'usage' && <Usage cfg={usage} setCfg={setUsage} log={log} notify={notify} />}
             </div>
           </main>
@@ -513,6 +514,8 @@ function Security({ log, notify }: any) {
 function Policies({ log, notify }: any) {
   const [rules, setRules] = useState<[string, string, Level][]>([['#leadership, #legal', 'Slack channels', 'Confidential'], ['Notion · Pricing', 'Workspace', 'Restricted'], ['Contains “salary”, “offer”, “termination”', 'Keyword match', 'Confidential'], ['Everything else', 'Default level', 'Internal']]);
   const [ret, setRet] = useState('30 days');
+  const [recRet, setRecRet] = useState('Until deleted');
+  const [holds, setHolds] = useState([{ name: 'Northwind contract review', scope: '#deal-desk, Gmail · Legal', count: 18, on: true }, { name: 'Q3 pricing change', scope: '#pricing, Notion · Pricing', count: 7, on: false }]);
   return (
     <>
       <Header title="Classification & retention" sub="Rules run before anything reaches search, Pulse or an agent" />
@@ -524,7 +527,21 @@ function Policies({ log, notify }: any) {
       </div>
       <div className="card stack gap-12"><h2 className="h4">Retention</h2>
         <div className="row between wrap gap-12"><div><div style={{ fontWeight: 600 }}>Raw messages</div><div className="caption">Encrypted at rest, then purged</div></div><select aria-label="Raw message retention" className="select" style={{ width: 170 }} value={ret} onChange={(e) => { setRet(e.target.value); log('Changed retention', `Raw messages → ${e.target.value}`); notify(`Retention set to ${e.target.value}`); }}>{['7 days', '14 days', '30 days'].map((x) => <option key={x}>{x}</option>)}</select></div>
+        <div className="row between wrap gap-12"><div><div style={{ fontWeight: 600 }}>Decision records</div><div className="caption">Structured decisions, owners and source links</div></div><select aria-label="Decision record retention" className="select" style={{ width: 170 }} value={recRet} onChange={(e) => { setRecRet(e.target.value); log('Changed retention', `Decision records → ${e.target.value}`); notify(`Decision records kept ${e.target.value.toLowerCase()}`); }}>{['Until deleted', '3 years', '1 year'].map((x) => <option key={x}>{x}</option>)}</select></div>
         <div className="row between wrap gap-12"><div><div style={{ fontWeight: 600 }}>Personal sources</div><div className="caption">Visible only to their owner, including from Admins</div></div><span className="status status-ok">Always on</span></div>
+      </div>
+      <div className="card stack gap-12">
+        <div className="row between wrap gap-8"><h2 className="h4">Legal hold</h2><span className="caption">Held records are exempt from retention and deletion</span></div>
+        {holds.map((h, i) => (
+          <div key={h.name} className="row between wrap gap-12" style={{ paddingTop: 12, borderTop: '1px solid var(--border)' }}>
+            <div><div style={{ fontWeight: 600 }}>{h.name}</div><div className="caption">{h.scope} · {h.count} records</div></div>
+            <button className={`btn ${h.on ? 'btn-secondary' : 'btn-primary'}`} onClick={() => { setHolds(holds.map((x, j) => j === i ? { ...x, on: !x.on } : x)); log(h.on ? 'Released legal hold' : 'Placed legal hold', `${h.name} · ${h.count} records`); notify(h.on ? `Hold released: ${h.name}` : `Hold placed: ${h.count} records frozen`); }}>{h.on ? 'Release hold' : 'Place hold'}</button>
+          </div>
+        ))}
+      </div>
+      <div className="card row between wrap gap-12">
+        <div><h2 className="h4">Export workspace</h2><div className="caption">Every decision record you can see, with owner, classification and source, as JSON</div></div>
+        <button className="btn btn-secondary" onClick={() => { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(RECORDS, null, 2)], { type: 'application/json' })); a.download = 'locus-ai-export.json'; a.click(); log('Exported workspace', `${RECORDS.length} records`); notify(`Exported ${RECORDS.length} records`); }}>Export JSON</button>
       </div>
     </>
   );
@@ -730,6 +747,78 @@ function Usage({ cfg, setCfg, log, notify }: { cfg: UsageCfg; setCfg: (c: UsageC
         <div className="row between wrap gap-8"><strong>Usage by team</strong><span className="caption">Share of tokens this month</span></div>
         {teams.map(([t, pc]) => <div key={t} className="reach" style={{ gridTemplateColumns: '100px minmax(0,1fr) 90px' }}><span className="small" style={{ color: 'var(--text)' }}>{t}</span><span className="reach-bar"><span style={{ width: `${pc}%` }} /></span><span className="caption">{((c.tokens * pc) / 100).toFixed(1)}M · {pc}%</span></div>)}
       </div>
+    </>
+  );
+}
+
+
+/* ===================== Adoption & ROI ===================== */
+const WEEKS = ['Aug 25', 'Sep 1', 'Sep 8', 'Sep 15', 'Sep 22', 'Sep 29', 'Oct 6', 'Oct 13'];
+const PEOPLE_Q = [38, 61, 84, 97, 118, 126, 141, 152];
+const AGENT_Q = [0, 12, 40, 96, 180, 244, 310, 362];
+const TEAM_ADOPT: [string, number, number, number, number, number][] = [
+  // team, active, total, searches/wk, agent queries/wk, decisions captured (30d)
+  ['Platform', 16, 18, 46, 148, 96], ['Growth', 11, 14, 38, 92, 71], ['Launch', 9, 12, 29, 64, 58], ['Support', 14, 22, 22, 41, 33], ['Legal', 3, 6, 9, 0, 21], ['Security', 4, 6, 8, 17, 14],
+];
+
+function Adoption() {
+  const [mins, setMins] = useState(4);
+  const [rate, setRate] = useState(75);
+  const [cost, setCost] = useState(3000);
+  const [half, setHalf] = useState(true);
+  const [hl, setHl] = useState<number | null>(null);
+  const pMonth = PEOPLE_Q.slice(-4).reduce((a, b) => a + b, 0), aMonth = AGENT_Q.slice(-4).reduce((a, b) => a + b, 0);
+  const qMonth = pMonth + aMonth;
+  const hours = ((pMonth + aMonth * (half ? 0.5 : 1)) * mins) / 60;
+  const value = hours * rate;
+  const roi = value / Math.max(cost, 1);
+  const active = TEAM_ADOPT.reduce((a, t) => a + t[1], 0), total = TEAM_ADOPT.reduce((a, t) => a + t[2], 0);
+  const maxW = Math.max(...PEOPLE_Q.map((p, i) => p + AGENT_Q[i]));
+  const exportCsv = () => { const csv = ['team,active,total,searches_per_week,agent_queries_per_week,decisions_30d', ...TEAM_ADOPT.map((t) => t.join(','))].join('\n'); const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' })); a.download = 'locus-ai-adoption.csv'; a.click(); };
+  return (
+    <>
+      <Header title="Adoption & ROI" sub="Last 8 weeks · sample data for Acme" right={<button className="btn btn-secondary" onClick={exportCsv}>Export CSV</button>} />
+      <div className="grid g4">
+        {[['Weekly active people', `${active} of ${total}`, `${Math.round((active / total) * 100)}% of invited people`], ['Agents querying', '4', 'support, release, review, onboarding'], ['Questions answered', qMonth.toLocaleString(), 'last 4 weeks, people and agents'], ['Plans changed before action', '23', 'Decision Guard conflicts, last 30 days']].map(([k, v, d]) => (
+          <div className="card stat" key={k}><span className="caption">{k}</span><b>{v}</b><span className="caption">{d}</span></div>
+        ))}
+      </div>
+      <div className="adopt-grid">
+        <div className="card stack gap-12">
+          <div className="row between wrap gap-8"><strong>Questions per week</strong><span className="row gap-12 caption"><span><i className="lg-dot" style={{ background: 'var(--brand)' }} />People</span><span><i className="lg-dot" style={{ background: '#C7BFFA' }} />Agents</span></span></div>
+          <div className="adopt-chart" role="img" aria-label={WEEKS.map((w, i) => `${w}: ${PEOPLE_Q[i]} people, ${AGENT_Q[i]} agents`).join('; ')}>
+            {WEEKS.map((w, i) => (
+              <div key={w} className={`adopt-col ${hl === i ? 'on' : ''}`} onMouseEnter={() => setHl(i)} onMouseLeave={() => setHl(null)}>
+                <div className="adopt-stack" style={{ height: `${((PEOPLE_Q[i] + AGENT_Q[i]) / maxW) * 100}%` }}>
+                  <span style={{ flex: AGENT_Q[i], background: '#C7BFFA' }} />
+                  <span style={{ flex: PEOPLE_Q[i], background: 'var(--brand)' }} />
+                </div>
+                <span className="adopt-x">{w}</span>
+                {hl === i && <span className="adopt-tip">{PEOPLE_Q[i]} people · {AGENT_Q[i]} agents</span>}
+              </div>
+            ))}
+          </div>
+          <p className="caption" style={{ margin: 0 }}>Agent queries overtook people in week 5, after the support agent was connected over MCP.</p>
+        </div>
+        <div className="card stack gap-12">
+          <div className="row between wrap gap-8"><strong>ROI estimate</strong><span className="tm-badge warn">Your inputs, not a measured result</span></div>
+          <label className="roi-in"><span>Minutes saved per answered question</span><input type="range" min={2} max={30} value={mins} onChange={(e) => setMins(+e.target.value)} /><b>{mins} min</b></label>
+          <label className="roi-in"><span>Loaded hourly cost</span><input type="range" min={30} max={200} step={5} value={rate} onChange={(e) => setRate(+e.target.value)} /><b>${rate}</b></label>
+          <label className="roi-in"><span>Locus AI cost per month</span><input type="range" min={500} max={10000} step={250} value={cost} onChange={(e) => setCost(+e.target.value)} /><b>${cost.toLocaleString()}</b></label>
+          <div className="roi-out">
+            <div><span className="caption">Hours saved / month</span><b>{Math.round(hours).toLocaleString()}</b></div>
+            <div><span className="caption">Value / month</span><b>${Math.round(value).toLocaleString()}</b></div>
+            <div><span className="caption">Return on cost</span><b className={roi >= 1 ? 'pos' : 'neg'}>{roi.toFixed(1)}×</b></div>
+          </div>
+          <label className="row gap-8 small" style={{ alignItems: 'center' }}><input type="checkbox" checked={half} onChange={(e) => setHalf(e.target.checked)} style={{ accentColor: 'var(--brand)' }} />Count agent questions at half value</label>
+          <p className="caption" style={{ margin: 0 }}>Based on {pMonth.toLocaleString()} questions from people and {aMonth.toLocaleString()} from agents in the last 4 weeks. Start conservative and replace these inputs with numbers from your own pilot.</p>
+        </div>
+      </div>
+      <div className="table-wrap"><table className="table"><thead><tr><th>Team</th><th>Active</th><th className="hide-sm">Searches / wk</th><th className="hide-sm">Agent queries / wk</th><th>Decisions (30d)</th></tr></thead><tbody>
+        {TEAM_ADOPT.map(([t, a, n, s, q, d]) => (
+          <tr key={t}><td style={{ fontWeight: 600 }}>{t}</td><td><div className="row gap-8" style={{ alignItems: 'center' }}><div className="bar-track" style={{ maxWidth: 90, height: 8 }}><div className="bar-fill" style={{ width: `${(a / n) * 100}%`, height: 8, background: a / n < 0.6 ? 'var(--warning)' : undefined }} /></div><span className="caption">{a}/{n}</span></div></td><td className="hide-sm">{s}</td><td className="hide-sm">{q}</td><td>{d}</td></tr>
+        ))}
+      </tbody></table></div>
     </>
   );
 }

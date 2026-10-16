@@ -7,7 +7,7 @@ import { BackToTop, PointerLight, ScrollProgress } from '@/components/Motion';
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="announce"><span className="announce-tag">New</span>Locus AI now ships an MCP server, so any agent can query your team’s memory. <Link href="/product#mcp">See the tools</Link></div>
+      <div className="announce"><span className="announce-tag">Now open</span>Design partner program: early access to Enterprise features and a direct line to the team. <Link href="/design-partners">Apply</Link></div>
       <SiteNav />
       <main id="main">{children}</main>
       <SiteFooter />

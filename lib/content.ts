@@ -8,9 +8,10 @@ export const SITE = {
 
 export const NAV = [
   { href: '/product', label: 'Product' },
+  { href: '/use-cases', label: 'Use cases' },
   { href: '/integrations', label: 'Integrations' },
   { href: '/enterprise', label: 'Enterprise' },
-  { href: '/security', label: 'Security' },
+  { href: '/trust', label: 'Trust' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/demo', label: 'Live demo' },
 ];
@@ -20,7 +21,7 @@ export const STATS = [
   { n: '80%', t: 'rely on docs and notes that only kind of work.' },
   { n: '87%', t: 'would adopt a dedicated memory layer once their team signs off.' },
 ];
-export const STATS_SOURCE = 'Source: Locus AI customer discovery, 15+ interviews with product and engineering teams, 2026.';
+export const STATS_SOURCE = 'Source: Locus AI customer discovery, 2026. Based on 15+ interviews, mostly with engineers. Directional findings, not a market survey.';
 
 // Logos: drop an official file at public/integrations/<slug>.svg (or .png) from each vendor's brand kit.
 // Tiles pick it up at build time; until then a neutral category icon is shown.
@@ -92,8 +93,8 @@ export const CLASSES = [
 
 export const PLANS = [
   { name: 'Individual', price: '$12', per: 'per month', desc: 'For one person who is tired of losing decisions.', cta: 'Start free', href: '/signin', features: ['Personal sources (Gmail, Slack DMs)', 'Private decision register', 'Context Search with history', 'Weekly personal Pulse', 'MCP access for your own agents'] },
-  { name: 'Team', price: 'Pilot', per: 'pricing on a call', desc: 'For teams that want one shared memory.', cta: 'Join the pilot', href: '/contact', featured: true, features: ['Everything in Individual', 'Shared workspace and scopes', 'Team Pulse and Memory Explorer', 'Roles: Admin, Lead, Member, Guest', 'Team MCP access for agents', 'Audit log'] },
-  { name: 'Enterprise', price: 'Custom', per: 'annual contract', desc: 'For organizations with security and compliance requirements.', cta: 'Contact sales', href: '/contact', features: ['Everything in Team', 'Decision Guard and agent decision features (early access)', 'SAML SSO and SCIM provisioning', 'Classification policies and confidential grants', 'Audit log export', 'Custom retention and data residency', 'DPA, security review and dedicated support'] },
+  { name: 'Team', price: 'Pilot', per: 'pricing on a call', desc: 'For teams that want one shared memory.', cta: 'Become a design partner', href: '/design-partners', featured: true, features: ['Everything in Individual', 'Shared workspace and scopes', 'Team Pulse and Memory Explorer', 'Roles: Admin, Lead, Member, Guest', 'Team MCP access for agents', 'Audit log'] },
+  { name: 'Enterprise', price: 'Custom', per: 'annual contract', desc: 'For organizations with security and compliance requirements.', cta: 'Contact sales', href: '/contact', features: ['Everything in Team', 'Decision Guard and agent decision features (early access)', 'SAML SSO and SCIM provisioning', 'Classification policies and confidential grants', 'Audit log export', 'Custom retention (data residency on the roadmap)', 'DPA, security review and dedicated support'] },
 ];
 
 export const FAQS = [
@@ -122,4 +123,118 @@ export const ENTERPRISE = [
   { key: 'alerts', name: 'Decision change alerts', line: 'Running agents learn about a changed decision as soon as it is confirmed.', body: 'Agents subscribe to topics. When an owner confirms that a new decision replaces an old one, every subscribed agent gets the change and a short reason over MCP.' },
   { key: 'handover', name: 'Ownerless decision handover', line: 'No decision is left without an owner when people move on.', body: 'When someone leaves or changes role, Locus AI finds their active decisions, suggests a new owner by team and scope, and queues the rest for review.' },
   { key: 'health', name: 'Decision Health', line: 'Measure how well each team makes and keeps decisions.', body: 'Per team: decisions argued over again, time to decide, reversal rate and decisions with no owner, trended week over week.' },
+];
+
+// Status of every connector. 'pilot' = available to pilot customers today. Update as connectors go GA.
+export const INTEGRATION_STATUS_LABEL = 'In pilot';
+
+// Connectors on the roadmap. Not available yet.
+export const PLANNED_INTEGRATIONS = [
+  { name: 'Google Drive', slug: 'google-drive', cat: 'Docs & files', why: 'Docs, comments and suggestions where specs get decided' },
+  { name: 'SharePoint & OneDrive', slug: 'sharepoint', cat: 'Docs & files', why: 'Microsoft 365 documents and their comment threads' },
+  { name: 'Outlook', slug: 'outlook', cat: 'Email', why: 'Microsoft 365 mail, with the same personal-by-default rule as Gmail' },
+  { name: 'Zoom transcripts', slug: 'zoom', cat: 'Meetings', why: 'Most decisions are made in meetings, not chat' },
+  { name: 'Google Meet transcripts', slug: 'google-meet', cat: 'Meetings', why: 'Decisions and owners pulled from meeting transcripts' },
+  { name: 'Gong', slug: 'gong', cat: 'Meetings', why: 'What sales promised customers on calls' },
+  { name: 'Linear', slug: 'linear', cat: 'Work tracking', why: 'Issue and project decisions for engineering teams' },
+  { name: 'Salesforce', slug: 'salesforce', cat: 'CRM', why: 'Deal terms and commitments recorded on opportunities' },
+  { name: 'Zendesk', slug: 'zendesk', cat: 'Support', why: 'Policy answers given to customers in tickets' },
+];
+
+// Agent platforms. 'works' = any MCP client can connect today. 'planned' = verified integration on the roadmap.
+export const AGENT_PLATFORMS = [
+  { name: 'Claude', status: 'works' },
+  { name: 'Cursor', status: 'works' },
+  { name: 'Your own agents', status: 'works' },
+  { name: 'Microsoft Copilot Studio', status: 'planned' },
+  { name: 'Glean', status: 'planned' },
+  { name: 'ChatGPT', status: 'planned' },
+  { name: 'Salesforce Agentforce', status: 'planned' },
+] as const;
+
+// Trust center. Flip a status only when it is true and you can show evidence.
+export type TrustStatus = 'In place' | 'In progress' | 'Planned';
+export const TRUST_CONTROLS: { area: string; items: { name: string; status: TrustStatus; note: string }[] }[] = [
+  { area: 'Access', items: [
+    { name: 'Read-only OAuth scopes', status: 'In place', note: 'Locus AI never posts, edits or replies in your tools.' },
+    { name: 'SAML SSO and SCIM provisioning', status: 'In place', note: 'Enterprise plan.' },
+    { name: 'Roles, scopes and four classification levels', status: 'In place', note: 'Checked on every search, digest and agent call.' },
+    { name: 'Agents act with the user’s permissions', status: 'In place', note: 'An agent never sees more than the person it acts for.' },
+    { name: 'Mirror each source tool’s own permissions', status: 'Planned', note: 'Channel membership, shared drives and groups, re-checked at query time.' },
+  ] },
+  { area: 'Data', items: [
+    { name: 'Raw content purged after 30 days', status: 'In place', note: 'Only structured decisions persist.' },
+    { name: 'Personal sources private to their owner', status: 'In place', note: 'Including from Admins.' },
+    { name: 'Source edits and deletions carried to decision records', status: 'Planned', note: 'A deleted source message updates or removes the record built from it.' },
+    { name: 'Customer-managed encryption keys', status: 'Planned', note: 'Your keys, in your cloud KMS.' },
+    { name: 'Bring your own model provider', status: 'Planned', note: 'Run extraction on your own Bedrock, Azure OpenAI or Vertex account.' },
+    { name: 'EU data residency', status: 'Planned', note: 'Storage and model inference both in the EU.' },
+    { name: 'Single-tenant deployment', status: 'Planned', note: 'Dedicated infrastructure for one customer.' },
+  ] },
+  { area: 'Governance', items: [
+    { name: 'Audit log with CSV export', status: 'In place', note: 'Admin actions, role changes and every confidential access.' },
+    { name: 'Retention policies per source, legal hold and full export', status: 'Planned', note: 'Shown in the live demo as a preview.' },
+    { name: 'Audit log streaming to your SIEM', status: 'Planned', note: 'Splunk, Datadog and similar.' },
+  ] },
+  { area: 'Assurance', items: [
+    { name: 'SOC 2 Type I', status: 'Planned', note: 'Type II follows after the observation period.' },
+    { name: 'Independent penetration test', status: 'Planned', note: 'Summary shared under NDA once complete.' },
+    { name: 'Public status page and uptime target', status: 'Planned', note: '' },
+    { name: 'Data Processing Agreement', status: 'In place', note: 'Available on request.' },
+    { name: 'Security questionnaire', status: 'In place', note: 'Answered by our team for each review.' },
+  ] },
+];
+
+export const TRUST_FAQ = [
+  { q: 'Which AI models process our data, and do they train on it?', a: 'Locus AI uses Anthropic models through the commercial API: a small model to skip noise and a larger one to extract decisions. Content sent through the commercial API is not used to train models. Model providers are listed as sub-processors.' },
+  { q: 'If someone loses access to a channel, when does Locus AI stop showing them its decisions?', a: 'Today, access follows the roles, scopes and classification your admins set in Locus AI, and SCIM removes people who leave. Mirroring each tool’s own membership, and re-checking it at query time, is on the roadmap.' },
+  { q: 'How do agents authenticate?', a: 'Each agent connects to the MCP server on behalf of a signed-in person and gets exactly that person’s access. There is no shared admin key for agents.' },
+  { q: 'Captured messages could contain instructions aimed at AI agents. How is that handled?', a: 'Decisions are returned to agents as quoted records with their source, never as instructions to follow. Screening captured content for injected instructions is on the roadmap.' },
+  { q: 'How accurate is decision extraction?', a: 'We measure precision and recall on pilot data with each design partner, and share the numbers for your own sources during the pilot rather than quoting a general figure.' },
+  { q: 'Can we run Locus AI in our own cloud?', a: 'Not yet. Customer-managed keys and bring-your-own model provider come first; single-tenant deployment follows for enterprise customers.' },
+];
+
+export const USE_CASES = [
+  {
+    slug: 'support', name: 'Support', title: 'Support agents that quote this week’s policy, not last quarter’s.',
+    lead: 'Pricing, refunds and SLAs change in Slack. Help centers and macros catch up weeks later. AI support agents answer from whatever they can find.',
+    where: ['Slack', 'Microsoft Teams', 'Notion', 'Zendesk (planned)'],
+    scenario: [
+      ['Monday', 'Growth caps the free tier at 20 seats in #pricing.'],
+      ['Wednesday', 'A 45-person prospect asks the support agent if the free tier covers them.'],
+      ['Without Locus AI', 'The agent reads the old help page and promises 45 free seats.'],
+      ['With Locus AI', 'The agent checks search_decisions first and answers with the 20-seat cap, citing Monday’s decision.'],
+    ],
+    captures: [['Decision', 'Cap the free tier at 20 seats', 'Growth · Restricted'], ['Decision', 'Refunds over $500 need a manager', 'Support ops · Internal'], ['Superseded', 'Free tier: unlimited seats', 'Replaced Mon']],
+    call: 'search_decisions("free tier seats")',
+    measure: ['Agent answers corrected after the fact', 'Escalations caused by outdated policy', 'Time from a policy change to agents using it'],
+  },
+  {
+    slug: 'sales', name: 'Sales', title: 'Every rep and agent quotes the same terms.',
+    lead: 'Discounts, packaging and custom commitments get agreed on calls and in DMs. Proposals and AI-drafted emails reuse whatever terms someone remembers.',
+    where: ['Slack', 'Gmail', 'Gong (planned)', 'Salesforce (planned)'],
+    scenario: [
+      ['Tuesday', 'The CRO approves a 15% ceiling on multi-year discounts in #deal-desk.'],
+      ['Thursday', 'An AI assistant drafts a renewal proposal for a rep.'],
+      ['Without Locus AI', 'It copies last year’s 25% discount from an old proposal.'],
+      ['With Locus AI', 'It checks the decision first, caps the discount at 15% and links the approval.'],
+    ],
+    captures: [['Decision', 'Multi-year discounts capped at 15%', 'Deal desk · Restricted'], ['Action', 'Legal to approve the new MSA template by Nov 1', 'Legal · Internal'], ['Blocker', 'EU DPA review holding two deals', 'Legal · Confidential']],
+    call: 'get_decision_context("multi-year discount")',
+    measure: ['Proposals sent with off-policy terms', 'Deal-desk questions asked twice', 'Time to answer “what did we agree with this customer?”'],
+  },
+  {
+    slug: 'engineering', name: 'Engineering', title: 'Coding agents that know what the team already ruled out.',
+    lead: 'Architecture decisions live in ADRs, PR threads and Slack. Coding agents and new hires can’t see them, so settled debates get reopened in code review.',
+    where: ['GitHub', 'Jira', 'Confluence', 'Slack', 'Linear (planned)'],
+    scenario: [
+      ['Last quarter', 'The platform team decides on Postgres with pgvector and rules out a separate vector database.'],
+      ['Today', 'A coding agent is asked to speed up retrieval.'],
+      ['Without Locus AI', 'It opens a PR adding a Redis cache and a new vector store.'],
+      ['With Locus AI', 'It checks the plan, finds ADR-014 and proposes an index change instead.'],
+    ],
+    captures: [['Decision', 'Adopt Postgres + pgvector', 'Platform · Internal'], ['Decision', 'No Redis cache for retrieval', 'Platform · Internal'], ['Action', 'SSO rollout plan by Oct 20', 'Launch · Internal']],
+    call: 'check_plan("add redis cache for retrieval")',
+    measure: ['PRs reopened over settled decisions', 'Onboarding time to first merged PR', 'Agent plans changed before execution'],
+  },
 ];

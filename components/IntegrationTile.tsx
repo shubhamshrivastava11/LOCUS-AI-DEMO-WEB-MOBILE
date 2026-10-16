@@ -28,7 +28,7 @@ export function IntegrationTile({ name, slug, cat, scope, compact }: { name: str
         <strong className="int-name">{name}</strong>
         {scope && !compact && <span className="caption">{scope}</span>}
       </div>
-      {!compact && <span className="int-live">Live</span>}
+      {!compact && <span className="int-live">In pilot</span>}
     </div>
   );
 }
