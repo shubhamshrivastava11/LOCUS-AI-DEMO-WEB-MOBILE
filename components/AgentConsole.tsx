@@ -101,7 +101,8 @@ export default function AgentConsole() {
       </div>
 
       <div className={`ac-foot ${shown(total) ? 'in' : ''}`}>
-        <span className={`ac-verdict ${on ? 'good' : 'bad'}`}>
+        {!shown(total) && <span className="ac-working">Agent is working<span className="dots"><i /><i /><i /></span></span>}
+        <span className={`ac-verdict ${on ? 'good' : 'bad'}`} hidden={!shown(total)}>
           {on ? <><b>Correct.</b> Linked to the decision made Monday.</> : <><b>Wrong.</b> The price changed Monday. The help page never did.</>}
         </span>
         <span className="ac-actions">

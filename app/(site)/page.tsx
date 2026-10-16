@@ -1,138 +1,148 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/Interactive';
-import { CtaBand } from '@/components/Sections';
+import { CtaBand, Cls } from '@/components/Sections';
+import HeroProduct from '@/components/HeroProduct';
 import AnswerInspector from '@/components/AnswerInspector';
 import AgentConsole from '@/components/AgentConsole';
 import { IntegrationMark } from '@/components/IntegrationTile';
-import { IconAgent, IconArrow, IconLink, IconLock, IconShield, IconTrash, IconUsers } from '@/components/Icons';
+import { IconArrow } from '@/components/Icons';
 import { INTEGRATIONS } from '@/lib/content';
 
 export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="hero2" style={{ marginTop: -73 }}>
-        <span className="hero2-pulse" aria-hidden="true" />
-        <div className="container hero2-grid">
-          <div className="hero2-copy">
-            <p className="hero2-kicker hero-in">Organizational memory for enterprise AI</p>
-            <h1 className="display2 split"><span className="ln"><span>Your AI can reason.</span></span><span className="ln"><span className="second">Locus AI makes it remember.</span></span></h1>
-            <p className="hero2-lead hero-in">Your team decides in Slack. Your agents read old docs. Locus AI captures every decision with its owner, source and access rules, so people and agents act on what’s current.</p>
-            <div className="row gap-12 wrap hero-in">
-              <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
-              <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo</Link>
-            </div>
-            <dl className="hero2-facts hero-in">
-              <div><dt>Read-only</dt><dd>Never posts, edits or replies in your tools</dd></div>
-              <div><dt>30 days</dt><dd>Until raw content is purged</dd></div>
-              <div><dt>Every answer</dt><dd>Linked to the thread it came from</dd></div>
-            </dl>
+      <section className="h3o">
+        <div className="h3o-bg" aria-hidden="true" />
+        <div className="container h3o-copy">
+          <Link href="/enterprise#guard" className="h3o-pill"><span>New</span>Decision Guard: agents check their plan before they act <IconArrow size={14} /></Link>
+          <h1 className="h3o-title">Your AI can reason.<br /><span>Locus AI makes it remember.</span></h1>
+          <p className="h3o-lead">Locus AI captures every decision your team makes in Slack, email, docs and tickets, with its owner, source and access rules. People and AI agents act on what’s current, not last quarter’s docs.</p>
+          <div className="h3o-cta">
+            <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
+            <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo</Link>
           </div>
-          <div className="hero2-record"><AgentConsole /></div>
+          <ul className="h3o-facts">
+            {['Read-only OAuth', 'SAML SSO and SCIM', 'Permission-aware MCP', 'Raw content purged in 30 days'].map((f) => <li key={f}>{f}</li>)}
+          </ul>
+        </div>
+        <div className="container h3o-frame">
+          <HeroProduct />
         </div>
       </section>
 
-      {/* TRUST STRIP */}
-      <section className="trust-strip" aria-label="Enterprise controls">
-        <div className="container trust-grid">
-          {[[IconLock, 'Read-only OAuth', 'Never posts or edits'], [IconShield, 'SAML SSO and SCIM', 'On the Enterprise plan'], [IconUsers, 'Permission checks', 'Role, scope and classification'], [IconLink, 'Audit log', 'Every confidential access'], [IconTrash, '30-day purge', 'Raw content deleted']].map(([I, t, d]: any) => (
-            <div key={t} className="trust-item"><span className="trust-ic"><I size={18} /></span><span><strong>{t}</strong><span>{d}</span></span></div>
-          ))}
-        </div>
-      </section>
-
-      {/* PROBLEM */}
-      <section className="section prob">
+      {/* WORKS WITH */}
+      <section className="ww">
         <div className="container">
-          <Reveal className="head prob-head">
-            <p className="overline">The problem</p>
-            <h2 className="h1">Your team changes decisions in Slack. Your AI agents still read last quarter’s docs.</h2>
-            <p className="lead">Pricing, launch dates and architecture choices change every week, mostly in threads and meetings. The pages your agents read don’t change with them. People used to catch the stale answer before it reached a customer. Agents don’t.</p>
+          <p className="ww-k">Captures decisions from the tools your team already uses</p>
+          <div className="ww-row">
+            {INTEGRATIONS.map((i) => <span key={i.slug} className="ww-item"><IntegrationMark name={i.name} slug={i.slug} cat={i.cat} size={28} />{i.name}</span>)}
+          </div>
+        </div>
+      </section>
+
+      {/* VALUE */}
+      <section className="section vp">
+        <div className="container">
+          <Reveal className="vp-head">
+            <h2 className="h1">Search finds documents.<br />Memory knows what was decided.</h2>
           </Reveal>
-          <div className="prob-costs">
+          <div className="vp-grid">
             {[
-              ['Support and sales agents', 'A customer hears a price you retired.', 'The agent quotes the help center. The decision changed in #pricing on Monday.'],
-              ['Coding agents', 'A sprint rebuilds a design you rejected.', 'The agent proposes the cache the team ruled out in an ADR. Review catches it a week later.'],
-              ['Leaders and new hires', 'A settled call gets argued again.', 'Nobody can find who decided, when, or why, and the person who decided has moved teams.'],
-            ].map(([who, what, how], i) => (
-              <Reveal key={who} delay={i * 90}>
-                <div className="prob-card">
-                  <span className="prob-who">{who}</span>
-                  <h3 className="h3">{what}</h3>
-                  <p className="small">{how}</p>
-                </div>
+              ['Capture', 'Decisions, owners and rationale are pulled from conversations as they happen. No tagging, no templates, nothing new for your team to learn.'],
+              ['Keep current', 'When a decision changes, the old one is marked replaced and linked to the new one. People and agents only get what’s current.'],
+              ['Govern', 'Role, scope and classification are checked before anything reaches a person or an agent. Every confidential access is logged.'],
+            ].map(([t, b], i) => (
+              <Reveal key={t} delay={i * 80} className="vp-item">
+                <span className="vp-n">0{i + 1}</span>
+                <h3 className="h3">{t}</h3>
+                <p className="body">{b}</p>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* BEFORE / AFTER */}
+      <section className="section ba">
+        <div className="container ba-grid">
+          <Reveal className="stack gap-20">
+            <p className="overline">The problem</p>
+            <h2 className="h1">Your agents answer from whatever they can find.</h2>
+            <p className="lead">Pricing, launch dates and architecture change every week in threads and meetings. The pages your agents read don’t. People used to catch the stale answer before a customer did. Agents don’t.</p>
+            <ul className="ba-list">
+              <li><b>Support and sales agents</b> quote a price you retired.</li>
+              <li><b>Coding agents</b> rebuild a design the team rejected.</li>
+              <li><b>New hires and leaders</b> reopen decisions nobody can trace.</li>
+            </ul>
+            <p className="small">Flip the switch to see the same agent with Locus AI memory.</p>
+          </Reveal>
+          <Reveal delay={80} className="ba-stage"><AgentConsole /></Reveal>
+        </div>
+      </section>
+
+      {/* PROVENANCE */}
       <section className="section prism-section">
         <div className="container">
           <Reveal className="head">
-            <p className="overline">How it works</p>
+            <p className="overline">Provenance</p>
             <h2 className="h1">Every answer shows its work.</h2>
             <p className="lead">Locus AI searches each connected tool with the asker’s access, answers only what a source backs, and links every sentence to where it came from. Select a sentence to trace it.</p>
           </Reveal>
           <Reveal delay={80}><AnswerInspector /></Reveal>
-          <div className="row gap-16 wrap" style={{ marginTop: 24 }}>
-            <Link href="/product" className="btn btn-secondary">Explore the product</Link>
-            <Link href="/demo" className="btn btn-ghost">Open the live demo <IconArrow size={16} /></Link>
+        </div>
+      </section>
+
+      {/* BENTO */}
+      <section className="section">
+        <div className="container">
+          <Reveal className="head">
+            <p className="overline">Built for enterprise</p>
+            <h2 className="h1">Governed memory for people and agents.</h2>
+          </Reveal>
+          <div className="bento">
+            <Reveal className="bx bx-mcp">
+              <div className="bx-copy"><h3 className="h4">Any agent, over MCP</h3><p className="small">Claude, Cursor or your own agents query the same memory, with the permissions of the person they act for.</p></div>
+              <pre className="bx-code"><span className="c">{'// agent, acting for Sam Lee (Growth)'}</span>{'\n'}<span className="k">search_decisions</span>(<span className="s">&quot;free tier seats&quot;</span>){'\n\n'}<span className="c">{'→'}</span> {'{'}{'\n'}  title: <span className="s">&quot;Cap the free tier at 20 seats&quot;</span>,{'\n'}  owner: <span className="s">&quot;Rosa Diaz&quot;</span>,{'\n'}  status: <span className="s">&quot;active&quot;</span>, replaces: <span className="s">&quot;unlimited seats&quot;</span>,{'\n'}  source: <span className="s">&quot;slack://#pricing/1697…&quot;</span>{'\n'}{'}'}</pre>
+            </Reveal>
+            <Reveal className="bx bx-perm" delay={60}>
+              <div className="bx-copy"><h3 className="h4">Permission-aware by default</h3><p className="small">Four classification levels plus role and scope, checked on every search, digest and agent call.</p></div>
+              <div className="bx-perm-t">
+                {[['Internal', 'Launch Q3 on July 29', true], ['Restricted', 'Cap the free tier at 20 seats', true], ['Confidential', 'EU DPA review', false]].map(([l, t, ok]: any) => (
+                  <div key={t} className={`bx-perm-r ${ok ? '' : 'no'}`}><Cls l={l} /><span>{t}</span><b>{ok ? '✓ Sam can see' : '✕ Needs a grant'}</b></div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal className="bx bx-line" delay={60}>
+              <div className="bx-copy"><h3 className="h4">Lineage, not just search</h3><p className="small">Every decision links to what it replaced.</p></div>
+              <div className="bx-chain">
+                <div className="old"><span>Aug 30</span><s>Free tier: unlimited seats</s></div>
+                <div className="arrow" aria-hidden="true" />
+                <div className="new"><span>Mon · active</span><b>Cap the free tier at 20 seats</b></div>
+              </div>
+            </Reveal>
+            <Reveal className="bx bx-audit" delay={120}>
+              <div className="bx-copy"><h3 className="h4">Audit everything</h3><p className="small">Role changes, grants and confidential access, exportable.</p></div>
+              <div className="bx-log">
+                {[['09:41', 'Granted Confidential access'], ['09:12', 'SCIM provisioned a member'], ['Yesterday', 'Changed a role']].map(([t, e]) => <div key={e}><span>{t}</span>{e}</div>)}
+              </div>
+            </Reveal>
+            <Reveal className="bx bx-data" delay={180}>
+              <div className="bx-copy"><h3 className="h4">Minimal data, by design</h3><p className="small">Read-only scopes. Raw content purged after 30 days. Only structured decisions persist.</p></div>
+              <div className="bx-chips">{['Read-only OAuth', 'SSO and SCIM', '30-day purge', 'Audit export'].map((c) => <span key={c}>{c}</span>)}</div>
+            </Reveal>
+            <Reveal className="bx bx-trust">
+              <div className="bx-copy">
+                <h3 className="h3">Every control, with its real status.</h3>
+                <p className="body">The Trust center lists what’s in place today and what’s on the roadmap, so your security review starts with facts.</p>
+              </div>
+              <div className="row gap-12 wrap"><Link href="/trust" className="btn btn-primary">Open the Trust center</Link><Link href="/security" className="btn btn-secondary">How access works</Link></div>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* INTEGRATIONS */}
-      <section className="section">
-        <div className="container home-int">
-          <Reveal className="stack gap-16">
-            <p className="overline">Integrations</p>
-            <h2 className="h1">Works where your team already decides.</h2>
-            <p className="lead">Ten connectors in pilot, each read-only and scoped to the channels, labels and spaces you pick. Meeting transcripts, Google Drive and Microsoft 365 are next.</p>
-            <div className="row gap-16 wrap">
-              <Link href="/integrations" className="btn btn-secondary">See all integrations</Link>
-              <Link href="/contact?topic=integration" className="btn btn-ghost">Request one <IconArrow size={16} /></Link>
-            </div>
-          </Reveal>
-          <Reveal delay={80} className="stack gap-16">
-            <div className="hi-grid">
-              {INTEGRATIONS.map((i) => (
-                <div key={i.slug} className="hi-tile"><IntegrationMark name={i.name} slug={i.slug} cat={i.cat} size={36} /><span>{i.name}</span></div>
-              ))}
-            </div>
-            <div className="hi-agents"><span className="hi-k">Agents connect over MCP</span>{['Claude', 'Cursor', 'Your own agents'].map((a) => <span key={a} className="hi-chip">{a}</span>)}</div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* SECURITY */}
-      <section className="section alt">
-        <div className="container home-sec">
-          <Reveal className="stack gap-16">
-            <p className="overline">Security</p>
-            <h2 className="h1">Built to pass your security review.</h2>
-            <p className="lead">Every control we’re asked about, with its real status, is published in the Trust center. Nothing is marked in place unless it works today.</p>
-            <div className="row gap-16 wrap">
-              <Link href="/trust" className="btn btn-primary">Open the Trust center</Link>
-              <Link href="/security" className="btn btn-ghost">How access works <IconArrow size={16} /></Link>
-            </div>
-          </Reveal>
-          <Reveal delay={80}>
-            <ul className="sec-list">
-              {[
-                [IconAgent, 'Agents never see more than their user', 'Every MCP call runs with the permissions of the person the agent acts for.'],
-                [IconShield, 'Access is checked before every answer', 'Role, scope and four classification levels. Spaces you can’t open are skipped.'],
-                [IconLock, 'Minimal data, by design', 'Read-only scopes. Raw content is purged after 30 days. Only structured decisions persist.'],
-              ].map(([I, t, d]: any) => (
-                <li key={t}><span className="sec-ic"><I size={18} /></span><div><strong>{t}</strong><span>{d}</span></div></li>
-              ))}
-            </ul>
-          </Reveal>
-        </div>
-      </section>
-
-      <CtaBand partner title="Give your agents a memory they can be held to." lead="We’re onboarding a small group of design partners now, with early access to Decision Guard and the other Enterprise features." />
+      <CtaBand partner title="Give your agents a memory they can be held to." lead="We’re onboarding a small group of design partners, with early access to Decision Guard and the other Enterprise features." />
     </>
   );
 }

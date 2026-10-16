@@ -6,8 +6,9 @@ import { useEffect, useState } from 'react';
 import { NAV } from '@/lib/content';
 import { openPalette } from './CommandPalette';
 
-export default function SiteNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
+export default function SiteNav({ tone: toneProp = 'dark' }: { tone?: 'dark' | 'light' }) {
   const path = usePathname();
+  const tone = path === '/' ? 'light' : toneProp;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {
