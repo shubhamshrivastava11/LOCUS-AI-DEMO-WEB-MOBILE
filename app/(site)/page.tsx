@@ -3,6 +3,7 @@ import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
 import MemoryLoom from '@/components/MemoryLoom';
+import HeroLedger from '@/components/HeroLedger';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
@@ -14,18 +15,24 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="dark hero" style={{ marginTop: -73, paddingTop: 136 }}>
-        <div className="container hero-copy hero-in">
-          <p className="eyebrow">Memory infrastructure for people and AI agents</p>
-          <h1 className="display split"><span className="ln"><span>Your AI can reason.</span></span><span className="ln"><span className="accent">Locus AI makes it remember.</span></span></h1>
-          <p className="lead" style={{ maxWidth: 680 }}>Locus AI captures every decision your team makes across Slack, Gmail, Notion, Jira and six more tools, then serves it back with sources and permissions to the people and agents who act next.</p>
-          <div className="row gap-12 wrap" style={{ justifyContent: 'center' }}>
-            <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
-            <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo <IconArrow size={16} /></Link>
+      <section className="hero2" style={{ marginTop: -73 }}>
+        <div className="container hero2-grid">
+          <div className="hero2-copy">
+            <p className="hero2-kicker hero-in">Organizational memory for enterprise AI</p>
+            <h1 className="display2 split"><span className="ln"><span>Your AI can reason.</span></span><span className="ln"><span className="second">Locus AI makes it remember.</span></span></h1>
+            <p className="hero2-lead hero-in">Every decision your team makes in Slack, Gmail, Notion, Jira and six more tools, kept with its owner, its source and who may see it. Ready for the next person or agent who acts on it.</p>
+            <div className="row gap-12 wrap hero-in">
+              <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
+              <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo</Link>
+            </div>
+            <dl className="hero2-facts hero-in">
+              <div><dt>Read-only</dt><dd>Never posts, edits or replies in your tools</dd></div>
+              <div><dt>30 days</dt><dd>Until raw content is purged</dd></div>
+              <div><dt>Every answer</dt><dd>Linked to the thread it came from</dd></div>
+            </dl>
           </div>
-          <p className="trust">Read-only access · Raw content purged after 30 days · Every answer cited</p>
+          <div className="hero2-record"><HeroLedger logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} /></div>
         </div>
-        <div className="hero-in" aria-label="Product preview"><HeroPreview /></div>
       </section>
 
       {/* MEMORY LOOM */}
@@ -82,8 +89,9 @@ export default function Home() {
       {/* TWO AUDIENCES */}
       <section className="section alt">
         <div className="container">
-          <SectionHead overline="One memory, two audiences" title="Built for the people deciding and the agents acting on it." />
-          <div className="grid g2">
+          <SectionHead overline="One memory, two audiences" title="Built for the people deciding and the agents acting on it." lead="Same decision, same permissions. Switch between what a person sees and what an agent gets." />
+          <div className="preview-light"><HeroPreview /></div>
+          <div className="grid g2" style={{ marginTop: 40 }}>
             <Reveal>
               <div className="aud-card lit">
                 <div className="row gap-12"><span className="icon-chip"><IconUser size={20} /></span><div><p className="overline" style={{ color: 'var(--text-3)' }}>For people</p><h3 className="h3">Answers with receipts</h3></div></div>
