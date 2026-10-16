@@ -624,8 +624,8 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
 @keyframes timer { to { transform: scaleX(1); } }
 .caret { display: inline-block; width: 2px; height: 1em; margin-left: 1px; vertical-align: -2px; background: #6D5AE6; animation: blink .7s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
-.flight { position: absolute; z-index: 5; left: 0; top: 64px; width: 300px; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 14px 14px 14px 4px; background: #1B2740; border: 1px solid rgba(182,172,255,.35); color: #E6E9F2; box-shadow: 0 18px 40px rgba(0,0,0,.4); animation: fly 1.7s cubic-bezier(.4,0,.2,1) forwards; pointer-events: none; }
-.flight-src { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #B6ACFF; }
+.flight { position: absolute; z-index: 5; left: 0; top: 64px; width: 300px; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 14px 14px 14px 4px; background: #FFFFFF; border: 1px solid #DCD6FB; color: #0F1A2E; box-shadow: 0 18px 44px rgba(10,8,40,.45), 0 0 0 4px rgba(164,151,255,.18); animation: fly 1.7s cubic-bezier(.4,0,.2,1) forwards; pointer-events: none; }
+.flight-src { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #4338CA; }
 .flight-src svg, .flight-src img { flex: none; }
 .flight-said { font-size: 14px; line-height: 1.45; }
 @keyframes fly {
@@ -672,4 +672,4 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
 .mq-chip .int-mark.tool { background: color-mix(in srgb, var(--hue) 13%, white); color: var(--hue); border-radius: 12px; }
 .tool-chip .int-mark.tool { border-radius: 99px; }
 .ledger-src svg { color: inherit; }
-.flight-src svg { color: #B6ACFF; }
+.flight-src svg { color: #6D5AE6; }
