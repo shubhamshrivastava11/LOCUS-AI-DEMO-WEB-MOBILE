@@ -6,6 +6,7 @@ import MemoryLoom from '@/components/MemoryLoom';
 import HeroLedger from '@/components/HeroLedger';
 import IntegrationMarquee from '@/components/IntegrationMarquee';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
+import Scenario from '@/components/Scenario';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
@@ -44,6 +45,18 @@ export default function Home() {
           {[[IconLock, 'Read-only OAuth', 'Never posts or edits'], [IconShield, 'SAML SSO and SCIM', 'On the Enterprise plan'], [IconUsers, 'Permission checks', 'Role, scope and classification'], [IconLink, 'Audit log', 'Every confidential access'], [IconTrash, '30-day purge', 'Raw content deleted']].map(([I, t, d]: any) => (
             <div key={t} className="trust-item"><span className="trust-ic"><I size={18} /></span><span><strong>{t}</strong><span>{d}</span></span></div>
           ))}
+        </div>
+      </section>
+
+      {/* EXAMPLE SCENARIO */}
+      <section className="section scn-section">
+        <div className="container">
+          <Reveal className="head">
+            <p className="overline">Example scenario · B2B software company</p>
+            <h2 className="h1">A pricing decision changes on Monday. By Thursday, an AI agent has promised a customer the old one.</h2>
+            <p className="lead">Decisions move faster than anyone writes them down. Now AI agents act on the stale version at machine speed. Step through what happens, with and without Locus AI.</p>
+          </Reveal>
+          <Reveal delay={80}><Scenario /></Reveal>
         </div>
       </section>
 
