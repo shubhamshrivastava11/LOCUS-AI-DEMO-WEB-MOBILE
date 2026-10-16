@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IconAgent, IconFile, IconHome, IconList, IconLock, IconMoon, IconPulse, IconRadar, IconSearch, IconSettings, IconShield, IconSun, IconUsers } from '@/components/Icons';
 
-type Screen = 'home' | 'search' | 'explorer' | 'pulse' | 'agents' | 'members' | 'security' | 'policies' | 'audit';
+type Screen = 'home' | 'search' | 'explorer' | 'pulse' | 'agents' | 'members' | 'security' | 'policies' | 'audit' | 'usage';
 type Kind = 'Decision' | 'Action' | 'Blocker' | 'Superseded';
 type Level = 'Public' | 'Internal' | 'Restricted' | 'Confidential';
 type Rec = { id: string; kind: Kind; title: string; cls: Level; owner: string; team: string; source: string; date: string; why: string; thread: [string, string][] };
@@ -38,6 +38,7 @@ export default function DemoApp() {
   const [toast, setToast] = useState<string | null>(null);
   const [query, setQuery] = useState('');
   const [gmailOk, setGmailOk] = useState(false);
+  const [usage, setUsage] = useState<UsageCfg>(DEFAULT_USAGE);
   const [audit, setAudit] = useState<[string, string, string, string][]>([
     ['Oct 15 · 09:41', 'Maya Chen', 'Granted Confidential access', '“EU DPA review” → Legal team'],
     ['Oct 15 · 09:12', 'Okta SCIM', 'Provisioned user', 'mei@acme.com · Member'],
@@ -59,7 +60,7 @@ export default function DemoApp() {
 
   const ask = (q: string) => { setQuery(q); setScreen('search'); };
   const nav: [Screen, string, any, number?][] = [['home', 'Home', IconHome], ['search', 'Search', IconSearch], ['explorer', 'Memory Explorer', IconRadar, records.length], ['pulse', 'Team Pulse', IconPulse], ['agents', 'Agents', IconAgent]];
-  const admin: [Screen, string, any][] = [['members', 'Members & roles', IconUsers], ['security', 'Security & SSO', IconShield], ['policies', 'Policies', IconLock], ['audit', 'Audit log', IconList]];
+  const admin: [Screen, string, any][] = [['members', 'Members & roles', IconUsers], ['usage', 'Models & usage', IconSettings], ['security', 'Security & SSO', IconShield], ['policies', 'Policies', IconLock], ['audit', 'Audit log', IconList]];
 
   return (
     <>
@@ -89,7 +90,7 @@ export default function DemoApp() {
           </div>
           <main id="main" className="app-body" key={screen}>
             <div className="panel-in stack gap-20">
-              {screen === 'home' && <Home records={records} ask={ask} open={setOpen} gmailOk={gmailOk} reconnect={() => { setGmailOk(true); log('Reconnected source', 'Gmail'); notify('Gmail reconnected. Capturing resumed.'); }} go={setScreen} />}
+              {screen === 'home' && <Home records={records} ask={ask} open={setOpen} gmailOk={gmailOk} reconnect={() => { setGmailOk(true); log('Reconnected source', 'Gmail'); notify('Gmail reconnected. Capturing resumed.'); }} go={setScreen} usage={usage} />}
               {screen === 'search' && <Search query={query} ask={ask} notify={notify} gmailOk={gmailOk} />}
               {screen === 'explorer' && <Explorer records={records} open={setOpen} notify={notify} />}
               {screen === 'pulse' && <Pulse records={records} notify={notify} />}
@@ -98,6 +99,7 @@ export default function DemoApp() {
               {screen === 'security' && <Security log={log} notify={notify} />}
               {screen === 'policies' && <Policies log={log} notify={notify} />}
               {screen === 'audit' && <Audit audit={audit} />}
+              {screen === 'usage' && <Usage cfg={usage} setCfg={setUsage} log={log} notify={notify} />}
             </div>
           </main>
         </div>
@@ -134,7 +136,7 @@ function FeedRow({ r, onOpen, cols }: { r: Rec; onOpen: (r: Rec) => void; cols?:
   return <button className="feed-row" onClick={() => onOpen(r)}><span style={{ width: 92 }}><Tag k={r.kind} /></span><span className="t" style={{ textDecoration: r.kind === 'Superseded' ? 'line-through' : undefined, color: r.kind === 'Superseded' ? 'var(--text-2)' : undefined }}>{r.title}</span><span className="hide-sm" style={{ width: 120 }}><Cls l={r.cls} /></span>{cols && <span className="hide-sm muted" style={{ width: 100 }}>{r.owner}</span>}<span className="hide-sm muted" style={{ width: 150 }}>{r.source}</span><span className="muted" style={{ width: 54, textAlign: 'right' }}>{fmt(r.date)}</span></button>;
 }
 
-function Home({ records, ask, open, gmailOk, reconnect, go }: any) {
+function Home({ records, ask, open, gmailOk, reconnect, go, usage }: any) {
   const [q, setQ] = useState('');
   const c = (k: Kind) => records.filter((r: Rec) => r.kind === k).length;
   return (
@@ -149,6 +151,7 @@ function Home({ records, ask, open, gmailOk, reconnect, go }: any) {
       <div className="grid g4">
         {[['Decisions', c('Decision'), 'Captured in the last 2 weeks'], ['Open actions', c('Action'), '1 due this week'], ['Blockers', c('Blocker'), '1 older than 5 days'], ['Superseded', c('Superseded'), 'Linked to replacements']].map(([a, b, s]) => <div className="card stat" key={a as string}><span className="small">{a}</span><b style={{ color: a === 'Blockers' ? 'var(--warning)' : undefined }}>{b}</b><span className="caption">{s}</span></div>)}
       </div>
+      <TokenMeterCard cfg={usage} go={go} />
       {!gmailOk && <div className="row gap-12 wrap card" style={{ background: 'var(--danger-bg)', border: 0, padding: '12px 16px' }}><span className="small" style={{ color: 'var(--danger)', flex: 1 }}>Gmail disconnected 2 hours ago. Decisions from email are paused until it is reconnected.</span><button className="btn btn-secondary" onClick={reconnect}>Reconnect Gmail</button></div>}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div className="row between" style={{ padding: '14px 16px' }}><span className="overline" style={{ color: 'var(--text-3)' }}>Decision Radar · live</span><button className="btn btn-ghost" onClick={() => go('explorer')}>View all</button></div>
@@ -539,6 +542,194 @@ function Audit({ audit }: { audit: [string, string, string, string][] }) {
       <div className="table-wrap"><table className="table"><thead><tr><th>Time</th><th>Actor</th><th>Event</th><th className="hide-sm">Object</th></tr></thead><tbody>
         {rows.map((r, i) => <tr key={i} className={i === 0 ? 'panel-in' : ''}><td className="muted" style={{ whiteSpace: 'nowrap' }}>{r[0]}</td><td style={{ fontWeight: 600 }}>{r[1]}</td><td>{r[2]}</td><td className="hide-sm muted">{r[3]}</td></tr>)}
       </tbody></table></div>
+    </>
+  );
+}
+
+
+/* ===================== Token meter ===================== */
+type ModelDef = { id: string; name: string; provider: string; tier: 'Large' | 'Medium' | 'Small' };
+const MODELS: ModelDef[] = [
+  { id: 'claude-opus', name: 'Claude Opus', provider: 'Anthropic', tier: 'Large' },
+  { id: 'claude-sonnet', name: 'Claude Sonnet', provider: 'Anthropic', tier: 'Medium' },
+  { id: 'claude-haiku', name: 'Claude Haiku', provider: 'Anthropic', tier: 'Small' },
+  { id: 'gpt-flagship', name: 'GPT flagship', provider: 'OpenAI', tier: 'Large' },
+  { id: 'gpt-mini', name: 'GPT mini', provider: 'OpenAI', tier: 'Small' },
+  { id: 'gemini-pro', name: 'Gemini Pro', provider: 'Google', tier: 'Large' },
+  { id: 'gemini-flash', name: 'Gemini Flash', provider: 'Google', tier: 'Small' },
+  { id: 'llama', name: 'Llama, self-hosted', provider: 'Self-hosted', tier: 'Medium' },
+];
+const PROVIDERS = ['Anthropic', 'OpenAI', 'Google', 'Self-hosted'];
+const STAGES = [
+  { id: 'triage', name: 'Triage gate', desc: 'Skips noise before extraction', mtd: 14.2, team: 'all' },
+  { id: 'extract', name: 'Decision extraction', desc: 'Owner, rationale, source, class', mtd: 9.8 },
+  { id: 'search', name: 'Search answers', desc: 'Answers people read', mtd: 4.6 },
+  { id: 'agents', name: 'Agent calls (MCP)', desc: 'Context returned to agents', mtd: 2.1 },
+  { id: 'pulse', name: 'Team Pulse digests', desc: 'Weekly summaries per team', mtd: 0.7 },
+];
+const STAGE_HUE: Record<string, string> = { triage: '#9F95F0', extract: '#6D5AE6', search: '#0E9F8E', agents: '#2F6FEB', pulse: '#C77A12' };
+const DAY = 16, DAYS = 31;
+type UsageCfg = { route: Record<string, string>; budget: number; alert: number; cap: boolean; providers: Record<string, boolean>; rates: Record<string, number> };
+const DEFAULT_USAGE: UsageCfg = {
+  route: { triage: 'claude-haiku', extract: 'claude-sonnet', search: 'claude-sonnet', agents: 'claude-sonnet', pulse: 'claude-opus' },
+  budget: 130, alert: 80, cap: false,
+  providers: { Anthropic: true, OpenAI: false, Google: false, 'Self-hosted': false },
+  rates: { 'claude-opus': 15, 'claude-sonnet': 3, 'claude-haiku': 0.8, 'gpt-flagship': 10, 'gpt-mini': 0.6, 'gemini-pro': 7, 'gemini-flash': 0.5, llama: 0.3 },
+};
+const money = (n: number) => '$' + n.toLocaleString('en-US', { minimumFractionDigits: n < 100 ? 2 : 0, maximumFractionDigits: n < 100 ? 2 : 0 });
+const model = (id: string) => MODELS.find((m) => m.id === id)!;
+function calc(cfg: UsageCfg) {
+  const rows = STAGES.map((st) => { const m = cfg.route[st.id]; const spend = st.mtd * (cfg.rates[m] ?? 0); return { ...st, model: m, spend }; });
+  const spend = rows.reduce((a, r) => a + r.spend, 0);
+  const tokens = rows.reduce((a, r) => a + r.mtd, 0);
+  const proj = (spend / DAY) * DAYS;
+  const used = spend / cfg.budget, projPct = proj / cfg.budget;
+  const state = projPct > 1 ? 'over' : projPct * 100 >= cfg.alert ? 'warn' : 'ok';
+  return { rows, spend, tokens, proj, projTokens: (tokens / DAY) * DAYS, used, projPct, state };
+}
+function suggest(cfg: UsageCfg) {
+  const c = calc(cfg);
+  const enabled = MODELS.filter((m) => cfg.providers[m.provider]);
+  let best: { stage: string; from: string; to: string; save: number } | null = null;
+  c.rows.forEach((r) => {
+    const cur = cfg.rates[r.model];
+    const cheaper = enabled.filter((m) => cfg.rates[m.id] < cur && (r.id === 'triage' || m.tier !== 'Small')).sort((a, b) => cfg.rates[b.id] - cfg.rates[a.id])[0];
+    if (!cheaper) return;
+    const save = (r.mtd * (cur - cfg.rates[cheaper.id]) / DAY) * DAYS;
+    if (!best || save > best.save) best = { stage: r.id, from: r.model, to: cheaper.id, save };
+  });
+  return best as { stage: string; from: string; to: string; save: number } | null;
+}
+
+function Gauge({ cfg, size = 220 }: { cfg: UsageCfg; size?: number }) {
+  const c = calc(cfg);
+  const r = 80, cx = 100, cy = 96, L = Math.PI * r;
+  const arc = `M ${cx - r} ${cy} A ${r} ${r} 0 0 1 ${cx + r} ${cy}`;
+  const u = Math.min(c.used, 1), p = Math.min(c.projPct, 1);
+  const col = c.state === 'over' ? 'var(--danger)' : c.state === 'warn' ? 'var(--warning)' : 'var(--brand)';
+  const a = (cfg.alert / 100) * Math.PI;
+  const ax = cx - r * Math.cos(a), ay = cy - r * Math.sin(a);
+  return (
+    <svg viewBox="0 0 200 118" width={size} role="img" aria-label={`${money(c.spend)} used of ${money(cfg.budget)} budget, projected ${money(c.proj)}`} className="gauge">
+      <path d={arc} fill="none" stroke="var(--bg-subtle)" strokeWidth="14" strokeLinecap="round" />
+      <path d={arc} fill="none" stroke={col} strokeOpacity=".28" strokeWidth="14" strokeLinecap="round" strokeDasharray={`${p * L} ${L}`} style={{ transition: 'stroke-dasharray .7s cubic-bezier(.2,.8,.2,1)' }} />
+      <path d={arc} fill="none" stroke={col} strokeWidth="14" strokeLinecap="round" strokeDasharray={`${u * L} ${L}`} style={{ transition: 'stroke-dasharray .7s cubic-bezier(.2,.8,.2,1), stroke .3s' }} />
+      <line x1={ax} y1={ay} x2={cx - (r + 12) * Math.cos(a)} y2={cy - (r + 12) * Math.sin(a)} stroke="var(--text-3)" strokeWidth="1.5" />
+      <text x={cx} y={cy - 22} textAnchor="middle" fontSize="22" fontWeight="700" fill="var(--text)">{money(c.spend)}</text>
+      <text x={cx} y={cy - 6} textAnchor="middle" fontSize="9.5" fill="var(--text-2)">of {money(cfg.budget)} this month</text>
+      <text x={cx - r} y={cy + 16} textAnchor="middle" fontSize="8" fill="var(--text-3)">$0</text>
+      <text x={cx + r} y={cy + 16} textAnchor="middle" fontSize="8" fill="var(--text-3)">{money(cfg.budget)}</text>
+    </svg>
+  );
+}
+
+function TokenMeterCard({ cfg, go }: { cfg: UsageCfg; go: (s: Screen) => void }) {
+  const c = calc(cfg);
+  const byModel = Object.entries(c.rows.reduce((a: Record<string, number>, r) => { a[r.model] = (a[r.model] || 0) + r.mtd; return a; }, {}));
+  return (
+    <div className="card tm-card">
+      <Gauge cfg={cfg} size={190} />
+      <div className="stack gap-8" style={{ flex: 1, minWidth: 0 }}>
+        <div className="row between wrap gap-8"><strong>Token meter</strong><span className={`tm-badge ${c.state}`}>{c.state === 'over' ? 'Projected over budget' : c.state === 'warn' ? `Above ${cfg.alert}% alert` : 'On track'}</span></div>
+        <p className="small" style={{ margin: 0 }}>{c.tokens.toFixed(1)}M tokens so far, day {DAY} of {DAYS}. Projected <b style={{ color: 'var(--text)' }}>{money(c.proj)}</b> by Oct 31.</p>
+        <div className="tm-split">{byModel.map(([m, t]) => <span key={m} style={{ flex: t, background: m.startsWith('claude-opus') ? '#C77A12' : m.includes('haiku') || m.includes('mini') || m.includes('flash') ? '#9F95F0' : '#6D5AE6' }} title={`${model(m).name}: ${t.toFixed(1)}M`} />)}</div>
+        <div className="row gap-12 wrap caption">{byModel.map(([m, t]) => <span key={m}>{model(m).name} {Math.round((t / c.tokens) * 100)}%</span>)}</div>
+        <div><button className="btn btn-secondary" onClick={() => go('usage')}>Manage models and budget</button></div>
+      </div>
+    </div>
+  );
+}
+
+function Usage({ cfg, setCfg, log, notify }: { cfg: UsageCfg; setCfg: (c: UsageCfg) => void; log: (a: string, b: string) => void; notify: (m: string) => void }) {
+  const c = calc(cfg);
+  const sug = suggest(cfg);
+  const enabled = MODELS.filter((m) => cfg.providers[m.provider]);
+  const setRoute = (stage: string, m: string) => { const st = STAGES.find((x) => x.id === stage)!; setCfg({ ...cfg, route: { ...cfg.route, [stage]: m } }); log('Changed model routing', `${st.name} → ${model(m).name}`); notify(`${st.name} now runs on ${model(m).name}.`); };
+  const toggleProvider = (p: string) => {
+    const next = { ...cfg.providers, [p]: !cfg.providers[p] };
+    if (!Object.values(next).some(Boolean)) { notify('Keep at least one provider enabled.'); return; }
+    const fallback = MODELS.find((m) => next[m.provider])!.id;
+    const route = Object.fromEntries(Object.entries(cfg.route).map(([k, v]) => [k, next[model(v).provider] ? v : fallback]));
+    setCfg({ ...cfg, providers: next, route }); log(next[p] ? 'Enabled provider' : 'Disabled provider', p); notify(`${p} ${next[p] ? 'enabled' : 'disabled'}.`);
+  };
+  // daily series: actual days 1..DAY, projected after
+  const weights = Array.from({ length: DAYS }, (_, i) => { const dow = (i + 3) % 7; return dow === 5 || dow === 6 ? 0.45 : 1 + ((i * 37) % 7) / 20; });
+  const wSum = weights.slice(0, DAY).reduce((a, b) => a + b, 0);
+  const daily = weights.map((w) => (c.tokens * w) / wSum);
+  const maxD = Math.max(...daily);
+  const teams: [string, number][] = [['Platform', 34], ['Growth', 22], ['Launch', 18], ['Infra', 11], ['Security', 8], ['Legal', 7]];
+  return (
+    <>
+      <Header title="Models & usage" sub={`October 1–31 · day ${DAY} of ${DAYS} · costs use the rates below`} right={<span className={`tm-badge ${c.state}`}>{c.state === 'over' ? `Projected ${money(c.proj - cfg.budget)} over budget` : c.state === 'warn' ? `Projected ${Math.round(c.projPct * 100)}% of budget` : 'On track'}</span>} />
+      <div className="usage-top">
+        <div className="card usage-gauge">
+          <Gauge cfg={cfg} size={260} />
+          <div className="usage-kpis">
+            {[['Spend so far', money(c.spend)], ['Projected by Oct 31', money(c.proj)], ['Tokens so far', `${c.tokens.toFixed(1)}M`], ['Projected tokens', `${c.projTokens.toFixed(1)}M`]].map(([k, v]) => <div key={k}><span className="caption">{k}</span><b>{v}</b></div>)}
+          </div>
+          <div className="bymodel">
+            <span className="caption">Spend by model</span>
+            {Object.entries(c.rows.reduce((a: Record<string, { t: number; s: number }>, r) => { const x = a[r.model] || { t: 0, s: 0 }; a[r.model] = { t: x.t + r.mtd, s: x.s + r.spend }; return a; }, {})).sort((a, b) => b[1].s - a[1].s).map(([m, v]) => (
+              <div key={m} className="bm-row"><span className="small" style={{ color: 'var(--text)' }}>{model(m).name}<span className="caption"> · {model(m).provider}</span></span><span className="reach-bar"><span style={{ width: `${c.spend ? (v.s / c.spend) * 100 : 0}%` }} /></span><span className="caption num">{v.t.toFixed(1)}M · {money(v.s)}</span></div>
+            ))}
+          </div>
+        </div>
+        <div className="card stack gap-16">
+          <strong>Budget and alerts</strong>
+          <div className="field"><label htmlFor="bud">Monthly budget (USD)</label><input id="bud" className="input" type="number" min={10} step={10} value={cfg.budget} onChange={(e) => setCfg({ ...cfg, budget: Math.max(10, Number(e.target.value) || 10) })} onBlur={() => log('Updated token budget', money(cfg.budget))} /></div>
+          <label className="calc-field"><span className="calc-label"><span>Alert admins when projected spend reaches</span><output>{cfg.alert}%</output></span><input type="range" min={50} max={100} step={5} value={cfg.alert} onChange={(e) => setCfg({ ...cfg, alert: Number(e.target.value) })} style={{ ['--p' as any]: `${((cfg.alert - 50) / 50) * 100}%` }} /></label>
+          <label className="row gap-12" style={{ cursor: 'pointer' }}><input type="checkbox" checked={cfg.cap} onChange={(e) => { setCfg({ ...cfg, cap: e.target.checked }); log(e.target.checked ? 'Enabled budget cap' : 'Disabled budget cap', 'Pause digests at 100%'); }} /><span className="small">At 100% of budget, pause Team Pulse digests and keep capture, search and agent calls running.</span></label>
+          {sug && c.state !== 'ok' && (
+            <div className="sug">
+              <span className="small" style={{ color: 'var(--text)' }}>Move <b>{STAGES.find((x) => x.id === sug.stage)!.name}</b> from {model(sug.from).name} to <b>{model(sug.to).name}</b> to save about <b>{money(sug.save)}</b> this month.</span>
+              <button className="btn btn-primary" onClick={() => setRoute(sug.stage, sug.to)}>Apply</button>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
+        <div className="row between wrap gap-8" style={{ padding: '16px 18px' }}><strong>Model routing</strong><span className="caption">Choose which model runs each stage. Only enabled providers are listed.</span></div>
+        <div className="table-wrap" style={{ border: 0, borderRadius: 0 }}><table className="table routing"><thead><tr><th>Stage</th><th>Model</th><th>Tokens so far</th><th>Spend so far</th><th className="hide-sm">Share of spend</th></tr></thead><tbody>
+          {c.rows.map((r) => (
+            <tr key={r.id}>
+              <td><div className="row gap-8"><i className="sw" style={{ background: STAGE_HUE[r.id] }} /><div><div style={{ fontWeight: 600 }}>{r.name}</div><div className="caption">{r.desc}</div></div></div></td>
+              <td><label className="sr-only" htmlFor={`m-${r.id}`}>Model for {r.name}</label><select id={`m-${r.id}`} className="select" style={{ minWidth: 190 }} value={r.model} onChange={(e) => setRoute(r.id, e.target.value)}>{PROVIDERS.filter((p) => cfg.providers[p]).map((p) => <optgroup key={p} label={p}>{enabled.filter((m) => m.provider === p).map((m) => <option key={m.id} value={m.id}>{m.name} · {m.tier}</option>)}</optgroup>)}</select></td>
+              <td className="num">{r.mtd.toFixed(1)}M</td>
+              <td className="num">{money(r.spend)}</td>
+              <td className="hide-sm"><span className="reach-bar" style={{ display: 'block', width: 160 }}><span style={{ width: `${c.spend ? (r.spend / c.spend) * 100 : 0}%`, background: STAGE_HUE[r.id] }} /></span></td>
+            </tr>
+          ))}
+        </tbody></table></div>
+      </div>
+      <div className="usage-grid">
+        <div className="card stack gap-12">
+          <div className="row between wrap gap-8"><strong>Daily tokens</strong><span className="caption">Solid: actual · faded: projected</span></div>
+          <div className="daily" role="img" aria-label={`Daily tokens for October, ${c.tokens.toFixed(1)} million so far`}>
+            {daily.map((d, i) => (
+              <span key={i} className={`dbar ${i >= DAY ? 'proj' : ''}`} style={{ height: `${(d / maxD) * 100}%` }} title={`Oct ${i + 1}: ${d.toFixed(2)}M tokens`}>
+                {i < DAY && STAGES.map((st) => <i key={st.id} style={{ flex: st.mtd, background: STAGE_HUE[st.id] }} />)}
+              </span>
+            ))}
+          </div>
+          <div className="row gap-12 wrap caption">{STAGES.map((st) => <span key={st.id} className="row gap-4"><i className="sw" style={{ background: STAGE_HUE[st.id] }} />{st.name}</span>)}</div>
+        </div>
+        <div className="card stack gap-12">
+          <strong>Providers and rates</strong>
+          <p className="caption" style={{ margin: 0 }}>Example rates in USD per million tokens. Replace them with your contracted prices.</p>
+          {PROVIDERS.map((p) => (
+            <div key={p} className="prov">
+              <label className="row gap-8" style={{ cursor: 'pointer' }}><input type="checkbox" checked={!!cfg.providers[p]} onChange={() => toggleProvider(p)} /><strong className="small" style={{ color: 'var(--text)' }}>{p}</strong><span className="caption" style={{ marginLeft: 'auto' }}>{cfg.providers[p] ? (p === 'Self-hosted' ? 'Your endpoint' : p === 'Anthropic' ? 'Locus AI key' : 'Your API key') : 'Off'}</span></label>
+              {cfg.providers[p] && MODELS.filter((m) => m.provider === p).map((m) => (
+                <div key={m.id} className="rate"><span className="small">{m.name}</span><span className="caption">{m.tier}</span><label className="sr-only" htmlFor={`r-${m.id}`}>Rate for {m.name}</label><input id={`r-${m.id}`} className="input" type="number" min={0} step={0.1} value={cfg.rates[m.id]} onChange={(e) => setCfg({ ...cfg, rates: { ...cfg.rates, [m.id]: Math.max(0, Number(e.target.value) || 0) } })} /></div>
+              ))}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="card stack gap-12">
+        <div className="row between wrap gap-8"><strong>Usage by team</strong><span className="caption">Share of tokens this month</span></div>
+        {teams.map(([t, pc]) => <div key={t} className="reach" style={{ gridTemplateColumns: '100px minmax(0,1fr) 90px' }}><span className="small" style={{ color: 'var(--text)' }}>{t}</span><span className="reach-bar"><span style={{ width: `${pc}%` }} /></span><span className="caption">{((c.tokens * pc) / 100).toFixed(1)}M · {pc}%</span></div>)}
+      </div>
     </>
   );
 }
