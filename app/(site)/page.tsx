@@ -6,7 +6,6 @@ import MemoryLoom from '@/components/MemoryLoom';
 import HeroStory from '@/components/HeroStory';
 import IntegrationMarquee from '@/components/IntegrationMarquee';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
-import Scenario from '@/components/Scenario';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
@@ -24,7 +23,7 @@ export default function Home() {
           <div className="hero2-copy">
             <p className="hero2-kicker hero-in">Organizational memory for enterprise AI</p>
             <h1 className="display2 split"><span className="ln"><span>Your AI can reason.</span></span><span className="ln"><span className="second">Locus AI makes it remember.</span></span></h1>
-            <p className="hero2-lead hero-in">Every decision your team makes in Slack, Gmail, Notion, Jira and six more tools, kept with its owner, its source and who may see it. Ready for the next person or agent who acts on it.</p>
+            <p className="hero2-lead hero-in">Your team decides in Slack. Your agents read old docs. Locus AI captures every decision with its owner, source and access rules, so people and agents act on what’s current.</p>
             <div className="row gap-12 wrap hero-in">
               <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
               <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo</Link>
@@ -48,15 +47,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* EXAMPLE SCENARIO */}
-      <section className="section scn-section">
+      {/* PROBLEM */}
+      <section className="section prob">
         <div className="container">
-          <Reveal className="head">
-            <p className="overline">Example scenario · B2B software company</p>
-            <h2 className="h1">A pricing decision changes on Monday. By Thursday, an AI agent has promised a customer the old one.</h2>
-            <p className="lead">Decisions move faster than anyone writes them down. Now AI agents act on the stale version at machine speed. Step through what happens, with and without Locus AI.</p>
+          <Reveal className="head prob-head">
+            <p className="overline">The problem</p>
+            <h2 className="h1">Your team changes decisions in Slack. Your AI agents still read last quarter’s docs.</h2>
+            <p className="lead">At a growing software company, pricing, launch dates and architecture choices change every week, mostly in threads and meetings. The pages your support, sales and coding agents read don’t change with them. People used to catch the stale answer before it reached a customer. Agents don’t.</p>
           </Reveal>
-          <Reveal delay={80}><Scenario /></Reveal>
+          <div className="prob-costs">
+            {[
+              ['Support and sales agents', 'A customer hears a price you retired.', 'The agent quotes the help center. The decision changed in #pricing on Monday. The deal opens with a correction.'],
+              ['Coding agents', 'A sprint rebuilds a design you rejected.', 'The agent proposes the cache the team ruled out in an ADR. Review catches it a week later, after the work is done.'],
+              ['Leaders and new hires', 'A settled call gets argued again.', 'Nobody can find who decided, when, or why. The meeting happens twice, and the person who decided has moved teams.'],
+            ].map(([who, what, how], i) => (
+              <Reveal key={who} delay={i * 90}>
+                <div className="prob-card">
+                  <span className="prob-who">{who}</span>
+                  <h3 className="h3">{what}</h3>
+                  <p className="small">{how}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+          <div className="prob-why">
+            <p className="prob-why-k">Why the tools you already pay for miss it</p>
+            <div className="prob-why-grid">
+              <div><strong>Enterprise search</strong><span>Finds every document that mentions pricing. Can’t tell you which decision is current.</span></div>
+              <div><strong>Agent memory</strong><span>Remembers one agent’s conversations. Not your organization’s decisions, owners or access rules.</span></div>
+              <div><strong>Docs and wikis</strong><span>Only as current as the last person who updated them, which is usually before the decision changed.</span></div>
+            </div>
+          </div>
+          <div className="prob-evidence">
+            <p className="prob-why-k">What we heard in customer discovery</p>
+            <div className="grid g3">
+              {STATS.map((s, i) => (
+                <Reveal key={s.n} delay={i * 90}>
+                  <div className={`stat-tile ${i === 2 ? 'brand' : ''}`}>
+                    <CountUp value={s.n} className="stat-n" />
+                    <p className="body" style={{ margin: 0 }}>{s.t}</p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+            <p className="caption" style={{ marginTop: 16 }}>{STATS_SOURCE}</p>
+          </div>
+          <div className="calc-wrap">
+            <Reveal className="stack gap-12">
+              <h3 className="h2">What does forgetting cost your team?</h3>
+              <p className="body" style={{ maxWidth: 520 }}>Move the sliders to match your organization. Everything here is calculated from your own estimates.</p>
+            </Reveal>
+            <Reveal delay={100}><CostCalculator /></Reveal>
+          </div>
         </div>
       </section>
 
@@ -68,31 +110,6 @@ export default function Home() {
             <p className="lead">Every few seconds a message lands in one of your tools. Locus AI keeps the decision, classifies it and makes it available to people and agents. Point at or tap a tool to replay it.</p>
           </div>
           <MemoryLoom logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} />
-        </div>
-      </section>
-
-      {/* PROBLEM */}
-      <section className="section">
-        <div className="container">
-          <SectionHead overline="The problem" title="Your AI keeps getting smarter. Your organization keeps forgetting." lead="Teams decide in Slack threads, email chains and Jira comments. Weeks later, nobody can find what was decided, by whom, or why, and neither can the agents you are deploying. It isn’t an intelligence problem. It’s a memory problem." />
-          <div className="grid g3">
-            {STATS.map((s, i) => (
-              <Reveal key={s.n} delay={i * 90}>
-                <div className={`stat-tile ${i === 2 ? 'brand' : ''}`}>
-                  <CountUp value={s.n} className="stat-n" />
-                  <p className="body" style={{ margin: 0 }}>{s.t}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-          <p className="caption" style={{ marginTop: 20 }}>{STATS_SOURCE}</p>
-          <div className="calc-wrap">
-            <Reveal className="stack gap-12">
-              <h3 className="h2">What does forgetting cost your team?</h3>
-              <p className="body" style={{ maxWidth: 520 }}>Move the sliders to match your organization. Everything here is calculated from your own estimates.</p>
-            </Reveal>
-            <Reveal delay={100}><CostCalculator /></Reveal>
-          </div>
         </div>
       </section>
 
