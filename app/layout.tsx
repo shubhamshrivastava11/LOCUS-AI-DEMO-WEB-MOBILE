@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import '@fontsource-variable/bricolage-grotesque';
+import '@fontsource-variable/inter-tight';
 import './globals.css';
 import { SITE } from '@/lib/content';
 
