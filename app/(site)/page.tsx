@@ -4,7 +4,7 @@ import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
 import MemoryLoom from '@/components/MemoryLoom';
 import HeroStory from '@/components/HeroStory';
-import IntegrationMarquee from '@/components/IntegrationMarquee';
+import IntegrationExplorer from '@/components/IntegrationExplorer';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
@@ -199,8 +199,8 @@ export default function Home() {
       {/* INTEGRATIONS */}
       <section className="section">
         <div className="container">
-          <SectionHead overline="Integrations" title="Captures decisions where they actually happen." lead="Ten integrations live, each connected with read-only OAuth and scopes you choose per channel, label, space or project." />
-          <Reveal><IntegrationMarquee /></Reveal>
+          <SectionHead overline="Integrations" title="Ten tools in. One decision record out." lead="Pick a tool to see exactly what Locus AI reads there, what it never touches, and what a real message becomes once it’s captured." />
+          <Reveal><IntegrationExplorer logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} /></Reveal>
           <div className="row gap-16 wrap" style={{ marginTop: 28 }}>
             <Link href="/integrations" className="btn btn-secondary">See all integrations</Link>
             <Link href="/contact?topic=integration" className="btn btn-ghost">Request an integration <IconArrow size={16} /></Link>
