@@ -6,7 +6,7 @@ import MemoryLoom from '@/components/MemoryLoom';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
-import { INTEGRATIONS, INTEGRATION_CATS, SECURITY, STATS, STATS_SOURCE } from '@/lib/content';
+import { ENTERPRISE, INTEGRATIONS, INTEGRATION_CATS, SECURITY, STATS, STATS_SOURCE } from '@/lib/content';
 
 const secIcons = [IconLock, IconTrash, IconUsers, IconShield, IconUser, IconLink];
 
@@ -113,6 +113,29 @@ export default function Home() {
             <p className="lead">The agents you are deploying have no idea what your team already decided. Locus AI is the shared memory they query first, through MCP, with the same permissions as the person they act for.</p>
           </Reveal>
           <AgentRail />
+        </div>
+      </section>
+
+      {/* ENTERPRISE */}
+      <section className="section">
+        <div className="container">
+          <Reveal className="head">
+            <span className="ea-tag">Enterprise · Early access</span>
+            <h2 className="h1">Memory that keeps every agent consistent with what you decided.</h2>
+            <p className="lead">Search answers questions. These features stop people and agents from acting against decisions your organization already made.</p>
+          </Reveal>
+          <div className="ent-teaser">
+            {ENTERPRISE.map((f, i) => (
+              <Reveal key={f.key} delay={i * 80}>
+                <Link href={`/enterprise#${f.key}`} className={`ent-card lit ${i === 0 ? 'first' : ''}`}>
+                  <span className="ent-n">{i + 1}</span>
+                  <strong>{f.name}</strong>
+                  <span className="small">{f.line}</span>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+          <div style={{ marginTop: 24 }}><Link href="/enterprise" className="btn btn-primary">Try Decision Guard <IconArrow size={16} /></Link></div>
         </div>
       </section>
 

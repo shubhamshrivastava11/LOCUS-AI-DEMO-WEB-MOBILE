@@ -9,6 +9,7 @@ export const SITE = {
 export const NAV = [
   { href: '/product', label: 'Product' },
   { href: '/integrations', label: 'Integrations' },
+  { href: '/enterprise', label: 'Enterprise' },
   { href: '/security', label: 'Security' },
   { href: '/pricing', label: 'Pricing' },
   { href: '/demo', label: 'Live demo' },
@@ -92,7 +93,7 @@ export const CLASSES = [
 export const PLANS = [
   { name: 'Individual', price: '$12', per: 'per month', desc: 'For one person who is tired of losing decisions.', cta: 'Start free', href: '/signin', features: ['Personal sources (Gmail, Slack DMs)', 'Private decision register', 'Context Search with history', 'Weekly personal Pulse', 'MCP access for your own agents'] },
   { name: 'Team', price: 'Pilot', per: 'pricing on a call', desc: 'For teams that want one shared memory.', cta: 'Join the pilot', href: '/contact', featured: true, features: ['Everything in Individual', 'Shared workspace and scopes', 'Team Pulse and Memory Explorer', 'Roles: Admin, Lead, Member, Guest', 'Team MCP access for agents', 'Audit log'] },
-  { name: 'Enterprise', price: 'Custom', per: 'annual contract', desc: 'For organizations with security and compliance requirements.', cta: 'Contact sales', href: '/contact', features: ['Everything in Team', 'SAML SSO and SCIM provisioning', 'Classification policies and confidential grants', 'Audit log export', 'Custom retention and data residency', 'DPA, security review and dedicated support'] },
+  { name: 'Enterprise', price: 'Custom', per: 'annual contract', desc: 'For organizations with security and compliance requirements.', cta: 'Contact sales', href: '/contact', features: ['Everything in Team', 'Decision Guard and agent decision features (early access)', 'SAML SSO and SCIM provisioning', 'Classification policies and confidential grants', 'Audit log export', 'Custom retention and data residency', 'DPA, security review and dedicated support'] },
 ];
 
 export const FAQS = [
@@ -112,4 +113,13 @@ export const LOOM = [
   { slug: 'jira', where: 'Jira · LOC-412', said: 'Priya to draft the SSO rollout plan by Oct 20.', kind: 'Action', title: 'Draft SSO rollout plan by Oct 20', cls: 'Internal', owner: 'Priya Shah' },
   { slug: 'github', where: 'GitHub · PR discussion', said: 'Not adding a Redis cache here. We ruled it out in the ADR.', kind: 'Decision', title: 'No Redis cache for retrieval', cls: 'Internal', owner: 'Platform team' },
   { slug: 'microsoft-teams', where: 'Teams · Pricing', said: 'Cap the free tier at 20 seats starting next month.', kind: 'Decision', title: 'Cap the free tier at 20 seats', cls: 'Restricted', owner: 'Growth' },
+];
+
+// Enterprise features (early access: not generally available yet)
+export const ENTERPRISE = [
+  { key: 'guard', name: 'Decision Guard', line: 'Agents check their plan against what your team decided before they act.', body: 'An agent sends its plan to check_plan. Locus AI returns any conflicting decision with its owner and source. The agent changes course or asks the owner for an override, and the override is logged.' },
+  { key: 'reversal', name: 'Reversal impact', line: 'See everything built on a decision the moment it is reversed.', body: 'Every agent action records the decisions it relied on. Reverse one, and Locus AI lists the actions, documents and pull requests that depended on it.' },
+  { key: 'alerts', name: 'Decision change alerts', line: 'Running agents learn about a changed decision as soon as it is confirmed.', body: 'Agents subscribe to topics. When an owner confirms that a new decision replaces an old one, every subscribed agent gets the change and a short reason over MCP.' },
+  { key: 'handover', name: 'Ownerless decision handover', line: 'No decision is left without an owner when people move on.', body: 'When someone leaves or changes role, Locus AI finds their active decisions, suggests a new owner by team and scope, and queues the rest for review.' },
+  { key: 'health', name: 'Decision Health', line: 'Measure how well each team makes and keeps decisions.', body: 'Per team: decisions argued over again, time to decide, reversal rate and decisions with no owner, trended week over week.' },
 ];

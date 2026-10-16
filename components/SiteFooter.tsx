@@ -19,6 +19,7 @@ export default function SiteFooter() {
               <li><Link href="/product#explorer">Memory Explorer</Link></li>
               <li><Link href="/product#pulse">Team Pulse</Link></li>
               <li><Link href="/product#mcp">MCP Server</Link></li>
+              <li><Link href="/enterprise">Enterprise</Link></li>
               <li><Link href="/integrations">Integrations</Link></li>
               <li><Link href="/pricing">Pricing</Link></li>
             </ul>
