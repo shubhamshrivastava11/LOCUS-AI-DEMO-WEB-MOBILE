@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
-import MemoryLoom from '@/components/MemoryLoom';
+import Prism from '@/components/Prism';
 import HeroStory from '@/components/HeroStory';
 import IntegrationExplorer from '@/components/IntegrationExplorer';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
@@ -102,14 +102,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MEMORY LOOM */}
-      <section className="section loom-section">
+      {/* PROVENANCE PRISM */}
+      <section className="section prism-section">
         <div className="container">
-          <div className="loom-head">
-            <h2 className="h1">Watch a conversation become memory.</h2>
-            <p className="lead">Every few seconds a message lands in one of your tools. Locus AI keeps the decision, classifies it and makes it available to people and agents. Point at or tap a tool to replay it.</p>
-          </div>
-          <MemoryLoom logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} />
+          <Reveal className="head">
+            <p className="overline">Provenance and groundedness</p>
+            <h2 className="h1">Every tool goes in. One answer comes out, with its receipts.</h2>
+            <p className="lead">Pick a question. Locus AI pulls only the sources you’re allowed to see, checks every claim against them, and shows exactly where each one came from. When nothing backs an answer, it says so instead of guessing.</p>
+          </Reveal>
+          <Reveal delay={80}><Prism /></Reveal>
         </div>
       </section>
 

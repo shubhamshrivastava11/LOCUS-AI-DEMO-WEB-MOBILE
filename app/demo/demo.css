@@ -142,3 +142,4 @@ button.tnode:hover { background: var(--bg-page); }
 .bm-row { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 120px; gap: 10px; align-items: center; }
 .bm-row .num { text-align: right; font-variant-numeric: tabular-nums; }
 @media (max-width: 600px) { .bm-row { grid-template-columns: minmax(0, 1fr) 110px; } .bm-row .reach-bar { display: none; } }
+@media (max-width: 600px) { .tm-card { flex-direction: column; align-items: stretch; } .tm-card .gauge { align-self: center; } .tm-card .btn { white-space: normal; } }
