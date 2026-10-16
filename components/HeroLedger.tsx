@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { asset } from '@/lib/base';
 import { INTEGRATIONS } from '@/lib/content';
 import { Cls, Tag } from './Sections';
-import { IconBoard, IconBook, IconChat, IconCode, IconMail } from './Icons';
+import { ToolIcon, toolHue } from './ToolIcon';
 
 type Entry = { id: string; src: string; kind: string; title: string; owner: string; cls: string; supersedes?: string; said?: string; where?: string };
 
@@ -24,9 +24,7 @@ const INCOMING: Entry[] = [
 const SHOW = 5, FLIGHT = 1700, DWELL = 2300, CYCLE = FLIGHT + DWELL;
 
 function SrcIcon({ slug }: { slug: string }) {
-  const cat = INTEGRATIONS.find((x) => x.slug === slug)?.cat;
-  const I = slug === 'gmail' ? IconMail : cat === 'Communication' ? IconChat : cat === 'Knowledge' ? IconBook : cat === 'Delivery' ? IconBoard : IconCode;
-  return <I size={14} />;
+  return <span style={{ color: toolHue(slug), display: 'inline-flex' }}><ToolIcon slug={slug} size={15} /></span>;
 }
 
 function TypeIn({ text, on }: { text: string; on: boolean }) {

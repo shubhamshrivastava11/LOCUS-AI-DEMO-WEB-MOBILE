@@ -666,3 +666,10 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
 .mq-name { font-size: 19px; font-weight: 600; letter-spacing: -.01em; color: var(--text); }
 @media (max-width: 600px) { .mq { gap: 14px; padding: 24px 0; } .mq-chip { padding: 10px 18px 10px 14px; gap: 10px; border-radius: 16px; } .mq-name { font-size: 16px; } .mq-track { gap: 12px; } }
 @media (prefers-reduced-motion: reduce) { .mq-track, .mq-live { animation: none !important; } .mq-row { overflow-x: auto; scrollbar-width: none; } }
+
+/* Tool identity (neutral icon + palette accent) */
+.int-mark.tool, .loom-mark.tool { background: color-mix(in srgb, var(--hue) 13%, white); color: var(--hue); }
+.mq-chip .int-mark.tool { background: color-mix(in srgb, var(--hue) 13%, white); color: var(--hue); border-radius: 12px; }
+.tool-chip .int-mark.tool { border-radius: 99px; }
+.ledger-src svg { color: inherit; }
+.flight-src svg { color: #B6ACFF; }

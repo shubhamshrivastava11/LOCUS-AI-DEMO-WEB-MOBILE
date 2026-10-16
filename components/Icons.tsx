@@ -24,3 +24,10 @@ export const IconBoard = ({ size }: P) => <svg {...base(size)}><rect x="3" y="4"
 export const IconCode = ({ size }: P) => <svg {...base(size)}><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16" /></svg>;
 export const IconBook = ({ size }: P) => <svg {...base(size)}><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z" /><path d="M4 19V5M8 7h7" /></svg>;
 export const IconSpark = ({ size }: P) => <svg {...base(size)}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6" /></svg>;
+export const IconHash = ({ size }: P) => <svg {...base(size)}><path d="M5 9h15M4 15h15M10 3L8 21M16 3l-2 18" /></svg>;
+export const IconHeadset = ({ size }: P) => <svg {...base(size)}><path d="M4 14v-2a8 8 0 0 1 16 0v2" /><rect x="3" y="14" width="4" height="6" rx="1.5" /><rect x="17" y="14" width="4" height="6" rx="1.5" /></svg>;
+export const IconTicket = ({ size }: P) => <svg {...base(size)}><path d="M3 8a2 2 0 0 0 2-2h14a2 2 0 0 0 2 2v2a2 2 0 0 0 0 4v2a2 2 0 0 0-2 2H5a2 2 0 0 0-2-2v-2a2 2 0 0 0 0-4z" /><path d="M14 6v12" strokeDasharray="2 2" /></svg>;
+export const IconChecklist = ({ size }: P) => <svg {...base(size)}><path d="M4 6l1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9" /></svg>;
+export const IconBranch = ({ size }: P) => <svg {...base(size)}><circle cx="6" cy="5" r="2" /><circle cx="6" cy="19" r="2" /><circle cx="18" cy="7" r="2" /><path d="M6 7v10M18 9c0 5-6 4-11 8" /></svg>;
+export const IconPage = ({ size }: P) => <svg {...base(size)}><rect x="5" y="3" width="14" height="18" rx="2" /><path d="M9 8h6M9 12h6M9 16h3" /></svg>;
+export const IconVideoChat = ({ size }: P) => <svg {...base(size)}><rect x="3" y="6" width="13" height="12" rx="2" /><path d="M16 10l5-3v10l-5-3" /></svg>;

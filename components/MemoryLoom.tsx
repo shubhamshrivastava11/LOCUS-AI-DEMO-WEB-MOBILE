@@ -3,7 +3,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { asset } from '@/lib/base';
 import { INTEGRATIONS, LOOM } from '@/lib/content';
 import { Cls, Tag } from './Sections';
-import { IconAgent, IconBoard, IconBook, IconChat, IconCode, IconMail, IconUser } from './Icons';
+import { IconAgent, IconUser } from './Icons';
+import { ToolIcon, toolHue } from './ToolIcon';
 
 // Geometry in SVG units. Phones get a taller canvas so the six sources have room.
 type Geo = { W: number; H: number; SRC_X: number; CORE: { x: number; y: number }; OUT_X: number; gap: number; top: number; outs: number[] };
@@ -18,9 +19,7 @@ const IN_MS = 950, OUT_MS = 850, CYCLE_MS = 3800;
 const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2);
 
 function SourceIcon({ slug }: { slug: string }) {
-  const cat = INTEGRATIONS.find((x) => x.slug === slug)?.cat;
-  const I = slug === 'gmail' ? IconMail : cat === 'Communication' ? IconChat : cat === 'Knowledge' ? IconBook : cat === 'Delivery' ? IconBoard : IconCode;
-  return <I size={18} />;
+  return <ToolIcon slug={slug} size={18} />;
 }
 
 export default function MemoryLoom({ logos }: { logos: Record<string, string | null> }) {
@@ -102,7 +101,7 @@ export default function MemoryLoom({ logos }: { logos: Record<string, string | n
 
         {LOOM.map((l, i) => (
           <button key={l.slug} type="button" className={`loom-src ${i === active ? 'on' : ''}`} style={{ left: `${(SRC_X / W) * 100}%`, top: `${(srcY(g, i) / H) * 100}%` }} onClick={() => jump(i, true)} onMouseEnter={() => jump(i, true)} aria-label={`Show a decision captured from ${name(l.slug)}`}>
-            <span className="loom-mark">{logos[l.slug] ? <img src={asset(logos[l.slug]!)} alt="" width={20} height={20} /> : <SourceIcon slug={l.slug} />}</span>
+            <span className="loom-mark tool" style={{ ['--hue' as any]: toolHue(l.slug) }}>{logos[l.slug] ? <img src={asset(logos[l.slug]!)} alt="" width={20} height={20} /> : <SourceIcon slug={l.slug} />}</span>
             <span className="loom-src-name">{name(l.slug)}</span>
           </button>
         ))}

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { asset } from '@/lib/base';
-import { IconBook, IconBoard, IconChat, IconCode, IconMail } from './Icons';
+import { ToolIcon, toolHue } from './ToolIcon';
 
 // Build-time lookup: use an official logo file if one was dropped into public/integrations/
 export function logoFor(slug: string): string | null {
@@ -11,16 +11,11 @@ export function logoFor(slug: string): string | null {
   return null;
 }
 
-function Fallback({ name, cat }: { name: string; cat: string }) {
-  const I = name === 'Gmail' ? IconMail : cat === 'Communication' ? IconChat : cat === 'Knowledge' ? IconBook : cat === 'Delivery' ? IconBoard : IconCode;
-  return <I size={20} />;
-}
-
 export function IntegrationMark({ name, slug, cat, size = 40 }: { name: string; slug: string; cat: string; size?: number }) {
   const src = logoFor(slug);
   return (
-    <span className={`int-mark ${src ? 'has-logo' : ''}`} style={{ width: size, height: size }} aria-hidden="true">
-      {src ? <img src={asset(src)} alt="" width={size - 14} height={size - 14} /> : <Fallback name={name} cat={cat} />}
+    <span className={`int-mark ${src ? 'has-logo' : 'tool'}`} style={{ width: size, height: size, ['--hue' as any]: toolHue(slug) }} aria-hidden="true">
+      {src ? <img src={asset(src)} alt="" width={size - 14} height={size - 14} /> : <ToolIcon slug={slug} size={Math.round(size * 0.48)} />}
     </span>
   );
 }
