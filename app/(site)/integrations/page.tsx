@@ -4,6 +4,7 @@ import { Reveal } from '@/components/Interactive';
 import { CtaBand, PageHero } from '@/components/Sections';
 import { INTEGRATIONS, INTEGRATION_CATS } from '@/lib/content';
 import { IntegrationTile } from '@/components/IntegrationTile';
+import IntegrationMarquee from '@/components/IntegrationMarquee';
 
 export const metadata: Metadata = { title: 'Integrations', description: 'Slack, Gmail, Microsoft Teams, Discord, Notion, Confluence, Jira, ClickUp, Monday and GitHub, with read-only scopes.' };
 
@@ -11,6 +12,7 @@ export default function Integrations() {
   return (
     <>
       <PageHero overline="Integrations" title="Works where decisions actually happen." lead="Ten integrations live, each connected with read-only OAuth and scopes you choose per channel, label, space or project." />
+      <section className="section-sm"><div className="container"><IntegrationMarquee /></div></section>
       {INTEGRATION_CATS.map((c, i) => (
         <section key={c.key} className={`section-sm ${i % 2 ? 'alt' : ''}`}>
           <div className="container">

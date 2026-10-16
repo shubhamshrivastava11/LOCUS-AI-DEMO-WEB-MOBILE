@@ -4,6 +4,7 @@ import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
 import MemoryLoom from '@/components/MemoryLoom';
 import HeroLedger from '@/components/HeroLedger';
+import IntegrationMarquee from '@/components/IntegrationMarquee';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
@@ -152,19 +153,7 @@ export default function Home() {
       <section className="section">
         <div className="container">
           <SectionHead overline="Integrations" title="Captures decisions where they actually happen." lead="Ten integrations live, each connected with read-only OAuth and scopes you choose per channel, label, space or project." />
-          <div className="int-groups">
-            {INTEGRATION_CATS.map((c, ci) => (
-              <Reveal key={c.key} delay={ci * 90}>
-                <div className="int-group">
-                  <div className="int-group-head"><span className="overline">{c.key === 'Engineering' ? 'Code & agents' : c.label}</span><span className="caption">{c.key === 'Engineering' ? 'Where decisions get shipped and used' : c.note}</span></div>
-                  <div className="int-grid">
-                    {INTEGRATIONS.filter((x) => x.cat === c.key).map((x) => <IntegrationTile key={x.slug} {...x} compact />)}
-                    {c.key === 'Engineering' && <div className="int-tile compact"><span className="int-mark" style={{ width: 36, height: 36 }}><IconAgent size={20} /></span><strong className="int-name">Any MCP client</strong></div>}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal><IntegrationMarquee /></Reveal>
           <div className="row gap-16 wrap" style={{ marginTop: 28 }}>
             <Link href="/integrations" className="btn btn-secondary">See all integrations</Link>
             <Link href="/contact?topic=integration" className="btn btn-ghost">Request an integration <IconArrow size={16} /></Link>
