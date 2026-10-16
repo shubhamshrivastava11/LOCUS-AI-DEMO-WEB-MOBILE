@@ -50,7 +50,7 @@ export default function Security() {
             <p className="overline">Compliance & contracts</p>
             <h2 className="h2">Ready for your security review.</h2>
             <div className="card stack gap-12">
-              {[['Data Processing Agreement', 'Available on request'], ['Security questionnaire', 'Answered by our team'], ['SSO (SAML) and SCIM', 'Enterprise plan'], ['SOC 2', '[Confirm status]'], ['Data residency', '[Confirm regions]']].map(([a, b]) => <div key={a} className="row between gap-12"><span style={{ fontWeight: 600 }}>{a}</span><span className={b.startsWith('[') ? 'placeholder small' : 'small'}>{b}</span></div>)}
+              {[['Data Processing Agreement', 'Available on request'], ['Security questionnaire', 'Answered by our team'], ['SSO (SAML) and SCIM', 'Enterprise plan']].map(([a, b]) => <div key={a} className="row between gap-12"><span style={{ fontWeight: 600 }}>{a}</span><span className={b.startsWith('[') ? 'placeholder small' : 'small'}>{b}</span></div>)}
             </div>
           </Reveal>
         </div>

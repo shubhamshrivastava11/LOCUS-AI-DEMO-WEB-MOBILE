@@ -21,7 +21,7 @@ export default function Pricing() {
           {PLANS.map((p) => (
             <Reveal key={p.name}>
               <div className={`card card-lg plan ${p.featured ? 'featured' : ''}`} style={{ height: '100%' }}>
-                <div className="row gap-8"><h2 className="h4">{p.name}</h2>{p.featured && <span className="tag tag-decision">Most popular</span>}</div>
+                <div className="row gap-8"><h2 className="h4">{p.name}</h2>{p.featured && <span className="tag tag-decision">Recommended</span>}</div>
                 <div className="row gap-8" style={{ alignItems: 'baseline' }}><span className={`price ${p.price.startsWith('[') ? 'placeholder' : ''}`} style={p.price.startsWith('[') ? { fontSize: 26 } : undefined}>{p.price}</span><span className="small">{p.per}</span></div>
                 <p className="small">{p.desc}</p>
                 <Link className={`btn btn-block ${p.featured ? 'btn-primary' : 'btn-secondary'}`} href={p.href}>{p.cta}</Link>

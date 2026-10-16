@@ -24,7 +24,7 @@ export default function Home() {
         <div className="mock-wrap hero-in" aria-label="Product preview">
           <div className="mock">
             <div className="mock-bar"><i /><i /><i /><span className="mono caption" style={{ marginLeft: 10 }}>app.locus.ai / search</span></div>
-            <div className="grid" style={{ gridTemplateColumns: 'minmax(0,1fr) minmax(0,300px)', gap: 20, padding: 24 }}>
+            <div className="grid hero-mock-grid">
               <div className="stack gap-16">
                 <div className="row gap-12" style={{ padding: '14px 16px', borderRadius: 12, border: '1.5px solid #CFC7FB', boxShadow: '0 0 0 4px #F1EEFF', fontWeight: 500 }}>Why did we move the Q3 launch to July 29?</div>
                 <div className="stack gap-12" style={{ padding: 18, borderRadius: 12, background: 'var(--bg-page)', border: '1px solid var(--border)' }}>

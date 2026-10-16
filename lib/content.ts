@@ -67,7 +67,7 @@ export const CLASSES = [
 
 export const PLANS = [
   { name: 'Individual', price: '$12', per: 'per month', desc: 'For one person who is tired of losing decisions.', cta: 'Start free', href: '/signin', features: ['Personal sources (Gmail, Slack DMs)', 'Private decision register', 'Context Search with history', 'Weekly personal Pulse', 'MCP access for your own agents'] },
-  { name: 'Team', price: '[$ per seat]', per: 'per seat / month', desc: 'For teams that want one shared memory.', cta: 'Start team trial', href: '/signin', featured: true, features: ['Everything in Individual', 'Shared workspace and scopes', 'Team Pulse and Memory Explorer', 'Roles: Admin, Lead, Member, Guest', 'Team MCP access for agents', 'Audit log'] },
+  { name: 'Team', price: 'Pilot', per: 'pricing on a call', desc: 'For teams that want one shared memory.', cta: 'Join the pilot', href: '/contact', featured: true, features: ['Everything in Individual', 'Shared workspace and scopes', 'Team Pulse and Memory Explorer', 'Roles: Admin, Lead, Member, Guest', 'Team MCP access for agents', 'Audit log'] },
   { name: 'Enterprise', price: 'Custom', per: 'annual contract', desc: 'For organizations with security and compliance requirements.', cta: 'Contact sales', href: '/contact', features: ['Everything in Team', 'SAML SSO and SCIM provisioning', 'Classification policies and confidential grants', 'Audit log export', 'Custom retention and data residency', 'DPA, security review and dedicated support'] },
 ];
 
