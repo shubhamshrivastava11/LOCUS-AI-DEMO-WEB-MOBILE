@@ -10,37 +10,34 @@ type Q = { id: string; ask: string; srcs: Src[]; answer: Claim[]; lineage?: stri
 const SOURCES = ['slack', 'gmail', 'microsoft-teams', 'notion', 'jira', 'github'];
 const QS: Q[] = [
   {
-    id: 'launch', ask: 'Why did the Q3 launch move to July 29?',
+    id: 'launch', ask: 'Why did the launch move?',
     srcs: [
       { n: 1, slug: 'slack', where: '#launch-planning', who: 'Priya Shah', when: 'Jun 12', quote: 'Moving launch two weeks to July 29 so SSO ships with it. I’ll own the new date.' },
       { n: 2, slug: 'notion', where: 'Q3 Roadmap', who: 'Launch team', when: 'Jun 13', quote: 'Security review must close before GA. SSO is in scope for the Q3 release.' },
       { n: 3, slug: 'jira', where: 'LOC-412', who: 'Priya Shah', when: 'Oct 13', quote: 'I’ll have the SSO rollout plan in this ticket by Oct 20.' },
     ],
     answer: [
-      { text: 'The launch moved from July 15 to July 29', refs: [1] },
-      { text: 'so the security review could finish and SSO could ship in the same release.', refs: [1, 2] },
-      { text: 'Priya Shah owns the new date, and the SSO rollout plan is due Oct 20.', refs: [1, 3] },
+      { text: 'It moved to July 29 so SSO could ship with it.', refs: [1, 2] },
+      { text: 'Priya Shah owns the date.', refs: [1, 3] },
     ],
-    lineage: 'Replaces “Launch on July 15” (May 28)',
+    lineage: 'July 15 plan',
   },
   {
-    id: 'pricing', ask: 'How many seats does the free tier include?',
+    id: 'pricing', ask: 'How many free-tier seats?',
     srcs: [
-      { n: 1, slug: 'slack', where: '#pricing', who: 'Rosa Diaz', when: 'Mon 10:14', quote: 'We’re capping the free tier at 20 seats, effective next billing cycle.' },
-      { n: 2, slug: 'microsoft-teams', where: 'Growth › Pricing', who: 'Sam Lee', when: 'Mon 11:02', quote: 'Billing will enforce the 20-seat cap from the next cycle. Existing workspaces get a notice.' },
+      { n: 1, slug: 'slack', where: '#pricing', who: 'Rosa Diaz', when: 'Mon', quote: 'We’re capping the free tier at 20 seats, effective next billing cycle.' },
+      { n: 2, slug: 'microsoft-teams', where: 'Growth › Pricing', who: 'Sam Lee', when: 'Mon', quote: 'Billing will enforce the 20-seat cap from the next cycle.' },
     ],
     answer: [
-      { text: 'The free tier is capped at 20 seats,', refs: [1] },
-      { text: 'starting with the next billing cycle,', refs: [1, 2] },
-      { text: 'and existing workspaces get a notice before it applies.', refs: [2] },
+      { text: '20 seats, from the next billing cycle.', refs: [1, 2] },
     ],
-    lineage: 'Replaces “Free tier: unlimited seats” (Aug 30)',
-    excluded: { where: 'help.acme.com/pricing', why: 'Says “unlimited seats”. Left out because a newer decision replaces it.' },
+    lineage: 'Unlimited seats',
+    excluded: { where: 'help.acme.com/pricing', why: 'Still says “unlimited seats”, but a newer decision replaced it, so Locus AI ignores it.' },
   },
   {
-    id: 'salary', ask: 'What are the salary bands for 2027?',
+    id: 'salary', ask: '2027 salary bands?',
     srcs: [], answer: [],
-    none: 'There’s no decision on this that you can access, so Locus AI won’t guess. If one exists, it may be Confidential and need a grant.',
+    none: 'Nothing you have access to answers this, so Locus AI doesn’t guess.',
   },
 ];
 
@@ -116,47 +113,53 @@ export default function Prism() {
           <span className="prism-phase" style={{ left: `${(PX / 1000) * 100}%`, top: `${((PY - 100) / 400) * 100}%` }}>{phase === 'retrieve' ? 'Retrieving sources you can access…' : phase === 'ground' ? 'Checking every claim…' : phase === 'done' ? (q.none ? 'Nothing to cite' : `${q.srcs.length} sources · ${grounded} claims checked`) : ' '}</span>
         </div>
 
-          <ol className="prism-steps">
-            <li className={phase === 'retrieve' ? 'on' : phase !== 'idle' ? 'done' : ''}><b>1</b><span><strong>Retrieve</strong> only sources this person may see</span></li>
-            <li className={phase === 'ground' ? 'on' : phase === 'done' ? 'done' : ''}><b>2</b><span><strong>Check</strong> every claim against those sources</span></li>
-            <li className={phase === 'done' ? 'on' : ''}><b>3</b><span><strong>Cite</strong> each claim, or decline to answer</span></li>
-          </ol>
+          <p className="prism-key">
+            <span className={phase === 'retrieve' ? 'on' : ''}>Retrieve what you can see</span><i>→</i>
+            <span className={phase === 'ground' ? 'on' : ''}>Check each claim</span><i>→</i>
+            <span className={phase === 'done' ? 'on' : ''}>Cite or decline</span>
+          </p>
         </div>
         <div className="prism-out" aria-live="polite" key={q.id}>
-          <span className="po-k">Question</span>
-          <p className="po-q">{q.ask}</p>
-          <span className="po-k">Answer</span>
           {q.none ? (
-            <div className={`po-none ${phase === 'done' ? 'in' : ''}`}>{phase === 'done' ? q.none : <span className="po-wait">Searching…</span>}</div>
+            <p className={`po-a none ${phase === 'done' ? 'in' : ''}`}>{phase === 'done' ? q.none : <span className="po-wait">Searching…</span>}</p>
           ) : (
             <p className="po-a">
               {q.answer.map((c, k) => (
                 <span key={k} className={`claim ${k < claimsShown ? 'in' : ''}`}>
                   {c.text}{' '}
-                  {c.refs.map((r) => <button key={r} className={`cite ${hot === r ? 'hot' : ''}`} onMouseEnter={() => setHot(r)} onMouseLeave={() => setHot(null)} onFocus={() => setHot(r)} onBlur={() => setHot(null)} aria-label={`Source ${r}`}>{r}</button>)}{' '}
+                  {c.refs.map((r) => <button key={r} className={`cite ${hot === r ? 'hot' : ''}`} onMouseEnter={() => setHot(r)} onFocus={() => setHot(r)} onClick={() => setHot(r)} aria-label={`Source ${r}`}>{r}</button>)}{' '}
                 </span>
               ))}
-              {claimsShown === 0 && <span className="po-wait">Retrieving…</span>}
+              {claimsShown === 0 && <span className="po-wait">Thinking…</span>}
             </p>
           )}
-          <div className="po-ground">
-            <div className="row between"><span className="po-k" style={{ margin: 0 }}>Groundedness</span><span className={`po-score ${q.none ? 'na' : ''}`}>{q.none ? 'No claims made' : `${Math.min(claimsShown, grounded)} of ${q.answer.length} claims backed by a source`}</span></div>
-            {!q.none && <div className="po-bar"><span style={{ width: `${(Math.min(claimsShown, grounded) / q.answer.length) * 100}%` }} /></div>}
-            {q.lineage && phase === 'done' && <div className="po-line"><span className="tag tag-superseded">Lineage</span>{q.lineage}</div>}
-            {q.excluded && phase === 'done' && <div className="po-excl"><b>Excluded:</b> {q.excluded.where}. {q.excluded.why}</div>}
+
+          <div className={`po-badges ${phase === 'done' ? 'in' : ''}`}>
+            {q.none
+              ? <span className="po-badge neutral">No sources · no answer</span>
+              : <span className="po-badge ok">✓ {grounded} of {q.answer.length} {q.answer.length === 1 ? "claim" : "claims"} cited</span>}
+            {q.lineage && <span className="po-badge">Replaces: <s>{q.lineage}</s></span>}
           </div>
+
           {q.srcs.length > 0 && (
-            <div className="po-prov">
-              <span className="po-k">Provenance</span>
-              {q.srcs.map((s, k) => (
-                <div key={s.n} className={`prov-row ${hot === s.n ? 'hot' : ''} ${phase === 'idle' || (phase === 'retrieve' && k > 0) ? '' : 'in'}`} onMouseEnter={() => setHot(s.n)} onMouseLeave={() => setHot(null)} style={{ ['--hue' as any]: toolHue(s.slug), transitionDelay: `${k * 120}ms` }}>
-                  <span className="prov-n">{s.n}</span>
-                  <div style={{ minWidth: 0 }}>
-                    <div className="prov-meta"><ToolIcon slug={s.slug} size={12} /> {name(s.slug)} · {s.where} · {s.who} · {s.when}</div>
-                    <div className="prov-quote">“{s.quote}”</div>
-                  </div>
-                </div>
-              ))}
+            <div className={`po-srcs ${phase === 'idle' ? '' : 'in'}`}>
+              <div className="po-chips">
+                {q.srcs.map((s) => (
+                  <button key={s.n} className={`po-chip ${hot === s.n ? 'hot' : ''}`} style={{ ['--hue' as any]: toolHue(s.slug) }} onMouseEnter={() => setHot(s.n)} onFocus={() => setHot(s.n)} onClick={() => setHot(s.n)}>
+                    <span className="po-n">{s.n}</span><ToolIcon slug={s.slug} size={12} />{name(s.slug)}
+                  </button>
+                ))}
+                {q.excluded && (
+                  <button className={`po-chip skip ${hot === -1 ? 'hot' : ''}`} onMouseEnter={() => setHot(-1)} onFocus={() => setHot(-1)} onClick={() => setHot(-1)}>Ignored 1 stale page</button>
+                )}
+              </div>
+              {(() => {
+                if (hot === -1 && q.excluded) return <div className="po-quote skip" key="x"><span className="po-qm">{q.excluded.where}</span>{q.excluded.why}</div>;
+                const src = q.srcs.find((x) => x.n === hot);
+                return src
+                  ? <div className="po-quote" key={src.n} style={{ ['--hue' as any]: toolHue(src.slug) }}><span className="po-qm">{name(src.slug)} · {src.where} · {src.who}, {src.when}</span>“{src.quote}”</div>
+                  : <div className="po-quote hint">Point at a source or a number to see the original message.</div>;
+              })()}
             </div>
           )}
         </div>
