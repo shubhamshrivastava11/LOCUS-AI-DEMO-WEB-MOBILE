@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { CostCalculator } from '@/components/Simulators';
 import type { Metadata } from 'next';
 import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, PageHero, SectionHead } from '@/components/Sections';
@@ -40,6 +41,12 @@ export default function Pricing() {
         </div>
       </section>
       <section className="section"><div className="container"><SectionHead centered overline="FAQ" title="Pricing questions" /><Faq /></div></section>
+      <section className="section alt">
+        <div className="container">
+          <SectionHead overline="Business case" title="What does forgetting cost your team?" lead="Use your own numbers. Nothing here is a Locus AI benchmark." />
+          <CostCalculator />
+        </div>
+      </section>
       <CtaBand />
     </>
   );

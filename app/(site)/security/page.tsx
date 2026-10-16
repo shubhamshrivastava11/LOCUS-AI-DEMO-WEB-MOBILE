@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, PageHero, SectionHead } from '@/components/Sections';
 import { CLASSES, ROLES, SECURITY } from '@/lib/content';
+import { PermissionSimulator } from '@/components/Simulators';
 
 export const metadata: Metadata = { title: 'Security', description: 'Read-only access, 30-day raw content purge, five roles, four classification levels, audit log, SSO and SCIM.' };
 
@@ -19,6 +20,12 @@ export default function Security() {
         </div>
       </section>
       <section className="section alt">
+        <div className="container">
+          <SectionHead overline="Try it" title="Who can see this decision?" lead="Pick a person. Switch on the agent to see that an agent acting for them gets exactly the same answer." />
+          <Reveal><PermissionSimulator /></Reveal>
+        </div>
+      </section>
+      <section className="section">
         <div className="container grid g2" style={{ gap: 40, alignItems: 'start' }}>
           <Reveal className="stack gap-16" >
             <p className="overline">Roles</p>

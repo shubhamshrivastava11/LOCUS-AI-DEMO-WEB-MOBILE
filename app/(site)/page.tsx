@@ -5,6 +5,7 @@ import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
 import MemoryLoom from '@/components/MemoryLoom';
 import HeroLedger from '@/components/HeroLedger';
 import IntegrationMarquee from '@/components/IntegrationMarquee';
+import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
 import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
@@ -37,6 +38,15 @@ export default function Home() {
         </div>
       </section>
 
+      {/* TRUST STRIP */}
+      <section className="trust-strip" aria-label="Enterprise controls">
+        <div className="container trust-grid">
+          {[[IconLock, 'Read-only OAuth', 'Never posts or edits'], [IconShield, 'SAML SSO and SCIM', 'On the Enterprise plan'], [IconUsers, 'Permission checks', 'Role, scope and classification'], [IconLink, 'Audit log', 'Every confidential access'], [IconTrash, '30-day purge', 'Raw content deleted']].map(([I, t, d]: any) => (
+            <div key={t} className="trust-item"><span className="trust-ic"><I size={18} /></span><span><strong>{t}</strong><span>{d}</span></span></div>
+          ))}
+        </div>
+      </section>
+
       {/* MEMORY LOOM */}
       <section className="section loom-section">
         <div className="container">
@@ -63,6 +73,13 @@ export default function Home() {
             ))}
           </div>
           <p className="caption" style={{ marginTop: 20 }}>{STATS_SOURCE}</p>
+          <div className="calc-wrap">
+            <Reveal className="stack gap-12">
+              <h3 className="h2">What does forgetting cost your team?</h3>
+              <p className="body" style={{ maxWidth: 520 }}>Move the sliders to match your organization. Everything here is calculated from your own estimates.</p>
+            </Reveal>
+            <Reveal delay={100}><CostCalculator /></Reveal>
+          </div>
         </div>
       </section>
 
@@ -168,15 +185,11 @@ export default function Home() {
             <Reveal className="stack gap-20">
               <p className="overline">Security & governance</p>
               <h2 className="h1">Shared memory, with real boundaries.</h2>
-              <p className="lead">Locus AI checks role, scope and classification before any answer reaches a person or an agent. Every confidential access is logged.</p>
+              <p className="lead">Locus AI checks role, scope and classification before any answer reaches a person or an agent. Pick a person on the right and see exactly what they, or an agent acting for them, can see.</p>
               <div className="row gap-8 wrap">{['Public', 'Internal', 'Restricted', 'Confidential'].map((l) => <Cls key={l} l={l} />)}</div>
               <div><Link href="/security" className="btn btn-secondary">How security works</Link></div>
             </Reveal>
-            <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 12 }}>
-              {SECURITY.map((s, i) => { const I = secIcons[i]; return (
-                <Reveal key={s.title} delay={i * 70}><div className="glass stack gap-8" style={{ height: '100%', padding: 20 }}><span className="icon-chip"><I size={18} /></span><h3 className="h4" style={{ margin: 0 }}>{s.title}</h3><p className="small" style={{ margin: 0 }}>{s.body}</p></div></Reveal>
-              ); })}
-            </div>
+            <Reveal delay={100}><PermissionSimulator /></Reveal>
           </div>
         </div>
       </section>
