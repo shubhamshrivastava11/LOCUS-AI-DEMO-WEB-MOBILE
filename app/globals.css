@@ -1237,3 +1237,19 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
 @media (max-width: 700px) { .ai-cols { grid-template-columns: minmax(0, 1fr); } .ai-col + .ai-col { border-left: 0; border-top: 1px solid var(--border); } .ai-searched ul { grid-template-columns: repeat(2, minmax(0, 1fr)); } .ai-viewer { display: none; } .ai-q { font-size: 15px; } .ai-claim, .ai-none { font-size: 16px; } .ai-top, .ai-col { padding: 14px; } }
 @media (prefers-reduced-motion: reduce) { .ai *, .ai { animation: none !important; transition: none !important; } }
 .vis-row .row { flex-wrap: wrap; }
+
+/* ===== Home: compact integrations and security ===== */
+.home-int, .home-sec { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 56px; align-items: center; }
+.hi-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.hi-tile { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px; border-radius: 14px; border: 1px solid var(--border); background: var(--bg-surface); font-size: 13px; font-weight: 600; text-align: center; transition: border-color .2s, transform .25s var(--ease-out), box-shadow .25s; }
+.hi-tile:hover { border-color: #C8C0FA; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.hi-agents { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 14px; border-radius: 12px; background: var(--bg-page); border: 1px solid var(--border); }
+.hi-k { font-size: 12.5px; font-weight: 600; color: var(--text-2); margin-right: 4px; }
+.hi-chip { font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--bg-surface); border: 1px solid var(--border); }
+.sec-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.sec-list li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px; border-radius: 14px; background: var(--bg-surface); border: 1px solid var(--border); }
+.sec-list strong { display: block; font-size: 16px; font-weight: 600; }
+.sec-list span:not(.sec-ic) { display: block; margin-top: 2px; font-size: 14px; line-height: 1.5; color: var(--text-2); }
+.sec-ic { width: 36px; height: 36px; flex: none; border-radius: 10px; display: grid; place-items: center; background: var(--brand-subtle); color: var(--brand-on-subtle); }
+@media (max-width: 960px) { .home-int, .home-sec { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+@media (max-width: 560px) { .hi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }

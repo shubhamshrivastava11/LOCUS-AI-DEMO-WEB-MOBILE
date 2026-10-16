@@ -2,7 +2,8 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, PageHero } from '@/components/Sections';
-import { USE_CASES } from '@/lib/content';
+import { STATS, STATS_SOURCE, USE_CASES } from '@/lib/content';
+import { SectionHead } from '@/components/Sections';
 
 export const metadata: Metadata = { title: 'Use cases', description: 'How support, sales and engineering teams keep people and AI agents consistent with what was decided.' };
 
@@ -23,6 +24,15 @@ export default function UseCases() {
               </Link>
             </Reveal>
           ))}
+        </div>
+      </section>
+      <section className="section alt">
+        <div className="container">
+          <SectionHead overline="Customer discovery" title="What we heard from teams." />
+          <div className="grid g3">
+            {STATS.map((x) => <Reveal key={x.n}><div className="stat-tile"><span className="stat-n">{x.n}</span><p className="body" style={{ margin: 0 }}>{x.t}</p></div></Reveal>)}
+          </div>
+          <p className="caption" style={{ marginTop: 16 }}>{STATS_SOURCE}</p>
         </div>
       </section>
       <CtaBand />

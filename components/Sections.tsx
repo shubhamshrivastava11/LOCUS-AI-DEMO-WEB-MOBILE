@@ -25,7 +25,7 @@ export function SectionHead({ overline, title, lead, centered }: { overline: str
   );
 }
 
-export function CtaBand({ title = 'Give your team a memory that doesn’t walk out the door.', lead = 'In pilot with 40+ users across 10 integrations. Read-only from day one, with nothing new to learn.' }: { title?: string; lead?: string }) {
+export function CtaBand({ title = 'Give your team a memory that doesn’t walk out the door.', lead = 'In pilot with 40+ users across 10 integrations. Read-only from day one, with nothing new to learn.', partner = false }: { title?: string; lead?: string; partner?: boolean }) {
   return (
     <section className="section">
       <div className="container">
@@ -34,8 +34,13 @@ export function CtaBand({ title = 'Give your team a memory that doesn’t walk o
             <h2 className="h1" style={{ maxWidth: 820 }}>{title}</h2>
             <p className="lead" style={{ maxWidth: 560 }}>{lead}</p>
             <div className="row gap-12 wrap" style={{ justifyContent: 'center' }}>
-              <Link className="btn btn-primary btn-lg" href="/contact">Book a demo</Link>
-              <Link className="btn btn-secondary btn-lg" href="/demo">Try the live demo</Link>
+              {partner ? <>
+                <Link className="btn btn-primary btn-lg" href="/design-partners">Become a design partner</Link>
+                <Link className="btn btn-secondary btn-lg" href="/contact">Book a demo</Link>
+              </> : <>
+                <Link className="btn btn-primary btn-lg" href="/contact">Book a demo</Link>
+                <Link className="btn btn-secondary btn-lg" href="/demo">Try the live demo</Link>
+              </>}
             </div>
           </div>
         </Reveal>

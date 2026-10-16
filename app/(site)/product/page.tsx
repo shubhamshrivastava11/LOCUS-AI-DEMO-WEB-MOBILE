@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, PageHero, SectionHead, Tag } from '@/components/Sections';
 import { PILLARS } from '@/lib/content';
+import { AgentRail, HeroPreview, Lifecycle } from '@/components/Home';
 
 export const metadata: Metadata = { title: 'Product', description: 'Context Search, Memory Explorer, Team Pulse and an MCP server, built on one governed organizational memory.' };
 
@@ -36,6 +37,30 @@ export default function Product() {
       <PageHero overline="Product" title={<>One governed memory.<br />Four ways to use it.</>} lead="Locus AI turns conversations into structured, cited, permission-aware decisions, then serves them in the app, in weekly digests and to your AI agents.">
         <div className="row gap-12 wrap" style={{ justifyContent: 'center' }}><Link className="btn btn-primary btn-lg" href="/demo">Try the live demo</Link><Link className="btn btn-secondary btn-lg" href="/contact">Book a demo</Link></div>
       </PageHero>
+      <section className="section">
+        <div className="container">
+          <SectionHead overline="The missing layer" title="LLMs reason. RAG retrieves. Agents execute. Locus AI remembers." lead="Retrieval finds documents. Memory knows which decision is current, who made it, what it replaced and who is allowed to see it." />
+          <div className="grid g4">
+            {[['01 · LLMs', 'reason.'], ['02 · RAG', 'retrieves.'], ['03 · Agents', 'execute.'], ['04 · Locus AI', 'remembers.']].map(([a, b], i) => (
+              <Reveal key={a} delay={i * 90}>
+                <div className={`stack-card ${i === 3 ? 'on' : ''}`}><span className="mono caption">{a}</span><span className="h2">{b}</span></div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="section alt">
+        <div className="container">
+          <SectionHead overline="How it works" title="Connect once. Every decision is captured, governed and ready to recall." />
+          <Lifecycle />
+        </div>
+      </section>
+      <section className="section">
+        <div className="container">
+          <SectionHead overline="One memory, two audiences" title="Built for the people deciding and the agents acting on it." lead="Same decision, same permissions. Switch between what a person sees and what an agent gets." />
+          <div className="preview-light"><HeroPreview /></div>
+        </div>
+      </section>
       {PILLARS.map((p, i) => (
         <section key={p.key} id={p.key} className={`section ${i % 2 ? 'alt' : ''}`} style={{ scrollMarginTop: 80 }}>
           <div className="container grid g2" style={{ alignItems: 'center', gap: 56 }}>
@@ -49,6 +74,16 @@ export default function Product() {
           </div>
         </section>
       ))}
+      <section className="section dark">
+        <div className="container stack" style={{ gap: 8 }}>
+          <Reveal className="head">
+            <p className="overline">Built for agents</p>
+            <h2 className="h1">Stop re-explaining context to every agent.</h2>
+            <p className="lead">Locus AI is the shared memory your agents query first, through MCP, with the same permissions as the person they act for.</p>
+          </Reveal>
+          <AgentRail />
+        </div>
+      </section>
       <section className="section">
         <div className="container">
           <SectionHead overline="Under the hood" title="From conversation to governed memory." lead="Two-model capture keeps cost down and precision up. Hybrid retrieval ranks the freshest decision first." />

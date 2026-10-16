@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Reveal, Faq } from '@/components/Interactive';
 import { CtaBand, PageHero, SectionHead } from '@/components/Sections';
 import TrustCenter from '@/components/TrustCenter';
-import { TRUST_FAQ } from '@/lib/content';
+import { FAQS, TRUST_FAQ } from '@/lib/content';
 
 export const metadata: Metadata = { title: 'Trust center', description: 'What Locus AI has in place today, and what is planned: access, data handling, governance and assurance.' };
 
@@ -25,7 +25,7 @@ export default function Trust() {
       <section className="section alt">
         <div className="container">
           <SectionHead overline="Security review" title="Questions your security team will ask." lead="Straight answers, including where the answer is “not yet”." centered />
-          <Faq items={TRUST_FAQ} />
+          <Faq items={[...FAQS.slice(0, 4), ...TRUST_FAQ]} />
         </div>
       </section>
       <section className="section">
