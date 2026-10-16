@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://shubhamshrivastava11.github.io/LOCUS-AI-DEMO-WEB-MOBILE/sitemap.xml
