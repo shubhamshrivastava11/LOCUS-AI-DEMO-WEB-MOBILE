@@ -3,7 +3,7 @@ import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, SectionHead } from '@/components/Sections';
 import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
 import MemoryLoom from '@/components/MemoryLoom';
-import HeroLedger from '@/components/HeroLedger';
+import HeroStory from '@/components/HeroStory';
 import IntegrationMarquee from '@/components/IntegrationMarquee';
 import { CostCalculator, PermissionSimulator } from '@/components/Simulators';
 import Scenario from '@/components/Scenario';
@@ -35,7 +35,7 @@ export default function Home() {
               <div><dt>Every answer</dt><dd>Linked to the thread it came from</dd></div>
             </dl>
           </div>
-          <div className="hero2-record"><HeroLedger logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} /></div>
+          <div className="hero2-record"><HeroStory /></div>
         </div>
       </section>
 
