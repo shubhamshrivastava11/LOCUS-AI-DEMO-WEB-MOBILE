@@ -16,6 +16,7 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="hero2" style={{ marginTop: -73 }}>
+        <span className="hero2-pulse" aria-hidden="true" />
         <div className="container hero2-grid">
           <div className="hero2-copy">
             <p className="hero2-kicker hero-in">Organizational memory for enterprise AI</p>

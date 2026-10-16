@@ -610,3 +610,38 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
   .ledger-ws { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { .display2.split .ln > span, .ledger, .ledger-row.fresh { animation: none !important; } }
+
+/* ===== Hero motion ===== */
+.hero2 { animation: ledgerDrift 7s linear infinite; }
+@keyframes ledgerDrift { to { background-position: 0 -44px; } }
+.hero2-pulse { position: absolute; left: calc(50% + 71px); top: 132px; width: 3px; height: 90px; border-radius: 3px; z-index: 1; background: linear-gradient(transparent, #B6ACFF, transparent); animation: pulseDown 4s cubic-bezier(.45,0,.55,1) infinite; pointer-events: none; }
+@keyframes pulseDown { 0% { transform: translateY(-40px); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateY(620px); opacity: 0; } }
+.ledger-stage { position: relative; transform: perspective(1400px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform .35s cubic-bezier(.2,.8,.2,1); transform-style: preserve-3d; }
+.ledger { transition: box-shadow .4s; }
+.ledger.catching { box-shadow: 0 30px 80px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.08), 0 0 0 6px rgba(109,90,230,.28); }
+.ledger-head { position: relative; }
+.ledger-timer { position: absolute; left: 0; bottom: -1px; height: 2px; width: 100%; background: #6D5AE6; transform-origin: 0 50%; transform: scaleX(0); animation-name: timer; animation-timing-function: linear; animation-fill-mode: forwards; }
+@keyframes timer { to { transform: scaleX(1); } }
+.caret { display: inline-block; width: 2px; height: 1em; margin-left: 1px; vertical-align: -2px; background: #6D5AE6; animation: blink .7s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.flight { position: absolute; z-index: 5; left: 0; top: 64px; width: 300px; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px; border-radius: 14px 14px 14px 4px; background: #1B2740; border: 1px solid rgba(182,172,255,.35); color: #E6E9F2; box-shadow: 0 18px 40px rgba(0,0,0,.4); animation: fly 1.7s cubic-bezier(.4,0,.2,1) forwards; pointer-events: none; }
+.flight-src { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #B6ACFF; }
+.flight-src svg, .flight-src img { flex: none; }
+.flight-said { font-size: 14px; line-height: 1.45; }
+@keyframes fly {
+  0% { opacity: 0; transform: translate(-200px, 26px) scale(.96); }
+  16% { opacity: 1; transform: translate(-150px, 26px) scale(1); }
+  58% { opacity: 1; transform: translate(-142px, 26px) scale(1); }
+  100% { opacity: 0; transform: translate(80px, 0) scale(.45); }
+}
+@media (max-width: 1000px) {
+  .hero2-pulse { display: none; }
+  .flight { left: 50%; width: min(300px, 86vw); animation-name: flyDown; }
+  @keyframes flyDown {
+    0% { opacity: 0; transform: translate(-50%, -110px) scale(.96); }
+    16% { opacity: 1; transform: translate(-50%, -90px) scale(1); }
+    58% { opacity: 1; transform: translate(-50%, -86px) scale(1); }
+    100% { opacity: 0; transform: translate(-50%, 20px) scale(.5); }
+  }
+}
+@media (prefers-reduced-motion: reduce) { .hero2, .hero2-pulse, .flight, .ledger-timer, .caret { animation: none !important; } .hero2-pulse { display: none; } .ledger-stage { transform: none !important; } }
