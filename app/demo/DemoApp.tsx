@@ -270,31 +270,213 @@ function Agents() {
   );
 }
 
+type Role = typeof ROLES[number];
+type Member = { id: string; name: string; email: string; role: Role; scopes: string[]; last: string; grants: string[]; expires?: string; idle?: boolean; extended?: boolean };
+const SCOPES = ['Leadership', 'Security', 'Platform', 'Infra', 'Launch', 'Growth', 'Legal'];
+const SEED_MEMBERS: Member[] = [
+  { id: 'priya', name: 'Priya Shah', email: 'priya@acme.com', role: 'Owner', scopes: ['Leadership', 'Launch'], last: 'Now', grants: ['d2'] },
+  { id: 'maya', name: 'Maya Chen', email: 'maya@acme.com', role: 'Admin', scopes: ['Security'], last: '2h ago', grants: [] },
+  { id: 'arjun', name: 'Arjun Mehta', email: 'arjun@acme.com', role: 'Lead', scopes: ['Platform', 'Infra'], last: 'Yesterday', grants: [] },
+  { id: 'mei', name: 'Mei Lin', email: 'mei@acme.com', role: 'Member', scopes: ['Platform'], last: '1h ago', grants: [] },
+  { id: 'dev', name: 'Dev Patel', email: 'dev@acme.com', role: 'Member', scopes: ['Platform', 'Infra'], last: '34 days ago', grants: [], idle: true },
+  { id: 'lena', name: 'Lena Park', email: 'lena@acme.com', role: 'Member', scopes: ['Infra'], last: 'Today', grants: [] },
+  { id: 'nina', name: 'Nina Rao', email: 'nina@acme.com', role: 'Member', scopes: ['Launch'], last: 'Today', grants: [] },
+  { id: 'rosa', name: 'Rosa Diaz', email: 'rosa@acme.com', role: 'Lead', scopes: ['Growth'], last: '3h ago', grants: [] },
+  { id: 'sam', name: 'Sam Lee', email: 'sam@acme.com', role: 'Member', scopes: ['Growth'], last: '3 days ago', grants: [] },
+  { id: 'omar', name: 'Omar Haddad', email: 'omar@acme.com', role: 'Member', scopes: ['Legal'], last: 'Today', grants: ['d2'] },
+  { id: 'jordan', name: 'Jordan Cole', email: 'contractor@agency.io', role: 'Guest', scopes: ['Launch'], last: '5 days ago', grants: [], expires: 'Nov 12' },
+];
+const AGENTS = [{ id: 'release-agent', actsFor: 'priya' }, { id: 'support-agent', actsFor: 'sam' }];
+const CAPS: [string, Role[]][] = [
+  ['Read Public decisions', ['Owner', 'Admin', 'Lead', 'Member', 'Guest']],
+  ['Read Internal decisions', ['Owner', 'Admin', 'Lead', 'Member']],
+  ['Read Restricted in own scopes', ['Owner', 'Lead', 'Member']],
+  ['Read Confidential with a grant', ['Owner', 'Admin', 'Lead', 'Member']],
+  ['Manage members of own scopes', ['Owner', 'Admin', 'Lead']],
+  ['Change roles', ['Owner', 'Admin']],
+  ['Configure sources and policies', ['Owner', 'Admin']],
+  ['Export the audit log', ['Owner', 'Admin']],
+  ['Billing and tenant settings', ['Owner']],
+];
+const can = (role: Role, cap: string) => CAPS.find((c) => c[0] === cap)![1].includes(role);
+const TEAM_SCOPE: Record<string, string> = { Platform: 'Platform', Infra: 'Infra', Launch: 'Launch', Growth: 'Growth', Legal: 'Legal', Security: 'Security' };
+function sees(m: Member, r: Rec) {
+  if (m.role === 'Guest') return r.cls === 'Public' && m.scopes.includes(TEAM_SCOPE[r.team]);
+  if (r.cls === 'Public' || r.cls === 'Internal') return true;
+  if (r.cls === 'Restricted') return m.role !== 'Admin' && (m.role === 'Owner' || m.scopes.includes(TEAM_SCOPE[r.team]));
+  return m.grants.includes(r.id);
+}
+const initials = (n: string) => n.split(' ').map((x) => x[0]).join('').slice(0, 2);
+const ROLE_HUE: Record<Role, string> = { Owner: '#4338CA', Admin: '#7C3AED', Lead: '#0E9F8E', Member: '#2F6FEB', Guest: '#C77A12' };
+const RoleBadge = ({ r }: { r: Role }) => <span className="rb" style={{ ['--h' as any]: ROLE_HUE[r] }}>{r}</span>;
+
 function Members({ log, notify }: any) {
-  const [rows, setRows] = useState([['Priya Shah', 'priya@acme.com', 'All scopes', 'Now', 'Owner'], ['Maya Chen', 'maya@acme.com', 'All scopes', '2h ago', 'Admin'], ['Arjun Mehta', 'arjun@acme.com', 'Platform, Infra', 'Yesterday', 'Lead'], ['Sam Lee', 'sam@acme.com', 'Growth', '3 days ago', 'Member'], ['Jordan Cole', 'contractor@agency.io', '#launch-planning', 'Expires Nov 12', 'Guest']]);
+  const [tab, setTab] = useState<'overview' | 'tree' | 'list'>('overview');
+  const [members, setMembers] = useState<Member[]>(SEED_MEMBERS);
+  const [sel, setSel] = useState('arjun');
   const [inviting, setInviting] = useState(false);
-  const [email, setEmail] = useState(''); const [role, setRole] = useState('Member'); const [err, setErr] = useState('');
+  const [email, setEmail] = useState(''); const [role, setRole] = useState<Role>('Member'); const [err, setErr] = useState('');
+  const setRoleFor = (id: string, v: Role) => { const m = members.find((x) => x.id === id)!; if (m.role === v) return; setMembers(members.map((x) => x.id === id ? { ...x, role: v } : x)); log('Changed role', `${m.name} · ${m.role} → ${v}`); notify(`${m.name} is now ${v}. Logged to audit.`); };
+  const patch = (id: string, p: Partial<Member>, what: string, detail: string, msg: string) => { setMembers(members.map((x) => x.id === id ? { ...x, ...p } : x)); log(what, detail); notify(msg); };
   return (
     <>
-      <Header title="Members & roles" sub={`${rows.length} members · provisioned by Okta SCIM`} right={<button className="btn btn-primary" onClick={() => setInviting(true)}>Invite people</button>} />
-      <div className="table-wrap"><table className="table"><thead><tr><th>Member</th><th className="hide-sm">Scopes</th><th className="hide-sm">Last active</th><th>Role</th></tr></thead><tbody>
-        {rows.map((r, i) => <tr key={r[1]}><td><div style={{ fontWeight: 600 }}>{r[0]}</div><div className="caption">{r[1]}</div></td><td className="hide-sm muted">{r[2]}</td><td className="hide-sm muted">{r[3]}</td><td>
-          <label className="sr-only" htmlFor={`role-${i}`}>Role for {r[0]}</label>
-          <select id={`role-${i}`} className="select" style={{ width: 150 }} value={r[4]} disabled={r[4] === 'Owner'} onChange={(e) => { const v = e.target.value; setRows(rows.map((x, j) => j === i ? [...x.slice(0, 4), v] : x)); log('Changed role', `${r[0]} · ${r[4]} → ${v}`); notify(`${r[0]} is now ${v}. Logged to audit.`); }}>{ROLES.map((x) => <option key={x}>{x}</option>)}</select>
-        </td></tr>)}
-      </tbody></table></div>
+      <Header title="Members & roles" sub={`${members.length} members · ${AGENTS.length} agents · provisioned by Okta SCIM`} right={<button className="btn btn-primary" onClick={() => setInviting(true)}>Invite people</button>} />
+      <div className="mtabs" role="tablist" aria-label="Members views">
+        {([['overview', 'Overview'], ['tree', 'Org tree'], ['list', 'Members']] as const).map(([k, l]) => <button key={k} role="tab" aria-selected={tab === k} onClick={() => setTab(k)}>{l}</button>)}
+      </div>
+      {tab === 'overview' && <RbacOverview members={members} patch={patch} openMember={(id: string) => { setSel(id); setTab('tree'); }} />}
+      {tab === 'tree' && <OrgTree members={members} sel={sel} setSel={setSel} setRoleFor={setRoleFor} patch={patch} />}
+      {tab === 'list' && (
+        <div className="table-wrap"><table className="table"><thead><tr><th>Member</th><th className="hide-sm">Scopes</th><th className="hide-sm">Last active</th><th>Role</th></tr></thead><tbody>
+          {members.map((m) => <tr key={m.id}><td><div style={{ fontWeight: 600 }}>{m.name}</div><div className="caption">{m.email}</div></td><td className="hide-sm muted">{m.role === 'Owner' ? 'All scopes' : m.scopes.join(', ')}</td><td className="hide-sm muted">{m.expires ? `Expires ${m.expires}` : m.last}</td><td>
+            <label className="sr-only" htmlFor={`role-${m.id}`}>Role for {m.name}</label>
+            <select id={`role-${m.id}`} className="select" style={{ width: 150 }} value={m.role} disabled={m.role === 'Owner'} onChange={(e) => setRoleFor(m.id, e.target.value as Role)}>{ROLES.map((x) => <option key={x}>{x}</option>)}</select>
+          </td></tr>)}
+        </tbody></table></div>
+      )}
       {inviting && <>
         <div className="drawer-scrim" onClick={() => setInviting(false)} />
         <div className="modal" role="dialog" aria-modal="true" aria-labelledby="inv-t" onClick={(e) => e.target === e.currentTarget && setInviting(false)}>
-          <form className="card card-lg stack gap-16" onSubmit={(e) => { e.preventDefault(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr('Enter a valid email.'); return; } setRows([...rows, [email.split('@')[0], email, role === 'Guest' ? 'Shared spaces only' : 'Pending invite', 'Invite sent', role]]); log('Invited user', `${email} · ${role}`); notify(`Invite sent to ${email}`); setInviting(false); setEmail(''); setErr(''); }}>
+          <form className="card card-lg stack gap-16" onSubmit={(e) => { e.preventDefault(); if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { setErr('Enter a valid email.'); return; } const id = email.split('@')[0]; setMembers([...members, { id, name: id, email, role, scopes: role === 'Guest' ? ['Launch'] : [], last: 'Invite sent', grants: [], expires: role === 'Guest' ? 'in 30 days' : undefined }]); log('Invited user', `${email} · ${role}`); notify(`Invite sent to ${email}`); setInviting(false); setEmail(''); setErr(''); }}>
             <h2 id="inv-t" className="h3">Invite people</h2>
             <div className="field"><label htmlFor="inv-e">Email</label><input id="inv-e" className="input" autoFocus value={email} onChange={(e) => setEmail(e.target.value)} aria-invalid={!!err} placeholder="name@acme.com" /><span className={`help ${err ? 'err' : ''}`}>{err || 'Guests only see what you share and expire after 30 days.'}</span></div>
-            <div className="field"><label htmlFor="inv-r">Role</label><select id="inv-r" className="select" value={role} onChange={(e) => setRole(e.target.value)}>{ROLES.filter((r) => r !== 'Owner').map((r) => <option key={r}>{r}</option>)}</select></div>
+            <div className="field"><label htmlFor="inv-r">Role</label><select id="inv-r" className="select" value={role} onChange={(e) => setRole(e.target.value as Role)}>{ROLES.filter((r) => r !== 'Owner').map((r) => <option key={r}>{r}</option>)}</select></div>
             <div className="row gap-8" style={{ justifyContent: 'flex-end' }}><button type="button" className="btn btn-ghost" onClick={() => setInviting(false)}>Cancel</button><button className="btn btn-primary">Send invite</button></div>
           </form>
         </div>
       </>}
     </>
+  );
+}
+
+function RbacOverview({ members, patch, openMember }: any) {
+  const [hl, setHl] = useState<Role | null>(null);
+  const byRole = ROLES.map((r) => [r, members.filter((m: Member) => m.role === r).length] as const);
+  const total = members.length;
+  const grants = members.flatMap((m: Member) => m.grants.map((g) => [m, g] as const));
+  const levelReach = LEVELS.map((l) => [l, members.filter((m: Member) => RECORDS.filter((r) => r.cls === l).some((r) => sees(m, r))).length] as const);
+  const issues: { id: string; text: string; sub: string; action: string; run: () => void }[] = [];
+  members.forEach((m: Member) => {
+    if (m.role === 'Guest' && m.expires && !m.extended) issues.push({ id: m.id + 'x', text: `${m.name}'s guest access expires ${m.expires}`, sub: `Guest · ${m.scopes.join(', ')}`, action: 'Extend 30 days', run: () => patch(m.id, { expires: 'Dec 12', extended: true }, 'Extended guest access', `${m.name} · until Dec 12`, `${m.name} can access shared spaces until Dec 12.`) });
+    if (m.idle && m.scopes.length) issues.push({ id: m.id + 'i', text: `${m.name} inactive for 34 days`, sub: `Still has Restricted access to ${m.scopes.join(', ')}`, action: 'Remove from scopes', run: () => patch(m.id, { scopes: [], idle: false }, 'Removed from scopes', `${m.name} · ${m.scopes.join(', ')}`, `${m.name} removed from ${m.scopes.join(' and ')}.`) });
+  });
+  grants.forEach(([m, g]: any) => issues.push({ id: m.id + g, text: `${m.name} holds a Confidential grant`, sub: RECORDS.find((r) => r.id === g)?.title || g, action: 'Revoke', run: () => patch(m.id, { grants: m.grants.filter((x: string) => x !== g) }, 'Revoked confidential grant', `${m.name} · ${g}`, `Grant revoked for ${m.name}.`) }));
+  return (
+    <div className="stack gap-20">
+      <div className="grid g4">
+        {[['People', total, `${members.filter((m: Member) => m.role !== 'Guest').length} employees, ${members.filter((m: Member) => m.role === 'Guest').length} guest`], ['Scopes', SCOPES.length, 'Teams and spaces with their own access'], ['Agents', AGENTS.length, 'Act with a person’s permissions'], ['Confidential grants', grants.length, 'Every access is logged']].map(([k, v, d]) => (
+          <div className="card stat" key={k as string}><span className="caption">{k}</span><b>{v}</b><span className="caption">{d}</span></div>
+        ))}
+      </div>
+      <div className="rbac-grid">
+        <div className="card stack gap-16">
+          <div className="row between"><strong>Role distribution</strong><span className="caption">{total} people</span></div>
+          <div className="rolebar" role="img" aria-label={byRole.map(([r, n]) => `${r} ${n}`).join(', ')}>
+            {byRole.filter(([, n]) => n).map(([r, n]) => <span key={r} style={{ flex: n, background: ROLE_HUE[r], opacity: hl && hl !== r ? .3 : 1 }} onMouseEnter={() => setHl(r)} onMouseLeave={() => setHl(null)} />)}
+          </div>
+          <div className="role-legend">{byRole.map(([r, n]) => <button key={r} className={hl === r ? 'on' : ''} onMouseEnter={() => setHl(r)} onMouseLeave={() => setHl(null)} onFocus={() => setHl(r)} onBlur={() => setHl(null)}><i style={{ background: ROLE_HUE[r] }} />{r}<b>{n}</b></button>)}</div>
+          <div className="stack gap-8" style={{ marginTop: 4 }}>
+            <strong className="small" style={{ color: 'var(--text)' }}>Who can read each level</strong>
+            {levelReach.map(([l, n]) => (
+              <div key={l} className="reach"><Cls l={l} /><span className="reach-bar"><span style={{ width: `${(n / total) * 100}%` }} /></span><span className="caption">{n} of {total}</span></div>
+            ))}
+          </div>
+        </div>
+        <div className="card stack gap-12" style={{ padding: 0, overflow: 'hidden' }}>
+          <div className="row between" style={{ padding: '16px 18px 0' }}><strong>Permission matrix</strong><span className="caption">Point at a role to highlight it</span></div>
+          <div className="table-wrap" style={{ border: 0, borderRadius: 0 }}><table className="table matrix"><thead><tr><th>Capability</th>{ROLES.map((r) => <th key={r} className={hl === r ? 'hl' : ''} onMouseEnter={() => setHl(r)} onMouseLeave={() => setHl(null)}>{r}</th>)}</tr></thead><tbody>
+            {CAPS.map(([c]) => <tr key={c}><td>{c}</td>{ROLES.map((r) => <td key={r} className={`${hl === r ? 'hl' : ''} ${can(r, c) ? 'yes' : 'no'}`} aria-label={can(r, c) ? 'Allowed' : 'Not allowed'}>{can(r, c) ? '✓' : '·'}</td>)}</tr>)}
+          </tbody></table></div>
+        </div>
+      </div>
+      <div className="rbac-grid">
+        <div className="card stack gap-12">
+          <div className="row between"><strong>Needs review</strong><span className="caption">{issues.length} open</span></div>
+          {issues.length === 0 && <p className="small">All clear. Nothing needs review.</p>}
+          {issues.map((x) => <div key={x.id} className="issue"><div><div className="small" style={{ color: 'var(--text)', fontWeight: 600 }}>{x.text}</div><div className="caption">{x.sub}</div></div><button className="btn btn-secondary" onClick={x.run}>{x.action}</button></div>)}
+        </div>
+        <div className="card stack gap-12">
+          <div className="row between"><strong>Agents and who they act for</strong><span className="caption">Same permissions as the person</span></div>
+          {AGENTS.map((a) => { const m = members.find((x: Member) => x.id === a.actsFor)!; const n = RECORDS.filter((r) => sees(m, r)).length; return (
+            <button key={a.id} className="agent-row" onClick={() => openMember(m.id)}>
+              <span className="av ag"><IconAgent size={16} /></span>
+              <span style={{ flex: 1, textAlign: 'left' }}><strong className="small" style={{ color: 'var(--text)' }}>{a.id}</strong><span className="caption" style={{ display: 'block' }}>Acts for {m.name} · <RoleBadge r={m.role} /></span></span>
+              <span className="caption">{n} of {RECORDS.length} decisions</span>
+            </button>
+          ); })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function OrgTree({ members, sel, setSel, setRoleFor, patch }: any) {
+  const [openS, setOpenS] = useState<Record<string, boolean>>(() => Object.fromEntries(SCOPES.map((s) => [s, true])));
+  const [q, setQ] = useState('');
+  const owner = members.find((m: Member) => m.role === 'Owner');
+  const guests = members.filter((m: Member) => m.role === 'Guest');
+  const match = (m: Member) => !q || (m.name + m.email + m.role).toLowerCase().includes(q.toLowerCase());
+  const m: Member = members.find((x: Member) => x.id === sel) || owner;
+  const visible = RECORDS.filter((r) => sees(m, r));
+  const agent = AGENTS.find((a) => a.actsFor === m.id);
+  const Person = ({ p, depth }: { p: Member; depth: number }) => (
+    <li role="treeitem" aria-selected={p.id === sel}>
+      <button className={`tnode person ${p.id === sel ? 'on' : ''}`} style={{ paddingLeft: 12 + depth * 22 }} onClick={() => setSel(p.id)}>
+        <span className="tline" aria-hidden="true" />
+        <span className="av" style={{ ['--h' as any]: ROLE_HUE[p.role] }}>{initials(p.name)}</span>
+        <span className="tname">{p.name}{p.idle && <span className="tdot" title="Inactive" />}</span>
+        <RoleBadge r={p.role} />
+      </button>
+    </li>
+  );
+  return (
+    <div className="tree-wrap">
+      <div className="card tree-card">
+        <div className="tree-tools"><input className="input" placeholder="Filter people" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Filter people" /><button className="btn btn-ghost" onClick={() => setOpenS(Object.fromEntries(SCOPES.map((s) => [s, !Object.values(openS).every(Boolean)])))}>{Object.values(openS).every(Boolean) ? 'Collapse all' : 'Expand all'}</button></div>
+        <ul className="tree" role="tree" aria-label="Acme organization">
+          <li role="treeitem" aria-expanded="true">
+            <div className="tnode org"><img src={asset('/mark.svg')} alt="" width={20} height={20} /><strong>Acme</strong><span className="caption">{members.length} people</span></div>
+            <ul role="group">
+              {SCOPES.map((s) => {
+                const ppl = members.filter((p: Member) => p.role !== 'Guest' && p.scopes.includes(s)).filter(match).sort((a: Member, b: Member) => ROLES.indexOf(a.role) - ROLES.indexOf(b.role));
+                const lead = ppl.find((p: Member) => p.role === 'Owner' || p.role === 'Lead' || p.role === 'Admin');
+                if (q && !ppl.length) return null;
+                return (
+                  <li key={s} role="treeitem" aria-expanded={!!openS[s]}>
+                    <button className="tnode scope" style={{ paddingLeft: 34 }} onClick={() => setOpenS({ ...openS, [s]: !openS[s] })}>
+                      <span className={`chev ${openS[s] ? 'open' : ''}`} aria-hidden="true">›</span>
+                      <span className="scope-ic" aria-hidden="true">{s[0]}</span>
+                      <strong>{s}</strong><span className="caption">{ppl.length} {ppl.length === 1 ? 'person' : 'people'}{lead ? ` · led by ${lead.name.split(' ')[0]}` : ''}</span>
+                    </button>
+                    {openS[s] && <ul role="group" className="tgroup">{ppl.map((p: Member) => <Person key={p.id + s} p={p} depth={2} />)}</ul>}
+                  </li>
+                );
+              })}
+              {guests.filter(match).length > 0 && (
+                <li role="treeitem" aria-expanded="true">
+                  <div className="tnode scope" style={{ paddingLeft: 34 }}><span className="chev open" aria-hidden="true">›</span><span className="scope-ic g" aria-hidden="true">G</span><strong>Guests</strong><span className="caption">shared spaces only</span></div>
+                  <ul role="group" className="tgroup">{guests.filter(match).map((p: Member) => <Person key={p.id} p={p} depth={2} />)}</ul>
+                </li>
+              )}
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div className="card profile panel-in" key={m.id}>
+        <div className="row gap-12"><span className="av lg" style={{ ['--h' as any]: ROLE_HUE[m.role] }}>{initials(m.name)}</span><div style={{ flex: 1, minWidth: 0 }}><strong style={{ fontSize: 17 }}>{m.name}</strong><div className="caption">{m.email} · {m.expires ? `expires ${m.expires}` : `active ${m.last.toLowerCase()}`}</div></div><RoleBadge r={m.role} /></div>
+        <div className="field"><label htmlFor="pr-role">Role</label><select id="pr-role" className="select" value={m.role} disabled={m.role === 'Owner'} onChange={(e) => setRoleFor(m.id, e.target.value as Role)}>{ROLES.map((x) => <option key={x}>{x}</option>)}</select></div>
+        <div className="stack gap-8"><span className="caption">Scopes</span><div className="row gap-8 wrap">{(m.role === 'Owner' ? ['All scopes'] : m.scopes.length ? m.scopes : ['None']).map((s) => <span key={s} className="chip" style={{ cursor: 'default' }}>{s}</span>)}</div></div>
+        <div className="stack gap-8">
+          <div className="row between"><span className="caption">What they can read</span><span className="caption"><b style={{ color: 'var(--text)' }}>{visible.length}</b> of {RECORDS.length} decisions</span></div>
+          {LEVELS.map((l) => { const all = RECORDS.filter((r) => r.cls === l); const n = all.filter((r) => sees(m, r)).length; return (
+            <div key={l} className="reach"><Cls l={l} /><span className="reach-bar"><span style={{ width: all.length ? `${(n / all.length) * 100}%` : 0 }} /></span><span className="caption">{n}/{all.length}</span></div>
+          ); })}
+        </div>
+        <div className="stack gap-8"><span className="caption">Capabilities</span><ul className="caps">{CAPS.map(([c]) => <li key={c} className={can(m.role, c) ? 'y' : 'n'}><span aria-hidden="true">{can(m.role, c) ? '✓' : '–'}</span>{c}</li>)}</ul></div>
+        {m.grants.length > 0 && <div className="stack gap-8"><span className="caption">Confidential grants</span>{m.grants.map((g) => <div key={g} className="issue"><span className="small" style={{ color: 'var(--text)' }}>{RECORDS.find((r) => r.id === g)?.title}</span><button className="btn btn-ghost" onClick={() => patch(m.id, { grants: m.grants.filter((x) => x !== g) }, 'Revoked confidential grant', `${m.name} · ${g}`, `Grant revoked for ${m.name}.`)}>Revoke</button></div>)}</div>}
+        {agent && <div className="agent-note"><IconAgent size={16} /><span className="small"><b>{agent.id}</b> acts for {m.name.split(' ')[0]} and sees exactly these {visible.length} decisions.</span></div>}
+      </div>
+    </div>
   );
 }
 
