@@ -2,17 +2,22 @@
 
 Marketing site and interactive product demo for Locus AI, organizational memory infrastructure for enterprise AI.
 
-- **Stack:** Next.js 14 (App Router), TypeScript, plain CSS design tokens
+**Live:** https://shubhamshrivastava11.github.io/LOCUS-AI-DEMO-WEB-MOBILE/
+
+- **Stack:** Next.js 14 (App Router, static export), TypeScript, plain CSS design tokens
 - **Routes:** home, product, security, integrations, pricing, contact, privacy, terms, sign-in, and `/demo` (interactive web + mobile app demo)
-- **Contact API:** `/api/contact` validates work emails; set `LEADS_WEBHOOK_URL` to forward leads
+- **Hosting:** GitHub Pages, served from the `gh-pages` branch
 
 ## Run locally
 
 ```bash
 npm install
-npm run dev
+npm run dev   # http://localhost:3000/LOCUS-AI-DEMO-WEB-MOBILE
 ```
 
-## Deploy
+## Publish an update
 
-Import this repo in Vercel. Framework preset: Next.js. No build settings needed.
+```bash
+npm run build                 # writes the static site to out/
+# then push the contents of out/ to the gh-pages branch
+```

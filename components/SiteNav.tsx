@@ -1,4 +1,5 @@
 'use client';
+import { asset } from '@/lib/base';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -25,7 +26,7 @@ export default function SiteNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) 
     <header className={`nav ${tone === 'dark' ? 'on-dark' : 'on-light'} ${scrolled || open ? 'scrolled' : ''}`} style={open ? { background: '#0B1424', color: '#fff' } : undefined}>
       <div className="container nav-inner">
         <Link href="/" aria-label="Locus AI home">
-          <img src={dark || open ? '/logo-dark.svg' : '/logo-light.svg'} alt="Locus AI" width={158} height={33} />
+          <img src={asset(dark || open ? '/logo-dark.svg' : '/logo-light.svg')} alt="Locus AI" width={158} height={33} />
         </Link>
         <nav aria-label="Primary">
           <ul className="nav-links">

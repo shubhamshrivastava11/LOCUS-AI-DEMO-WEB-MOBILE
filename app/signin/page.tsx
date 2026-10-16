@@ -1,4 +1,5 @@
 'use client';
+import { asset } from '@/lib/base';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -19,14 +20,14 @@ export default function SignIn() {
   return (
     <main id="main" style={{ minHeight: '100vh', background: 'var(--bg-page)', display: 'flex', flexDirection: 'column' }}>
       <div className="container row between" style={{ height: 72 }}>
-        <Link href="/" aria-label="Locus AI home"><img src="/logo-light.svg" alt="Locus AI" width={150} height={31} /></Link>
+        <Link href="/" aria-label="Locus AI home"><img src={asset('/logo-light.svg')} alt="Locus AI" width={150} height={31} /></Link>
         <Link href="/contact" className="small">Need help? Contact support</Link>
       </div>
       <div style={{ flex: 1, display: 'grid', placeItems: 'center', padding: '24px 20px 64px' }}>
         <div className="card card-lg stack gap-16 panel-in" style={{ width: 'min(460px, 100%)', boxShadow: 'var(--shadow-md)' }}>
           {step === 'sso' ? (
             <div className="stack gap-16" role="status">
-              <img src="/mark.svg" alt="" width={40} height={40} />
+              <img src={asset('/mark.svg')} alt="" width={40} height={40} />
               <h1 className="h2">Redirecting to your identity provider</h1>
               <p className="body">{msg} uses SAML single sign-on. You’ll come back here after signing in.</p>
               <div style={{ height: 6, borderRadius: 3, background: 'var(--bg-subtle)', overflow: 'hidden' }}><div style={{ height: 6, width: '60%', background: 'var(--brand)', borderRadius: 3, animation: 'rise 1.8s ease' }} /></div>

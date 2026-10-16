@@ -1,4 +1,5 @@
 'use client';
+import { asset } from '@/lib/base';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IconAgent, IconFile, IconHome, IconList, IconLock, IconMoon, IconPulse, IconRadar, IconSearch, IconSettings, IconShield, IconSun, IconUsers } from '@/components/Icons';
@@ -65,8 +66,8 @@ export default function DemoApp() {
       <div className="demo-banner"><span>Interactive demo with sample data for a fictional company, Acme.</span><Link href="/">Back to website</Link><Link href="/contact">Book a demo</Link></div>
       <div className="app">
         <aside className="app-side" aria-label="App navigation">
-          <div className="hide-m" style={{ padding: '0 8px 4px' }}><img src={theme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg'} alt="Locus AI" width={140} height={29} /></div>
-          <div className="ws hide-m"><img src="/mark.svg" alt="" width={22} height={22} />Acme<span style={{ marginLeft: 'auto' }} className="caption">▾</span></div>
+          <div className="hide-m" style={{ padding: '0 8px 4px' }}><img src={asset(theme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg')} alt="Locus AI" width={140} height={29} /></div>
+          <div className="ws hide-m"><img src={asset('/mark.svg')} alt="" width={22} height={22} />Acme<span style={{ marginLeft: 'auto' }} className="caption">▾</span></div>
           {nav.map(([k, l, I, c]) => <button key={k} className="nav-item" aria-current={screen === k ? 'page' : undefined} onClick={() => setScreen(k)}><I size={17} />{l}{c ? <span className="count">{c}</span> : null}</button>)}
           <div className="side-label">Admin</div>
           {admin.map(([k, l, I]) => <button key={k} className="nav-item" aria-current={screen === k ? 'page' : undefined} onClick={() => setScreen(k)}><I size={17} />{l}</button>)}

@@ -2,7 +2,7 @@
 export const SITE = {
   name: 'Locus AI',
   tagline: 'Organizational memory infrastructure for enterprise AI',
-  url: 'https://locus-ai.vercel.app',
+  url: 'https://shubhamshrivastava11.github.io/LOCUS-AI-DEMO-WEB-MOBILE',
   linkedin: 'https://www.linkedin.com/in/shubhamshrivastava11',
 };
 

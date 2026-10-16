@@ -1,3 +1,4 @@
+import { asset } from '@/lib/base';
 import Link from 'next/link';
 import { SITE } from '@/lib/content';
 
@@ -7,7 +8,7 @@ export default function SiteFooter() {
       <div className="container">
         <div className="footer-grid">
           <div className="stack gap-12">
-            <img src="/logo-light.svg" alt="Locus AI" width={158} height={33} />
+            <img src={asset('/logo-light.svg')} alt="Locus AI" width={158} height={33} />
             <p className="small" style={{ maxWidth: 300 }}>{SITE.tagline}.</p>
             <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="small" style={{ fontWeight: 600 }}>LinkedIn</a>
           </div>
