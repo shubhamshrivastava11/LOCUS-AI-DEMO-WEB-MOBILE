@@ -103,3 +103,13 @@ export const FAQS = [
   { q: 'Can our AI agents use it?', a: 'Yes. The Locus AI MCP server exposes search_decisions, get_decision_context and log_decision. Agents get the same permissions as the person they act for.' },
   { q: 'How long until we see value?', a: 'Setup is mostly connecting tools. Locus AI then reads recent history, so first answers usually arrive the same day.' },
 ];
+
+// Memory loom: what a raw message from each tool becomes once Locus AI captures it
+export const LOOM = [
+  { slug: 'slack', where: 'Slack · #launch-planning', said: 'Let’s move launch to the 29th so SSO ships with it. I’ll own the date.', kind: 'Decision', title: 'Launch on July 29 with SSO', cls: 'Internal', owner: 'Priya Shah' },
+  { slug: 'gmail', where: 'Gmail · Legal', said: 'DPA redlines are still with their counsel. Both deals are on hold until it clears.', kind: 'Blocker', title: 'EU DPA review blocking two deals', cls: 'Confidential', owner: 'Legal' },
+  { slug: 'notion', where: 'Notion · ADR-014', said: 'We standardize on Postgres with pgvector for retrieval. No separate vector DB.', kind: 'Decision', title: 'Adopt Postgres + pgvector', cls: 'Internal', owner: 'Platform team' },
+  { slug: 'jira', where: 'Jira · LOC-412', said: 'Priya to draft the SSO rollout plan by Oct 20.', kind: 'Action', title: 'Draft SSO rollout plan by Oct 20', cls: 'Internal', owner: 'Priya Shah' },
+  { slug: 'github', where: 'GitHub · PR discussion', said: 'Not adding a Redis cache here. We ruled it out in the ADR.', kind: 'Decision', title: 'No Redis cache for retrieval', cls: 'Internal', owner: 'Platform team' },
+  { slug: 'microsoft-teams', where: 'Teams · Pricing', said: 'Cap the free tier at 20 seats starting next month.', kind: 'Decision', title: 'Cap the free tier at 20 seats', cls: 'Restricted', owner: 'Growth' },
+];

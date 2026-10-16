@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: 'Contact sales', description: 'Book a
 
 export default function Contact() {
   return (
-    <section className="dark" style={{ marginTop: -72, padding: '144px 0 112px' }}>
+    <section className="dark" style={{ marginTop: -73, padding: '144px 0 112px' }}>
       <div className="container grid g2" style={{ gap: 56, alignItems: 'start' }}>
         <div className="stack gap-20 hero-in">
           <p className="overline">Contact sales</p>

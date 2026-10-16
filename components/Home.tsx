@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-import { AGENT_EXAMPLES, LIFECYCLE, SITE } from '@/lib/content';
+import { AGENT_EXAMPLES, LIFECYCLE } from '@/lib/content';
 import { Cls, Tag } from './Sections';
 import { IconAgent, IconArrow, IconUser } from './Icons';
 
@@ -153,13 +153,3 @@ export function AgentRail() {
   );
 }
 
-/* "Ask an AI about Locus AI" links with a prefilled prompt */
-export function AskAI() {
-  const q = encodeURIComponent(`Summarize what Locus AI (${SITE.url}) does as memory infrastructure for enterprise AI agents and teams, and how it handles permissions.`);
-  const links = [['ChatGPT', `https://chatgpt.com/?q=${q}`], ['Claude', `https://claude.ai/new?q=${q}`], ['Perplexity', `https://www.perplexity.ai/search?q=${q}`]];
-  return (
-    <div className="row gap-8 wrap" style={{ justifyContent: 'center' }}>
-      {links.map(([n, h]) => <a key={n} className="btn btn-secondary" href={h} target="_blank" rel="noopener noreferrer">Ask {n}</a>)}
-    </div>
-  );
-}

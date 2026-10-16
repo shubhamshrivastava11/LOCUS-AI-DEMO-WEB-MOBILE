@@ -1,7 +1,9 @@
 import Link from 'next/link';
 import { Faq, Reveal } from '@/components/Interactive';
 import { CtaBand, Cls, SectionHead } from '@/components/Sections';
-import { AgentRail, AskAI, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
+import { AgentRail, CountUp, HeroPreview, Lifecycle } from '@/components/Home';
+import MemoryLoom from '@/components/MemoryLoom';
+import { logoFor } from '@/components/IntegrationTile';
 import { IntegrationMark, IntegrationTile } from '@/components/IntegrationTile';
 import { IconAgent, IconArrow, IconLink, IconLock, IconPulse, IconRadar, IconSearch, IconShield, IconTrash, IconUser, IconUsers } from '@/components/Icons';
 import { INTEGRATIONS, INTEGRATION_CATS, SECURITY, STATS, STATS_SOURCE } from '@/lib/content';
@@ -12,10 +14,10 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="dark hero" style={{ marginTop: -72, paddingTop: 136 }}>
+      <section className="dark hero" style={{ marginTop: -73, paddingTop: 136 }}>
         <div className="container hero-copy hero-in">
           <p className="eyebrow">Memory infrastructure for people and AI agents</p>
-          <h1 className="display">Your AI can reason.<br /><span className="accent">Locus AI makes it remember.</span></h1>
+          <h1 className="display split"><span className="ln"><span>Your AI can reason.</span></span><span className="ln"><span className="accent">Locus AI makes it remember.</span></span></h1>
           <p className="lead" style={{ maxWidth: 680 }}>Locus AI captures every decision your team makes across Slack, Gmail, Notion, Jira and six more tools, then serves it back with sources and permissions to the people and agents who act next.</p>
           <div className="row gap-12 wrap" style={{ justifyContent: 'center' }}>
             <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
@@ -26,15 +28,14 @@ export default function Home() {
         <div className="hero-in" aria-label="Product preview"><HeroPreview /></div>
       </section>
 
-      {/* CONNECTED TOOLS */}
-      <section className="tools-strip">
-        <div className="container row between wrap gap-20">
-          <p className="small" style={{ maxWidth: 260 }}>Captures decisions from the tools your team already uses</p>
-          <div className="row wrap gap-12">
-            {INTEGRATIONS.map((i) => (
-              <span key={i.slug} className="tool-chip"><IntegrationMark name={i.name} slug={i.slug} cat={i.cat} size={26} />{i.name}</span>
-            ))}
+      {/* MEMORY LOOM */}
+      <section className="section loom-section">
+        <div className="container">
+          <div className="loom-head">
+            <h2 className="h1">Watch a conversation become memory.</h2>
+            <p className="lead">Every few seconds a message lands in one of your tools. Locus AI keeps the decision, classifies it and makes it available to people and agents. Point at or tap a tool to replay it.</p>
           </div>
+          <MemoryLoom logos={Object.fromEntries(INTEGRATIONS.map((i) => [i.slug, logoFor(i.slug)]))} />
         </div>
       </section>
 
@@ -44,7 +45,7 @@ export default function Home() {
           <SectionHead overline="The problem" title="Your AI keeps getting smarter. Your organization keeps forgetting." lead="Teams decide in Slack threads, email chains and Jira comments. Weeks later, nobody can find what was decided, by whom, or why, and neither can the agents you are deploying. It isn’t an intelligence problem. It’s a memory problem." />
           <div className="grid g3">
             {STATS.map((s, i) => (
-              <Reveal key={s.n}>
+              <Reveal key={s.n} delay={i * 90}>
                 <div className={`stat-tile ${i === 2 ? 'brand' : ''}`}>
                   <CountUp value={s.n} className="stat-n" />
                   <p className="body" style={{ margin: 0 }}>{s.t}</p>
@@ -62,7 +63,7 @@ export default function Home() {
           <SectionHead overline="The missing layer" title="LLMs reason. RAG retrieves. Agents execute. Locus AI remembers." lead="Retrieval finds documents. Memory knows which decision is current, who made it, what it replaced and who is allowed to see it." />
           <div className="grid g4">
             {[['01 · LLMs', 'reason.'], ['02 · RAG', 'retrieves.'], ['03 · Agents', 'execute.'], ['04 · Locus AI', 'remembers.']].map(([a, b], i) => (
-              <Reveal key={a}>
+              <Reveal key={a} delay={i * 90}>
                 <div className={`stack-card ${i === 3 ? 'on' : ''}`}><span className="mono caption">{a}</span><span className="h2">{b}</span></div>
               </Reveal>
             ))}
@@ -84,7 +85,7 @@ export default function Home() {
           <SectionHead overline="One memory, two audiences" title="Built for the people deciding and the agents acting on it." />
           <div className="grid g2">
             <Reveal>
-              <div className="aud-card">
+              <div className="aud-card lit">
                 <div className="row gap-12"><span className="icon-chip"><IconUser size={20} /></span><div><p className="overline" style={{ color: 'var(--text-3)' }}>For people</p><h3 className="h3">Answers with receipts</h3></div></div>
                 {[[IconSearch, 'Context Search', 'Ask what was decided and get the thread it came from.', '/product#search'], [IconRadar, 'Memory Explorer', 'Every decision, action and blocker, filterable and exportable.', '/product#explorer'], [IconPulse, 'Team Pulse', 'A weekly read on what moved, what’s open and what’s stuck.', '/product#pulse']].map(([I, t, d, h]: any) => (
                   <Link key={t} href={h} className="aud-row"><I size={18} /><span><strong>{t}</strong><span className="small" style={{ display: 'block' }}>{d}</span></span><IconArrow size={16} /></Link>
@@ -92,7 +93,7 @@ export default function Home() {
               </div>
             </Reveal>
             <Reveal>
-              <div className="aud-card">
+              <div className="aud-card lit">
                 <div className="row gap-12"><span className="icon-chip"><IconAgent size={20} /></span><div><p className="overline" style={{ color: 'var(--text-3)' }}>For agents</p><h3 className="h3">Context before action</h3></div></div>
                 {[['search_decisions', 'Find the current decision on any topic, team or date range.'], ['get_decision_context', 'Owner, rationale, lineage and sources for one decision.'], ['log_decision', 'Let an agent record what it decided, with an owner and source.']].map(([t, d]) => (
                   <Link key={t} href="/product#mcp" className="aud-row"><span className="mono small" style={{ color: 'var(--link)', fontWeight: 600 }}>fn</span><span><strong className="mono" style={{ fontSize: 14.5 }}>{t}</strong><span className="small" style={{ display: 'block' }}>{d}</span></span><IconArrow size={16} /></Link>
@@ -120,8 +121,8 @@ export default function Home() {
         <div className="container">
           <SectionHead overline="Integrations" title="Captures decisions where they actually happen." lead="Ten integrations live, each connected with read-only OAuth and scopes you choose per channel, label, space or project." />
           <div className="int-groups">
-            {INTEGRATION_CATS.map((c) => (
-              <Reveal key={c.key}>
+            {INTEGRATION_CATS.map((c, ci) => (
+              <Reveal key={c.key} delay={ci * 90}>
                 <div className="int-group">
                   <div className="int-group-head"><span className="overline">{c.key === 'Engineering' ? 'Code & agents' : c.label}</span><span className="caption">{c.key === 'Engineering' ? 'Where decisions get shipped and used' : c.note}</span></div>
                   <div className="int-grid">
@@ -152,7 +153,7 @@ export default function Home() {
             </Reveal>
             <div className="grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 240px), 1fr))', gap: 12 }}>
               {SECURITY.map((s, i) => { const I = secIcons[i]; return (
-                <Reveal key={s.title}><div className="glass stack gap-8" style={{ height: '100%', padding: 20 }}><span className="icon-chip"><I size={18} /></span><h3 className="h4" style={{ margin: 0 }}>{s.title}</h3><p className="small" style={{ margin: 0 }}>{s.body}</p></div></Reveal>
+                <Reveal key={s.title} delay={i * 70}><div className="glass stack gap-8" style={{ height: '100%', padding: 20 }}><span className="icon-chip"><I size={18} /></span><h3 className="h4" style={{ margin: 0 }}>{s.title}</h3><p className="small" style={{ margin: 0 }}>{s.body}</p></div></Reveal>
               ); })}
             </div>
           </div>
@@ -164,15 +165,6 @@ export default function Home() {
         <div className="container">
           <SectionHead centered overline="FAQ" title="Questions security teams ask first." />
           <Faq />
-        </div>
-      </section>
-
-      {/* ASK AI */}
-      <section className="section-sm">
-        <div className="container stack gap-16" style={{ alignItems: 'center', textAlign: 'center' }}>
-          <p className="overline">Prefer to ask an AI?</p>
-          <p className="body" style={{ maxWidth: 520 }}>Get a summary of Locus AI from the assistant you already use.</p>
-          <AskAI />
         </div>
       </section>
 

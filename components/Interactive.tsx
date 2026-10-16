@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { FAQS, PILLARS } from '@/lib/content';
 
-export function Reveal({ children, className = '', as: Tag = 'div' }: { children: ReactNode; className?: string; as?: any }) {
+export function Reveal({ children, className = '', as: Tag = 'div', delay = 0 }: { children: ReactNode; className?: string; as?: any; delay?: number }) {
   const ref = useRef<HTMLElement>(null);
   const [shown, setShown] = useState(false);
   useEffect(() => {
@@ -13,7 +13,7 @@ export function Reveal({ children, className = '', as: Tag = 'div' }: { children
     io.observe(el);
     return () => io.disconnect();
   }, []);
-  return <Tag ref={ref} className={`reveal ${shown ? 'in' : ''} ${className}`}>{children}</Tag>;
+  return <Tag ref={ref} className={`reveal ${shown ? 'in' : ''} ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>{children}</Tag>;
 }
 
 export function Faq({ items = FAQS }: { items?: { q: string; a: string }[] }) {

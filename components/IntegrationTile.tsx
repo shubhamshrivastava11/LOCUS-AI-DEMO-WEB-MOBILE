@@ -4,7 +4,7 @@ import { asset } from '@/lib/base';
 import { IconBook, IconBoard, IconChat, IconCode, IconMail } from './Icons';
 
 // Build-time lookup: use an official logo file if one was dropped into public/integrations/
-function logoFor(slug: string): string | null {
+export function logoFor(slug: string): string | null {
   for (const ext of ['svg', 'png', 'webp']) {
     if (fs.existsSync(path.join(process.cwd(), 'public', 'integrations', `${slug}.${ext}`))) return `/integrations/${slug}.${ext}`;
   }

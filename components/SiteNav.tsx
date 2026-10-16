@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { NAV } from '@/lib/content';
+import { openPalette } from './CommandPalette';
 
 export default function SiteNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) {
   const path = usePathname();
@@ -36,6 +37,7 @@ export default function SiteNav({ tone = 'dark' }: { tone?: 'dark' | 'light' }) 
           </ul>
         </nav>
         <div className="nav-cta">
+          <button type="button" className="nav-search" onClick={openPalette} aria-label="Search the site (Ctrl or Command + K)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="M20 20l-3.5-3.5" /></svg><span className="nav-search-label">Search</span><kbd>⌘K</kbd></button>
           <Link className="nav-signin" href="/signin">Sign in</Link>
           <Link className="btn btn-primary" href="/contact">Book a demo</Link>
           <button className="menu-btn" aria-expanded={open} aria-controls="mobile-menu" onClick={() => setOpen((o) => !o)}>{open ? 'Close' : 'Menu'}</button>
