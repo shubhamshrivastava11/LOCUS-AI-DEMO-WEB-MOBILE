@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, Cls } from '@/components/Sections';
 import LedgerHero from '@/components/LedgerHero';
+import MemoryGraph from '@/components/MemoryGraph';
 import AnswerInspector from '@/components/AnswerInspector';
 import AgentConsole from '@/components/AgentConsole';
 import { IntegrationMark } from '@/components/IntegrationTile';
@@ -13,22 +14,18 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="ed-hero">
-        <div className="container">
-          <div className="ed-top">
+        <div className="container mgh">
+          <div className="mgh-copy">
             <Link href="/enterprise#guard" className="ed-new"><span>New</span>Decision Guard for agents <IconArrow size={13} /></Link>
-          </div>
-          <div className="ed-grid">
-            <h1 className="ed-title"><span className="w" style={{ animationDelay: '0ms' }}>The</span> <span className="w" style={{ animationDelay: '70ms' }}>system</span> <span className="w" style={{ animationDelay: '140ms' }}>of</span> <span className="w" style={{ animationDelay: '210ms' }}>record</span> <span className="w" style={{ animationDelay: '280ms' }}>for</span> <em className="w" style={{ animationDelay: '380ms' }}>every decision.<svg className="ed-ul" viewBox="0 0 300 12" preserveAspectRatio="none" aria-hidden="true"><path d="M2 8 C 80 2, 180 12, 298 4" /></svg></em></h1>
-            <div className="ed-side">
-              <p className="ed-lead">Owner, source and access rules for every decision, ready for people and AI agents.</p>
-              <div className="ed-cta">
-                <Link href="/contact" className="btn btn-ink btn-lg">Book a demo</Link>
-                <Link href="/demo" className="ed-link">Live demo <IconArrow size={15} /></Link>
-              </div>
+            <h1 className="mgh-title">The system of record for <em>every decision.</em></h1>
+            <p className="mgh-lead">Locus AI turns conversations into a memory graph of decisions, owners and sources that people and AI agents can trust.</p>
+            <div className="ed-cta">
+              <Link href="/contact" className="btn btn-ink btn-lg">Book a demo</Link>
+              <Link href="/demo" className="ed-link">Live demo <IconArrow size={15} /></Link>
             </div>
+            <p className="mgh-hint">Point at a node. Drag to rearrange.</p>
           </div>
-          <div className="ed-rule" aria-hidden="true"><span /></div>
-          <div className="ed-frame"><LedgerHero /></div>
+          <div className="mgh-graph"><MemoryGraph /></div>
         </div>
       </section>
 
@@ -48,19 +45,7 @@ export default function Home() {
           <Reveal className="vp-head">
             <h2 className="h1">Search finds documents.<br />Memory knows what was decided.</h2>
           </Reveal>
-          <div className="vp-grid">
-            {[
-              ['Capture', 'Pulled from conversations as they happen. No tagging.'],
-              ['Keep current', 'Replaced decisions stay linked, never served.'],
-              ['Govern', 'Access checked before every answer. Every read logged.'],
-            ].map(([t, b], i) => (
-              <Reveal key={t} delay={i * 80} className="vp-item">
-                <span className="vp-n">0{i + 1}</span>
-                <h3 className="h3">{t}</h3>
-                <p className="body">{b}</p>
-              </Reveal>
-            ))}
-          </div>
+          <Reveal><LedgerHero /></Reveal>
         </div>
       </section>
 
