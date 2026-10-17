@@ -66,8 +66,8 @@ export default function LedgerHero() {
   return (
     <div className="lg" ref={box}>
       <div className="lg-head">
-        <div className="lg-title"><span className="lg-dot" />Decision ledger <span className="lg-ws">Acme · sample workspace</span></div>
-        <div className="lg-meta"><span>3,212 records</span><span>10 sources</span><span>Every read checked against access</span></div>
+        <div className="lg-title"><span className="lg-dot" />Decision ledger <span className="lg-ws">Sample workspace</span></div>
+        <div className="lg-meta"><span>Live</span></div>
       </div>
 
       <div className={`lg-signal ${phase === 1 ? 'on' : phase > 1 ? 'done' : ''}`} key={`sig-${si}`} aria-live="polite">
