@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Reveal } from '@/components/Interactive';
 import { CtaBand, Cls } from '@/components/Sections';
-import HeroProduct from '@/components/HeroProduct';
+import LedgerHero from '@/components/LedgerHero';
 import AnswerInspector from '@/components/AnswerInspector';
 import AgentConsole from '@/components/AgentConsole';
 import { IntegrationMark } from '@/components/IntegrationTile';
@@ -12,22 +12,24 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="h3o">
-        <div className="h3o-bg" aria-hidden="true" />
-        <div className="container h3o-copy">
-          <Link href="/enterprise#guard" className="h3o-pill"><span>New</span>Decision Guard: agents check their plan before they act <IconArrow size={14} /></Link>
-          <h1 className="h3o-title">Your AI can reason.<br /><span>Locus AI makes it remember.</span></h1>
-          <p className="h3o-lead">Locus AI captures every decision your team makes in Slack, email, docs and tickets, with its owner, source and access rules. People and AI agents act on what’s current, not last quarter’s docs.</p>
-          <div className="h3o-cta">
-            <Link href="/contact" className="btn btn-primary btn-lg">Book a demo</Link>
-            <Link href="/demo" className="btn btn-secondary btn-lg">Try the live demo</Link>
+      <section className="ed-hero">
+        <div className="container">
+          <div className="ed-top">
+            <span className="ed-k">Locus AI · Organizational memory for enterprise AI</span>
+            <Link href="/enterprise#guard" className="ed-new">New: Decision Guard for agents <IconArrow size={13} /></Link>
           </div>
-          <ul className="h3o-facts">
-            {['Read-only OAuth', 'SAML SSO and SCIM', 'Permission-aware MCP', 'Raw content purged in 30 days'].map((f) => <li key={f}>{f}</li>)}
-          </ul>
-        </div>
-        <div className="container h3o-frame">
-          <HeroProduct />
+          <div className="ed-grid">
+            <h1 className="ed-title">The system of record for <em>every decision</em> your company makes.</h1>
+            <div className="ed-side">
+              <p className="ed-lead">Your company decides in Slack, email and meetings. Locus AI turns each decision into a governed record with an owner, a source, access rules and lineage, so people and AI agents act on what’s current.</p>
+              <div className="ed-cta">
+                <Link href="/contact" className="btn btn-ink btn-lg">Book a demo</Link>
+                <Link href="/demo" className="ed-link">Try the live demo <IconArrow size={15} /></Link>
+              </div>
+            </div>
+          </div>
+          <p className="ed-strap"><span>LLMs reason.</span><span>RAG retrieves.</span><span>Agents execute.</span><span className="on">Locus AI remembers.</span></p>
+          <div className="ed-frame"><LedgerHero /></div>
         </div>
       </section>
 
