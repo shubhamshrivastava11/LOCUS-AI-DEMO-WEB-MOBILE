@@ -17,7 +17,7 @@ export default function Pricing() {
   return (
     <>
       <PageHero overline="Pricing" title="Start solo. Scale to the whole company." lead="Every plan is read-only by design and purges raw content after 30 days." />
-      <section className="section" style={{ paddingTop: 0, marginTop: -48 }}>
+      <section className="section" style={{ paddingTop: 48 }}>
         <div className="container grid g3" style={{ alignItems: 'stretch' }}>
           {PLANS.map((p) => (
             <Reveal key={p.name}>

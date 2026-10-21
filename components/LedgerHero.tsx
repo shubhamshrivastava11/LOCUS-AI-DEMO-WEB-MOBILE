@@ -84,13 +84,13 @@ export default function LedgerHero() {
           const link = hover && (hover === r.id || hover === r.by || (r.id === s.write.id && hover === s.supersedes) || (r.id === s.supersedes && hover === s.write.id));
           return (
             <div key={r.id} role="row" className={`lg-row ${r.fresh ? 'fresh' : ''} ${r.status} ${link ? 'link' : ''}`} onMouseEnter={() => setHover(r.id)} onMouseLeave={() => setHover(null)}>
-              <span className="lg-id">{r.id}</span>
-              <span className="lg-dec">{r.title}</span>
-              <span className="lg-c-owner">{r.owner}</span>
-              <span className="lg-c-src"><ToolIcon slug={r.slug} size={12} />{r.src}</span>
-              <span className={`lg-c-cls lg-cls ${r.cls.toLowerCase()}`}>{r.cls}</span>
-              <span className="lg-st">{r.status === 'superseded' ? <>Superseded → <b>{r.by}</b></> : r.status === 'open' ? 'Open blocker' : 'Active'}</span>
-              <span className="lg-c-reads">{r.cls === 'Confidential' ? <span className="lg-none">No agent access</span> : <>{r.reads}{r.fresh && phase >= 4 && <em className="lg-stamp">{s.agent}</em>}</>}</span>
+              <span role="cell" className="lg-id">{r.id}</span>
+              <span role="cell" className="lg-dec">{r.title}</span>
+              <span role="cell" className="lg-c-owner">{r.owner}</span>
+              <span role="cell" className="lg-c-src"><ToolIcon slug={r.slug} size={12} />{r.src}</span>
+              <span role="cell" className={`lg-c-cls lg-cls ${r.cls.toLowerCase()}`}>{r.cls}</span>
+              <span role="cell" className="lg-st">{r.status === 'superseded' ? <>Superseded → <b>{r.by}</b></> : r.status === 'open' ? 'Open blocker' : 'Active'}</span>
+              <span role="cell" className="lg-c-reads">{r.cls === 'Confidential' ? <span className="lg-none">No agent access</span> : <>{r.reads}{r.fresh && phase >= 4 && <em className="lg-stamp">{s.agent}</em>}</>}</span>
             </div>
           );
         })}

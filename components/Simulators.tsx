@@ -59,7 +59,7 @@ export function PermissionSimulator() {
       <ul className="psim-list">
         {res.map(({ r, ok, why }) => (
           <li key={r.id} className={ok ? 'ok' : 'no'}>
-            <span className="psim-state" aria-label={ok ? 'Visible' : 'Hidden'}>{ok ? '✓' : <IconLock size={14} />}</span>
+            <span className="psim-state" role="img" aria-label={ok ? 'Visible' : 'Hidden'}>{ok ? '✓' : <IconLock size={14} />}</span>
             <span className="psim-title">{ok ? r.title : <span className="psim-redacted">{r.title}</span>}</span>
             <span className="psim-cls">{r.cls === 'Personal' ? <span className="cls psim-personal">Personal</span> : <Cls l={r.cls} />}</span>
             <span className="psim-why">{why}</span>

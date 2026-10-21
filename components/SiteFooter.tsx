@@ -13,7 +13,7 @@ export default function SiteFooter() {
             <a href={SITE.linkedin} target="_blank" rel="noopener noreferrer" className="small" style={{ fontWeight: 600 }}>LinkedIn</a>
           </div>
           <div>
-            <h4>Product</h4>
+            <h2 className="footer-h">Product</h2>
             <ul>
               <li><Link href="/product">Context Search</Link></li>
               <li><Link href="/product#explorer">Memory Explorer</Link></li>
@@ -25,7 +25,7 @@ export default function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h4>Company</h4>
+            <h2 className="footer-h">Company</h2>
             <ul>
               <li><Link href="/design-partners">Design partners</Link></li>
               <li><Link href="/use-cases">Use cases</Link></li>
@@ -35,7 +35,7 @@ export default function SiteFooter() {
             </ul>
           </div>
           <div>
-            <h4>Trust</h4>
+            <h2 className="footer-h">Trust</h2>
             <ul>
               <li><Link href="/trust">Trust center</Link></li>
               <li><Link href="/security">Security</Link></li>

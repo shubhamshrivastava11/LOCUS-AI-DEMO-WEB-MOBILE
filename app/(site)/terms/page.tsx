@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/Sections';
 
-export const metadata: Metadata = { title: 'Terms of service' };
+export const metadata: Metadata = { title: 'Terms of service', description: 'Terms of service for the Locus AI private pilot.' };
 
 export default function Page() {
   return (

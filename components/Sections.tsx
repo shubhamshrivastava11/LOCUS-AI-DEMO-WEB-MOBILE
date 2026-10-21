@@ -4,12 +4,13 @@ import { Reveal } from './Interactive';
 
 export function PageHero({ overline, title, lead, children }: { overline: string; title: ReactNode; lead?: string; children?: ReactNode }) {
   return (
-    <section className="dark" style={{ padding: '72px 0 96px', marginTop: -73, paddingTop: 144 }}>
-      <div className="container hero-in" style={{ display: 'flex', flexDirection: 'column', gap: 20, maxWidth: 860, alignItems: 'center', textAlign: 'center', marginInline: 'auto' }}>
-        <p className="overline">{overline}</p>
-        <h1 className="h1">{title}</h1>
-        {lead && <p className="lead" style={{ maxWidth: 680 }}>{lead}</p>}
-        {children}
+    <section className="pg-hero">
+      <div className="container pg-hero-in">
+        <p className="pg-k">{overline}</p>
+        <h1 className="pg-title">{title}</h1>
+        {lead && <p className="pg-lead">{lead}</p>}
+        {children && <div className="pg-cta">{children}</div>}
+        <div className="pg-rule" aria-hidden="true" />
       </div>
     </section>
   );

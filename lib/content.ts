@@ -163,6 +163,7 @@ export const TRUST_CONTROLS: { area: string; items: { name: string; status: Trus
     { name: 'Mirror each source tool’s own permissions', status: 'Planned', note: 'Channel membership, shared drives and groups, re-checked at query time.' },
   ] },
   { area: 'Data', items: [
+    { name: 'Raw content encrypted at rest', status: 'In place', note: 'Encrypted until it is purged.' },
     { name: 'Raw content purged after 30 days', status: 'In place', note: 'Only structured decisions persist.' },
     { name: 'Personal sources private to their owner', status: 'In place', note: 'Including from Admins.' },
     { name: 'Source edits and deletions carried to decision records', status: 'Planned', note: 'A deleted source message updates or removes the record built from it.' },

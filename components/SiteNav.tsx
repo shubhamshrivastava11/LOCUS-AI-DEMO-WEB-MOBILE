@@ -8,7 +8,7 @@ import { openPalette } from './CommandPalette';
 
 export default function SiteNav({ tone: toneProp = 'dark' }: { tone?: 'dark' | 'light' }) {
   const path = usePathname();
-  const tone = path === '/' ? 'light' : toneProp;
+  void toneProp; const tone = 'light' as string;
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   useEffect(() => {

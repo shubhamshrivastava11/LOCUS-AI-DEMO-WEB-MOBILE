@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { PageHero } from '@/components/Sections';
 
-export const metadata: Metadata = { title: 'Privacy policy' };
+export const metadata: Metadata = { title: 'Privacy policy', description: 'How Locus AI collects, uses and protects information during the private pilot.' };
 
 export default function Page() {
   return (

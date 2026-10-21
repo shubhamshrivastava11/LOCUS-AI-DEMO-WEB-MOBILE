@@ -7,7 +7,7 @@ import { BackToTop, PointerLight, ScrollProgress } from '@/components/Motion';
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <div className="announce"><span className="announce-tag">Now open</span>Design partner program: early access to Enterprise features and a direct line to the team. <Link href="/design-partners">Apply</Link></div>
+      <aside className="announce" aria-label="Announcement"><span className="announce-tag">Now open</span>Design partner program: early access to Enterprise features and a direct line to the team. <Link href="/design-partners">Apply</Link></aside>
       <SiteNav />
       <main id="main">{children}</main>
       <SiteFooter />

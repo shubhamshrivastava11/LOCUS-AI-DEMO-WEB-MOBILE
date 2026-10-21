@@ -64,7 +64,7 @@ export default function DemoApp() {
 
   return (
     <>
-      <div className="demo-banner"><span>Interactive demo with sample data for a fictional company, Acme.</span><Link href="/">Back to website</Link><Link href="/contact">Book a demo</Link></div>
+      <aside className="demo-banner" aria-label="Demo notice"><span>Interactive demo with sample data for a fictional company, Acme.</span><Link href="/">Back to website</Link><Link href="/contact">Book a demo</Link></aside>
       <div className="app">
         <aside className="app-side" aria-label="App navigation">
           <div className="hide-m" style={{ padding: '0 8px 4px' }}><img src={asset(theme === 'dark' ? '/logo-dark.svg' : '/logo-light.svg')} alt="Locus AI" width={140} height={29} /></div>
@@ -80,14 +80,14 @@ export default function DemoApp() {
           <div className="hide-m row gap-8" style={{ padding: '10px 8px 0' }}><span className="icon-chip" style={{ width: 32, height: 32, borderRadius: 99, fontSize: 12, fontWeight: 700 }}>PS</span><div><div style={{ fontSize: 14, fontWeight: 600 }}>Priya Shah</div><div className="caption">Owner</div></div></div>
         </aside>
         <div className="app-main">
-          <div className="app-top">
+          <header className="app-top">
             <form onSubmit={(e) => { e.preventDefault(); const v = (e.currentTarget.elements.namedItem('q') as HTMLInputElement).value.trim(); if (v) ask(v); }} role="search">
               <label htmlFor="global-search" className="sr-only">Search decisions</label>
               <input id="global-search" name="q" className="input" placeholder="Ask about a decision, owner or thread   ⌘K" />
             </form>
             <span className="caption hide-sm" style={{ marginLeft: 'auto' }}>Viewing as Owner · all scopes</span>
             <button className="icon-btn" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>{theme === 'dark' ? <IconSun /> : <IconMoon />}</button>
-          </div>
+          </header>
           <main id="main" className="app-body" key={screen}>
             <div className="panel-in stack gap-20">
               {screen === 'home' && <Home records={records} ask={ask} open={setOpen} gmailOk={gmailOk} reconnect={() => { setGmailOk(true); log('Reconnected source', 'Gmail'); notify('Gmail reconnected. Capturing resumed.'); }} go={setScreen} usage={usage} />}

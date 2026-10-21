@@ -2,5 +2,5 @@ import type { MetadataRoute } from 'next';
 import { SITE } from '@/lib/content';
 export const dynamic = 'force-static';
 export default function sitemap(): MetadataRoute.Sitemap {
-  return ['', '/product', '/integrations', '/enterprise', '/security', '/pricing', '/contact', '/demo', '/signin', '/privacy', '/terms'].map((p) => ({ url: `${SITE.url}${p}`, lastModified: new Date(), changeFrequency: 'weekly', priority: p === '' ? 1 : 0.7 }));
+  return ['', '/product', '/use-cases', '/use-cases/support', '/use-cases/sales', '/use-cases/engineering', '/integrations', '/enterprise', '/trust', '/security', '/pricing', '/design-partners', '/contact', '/demo', '/signin', '/privacy', '/terms'].map((p) => ({ url: `${SITE.url}${p}`, lastModified: new Date(), changeFrequency: 'weekly', priority: p === '' ? 1 : 0.7 }));
 }
