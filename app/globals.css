@@ -1287,3 +1287,11 @@ textarea.input { padding: 10px 12px; min-height: 96px; resize: vertical; }
 /* Links inside running text are underlined, not just coloured */
 #main p a:not(.btn):not(.ed-link):not(.ed-new) { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
 p a:not([class]) { text-decoration: underline; text-underline-offset: 2px; text-decoration-thickness: 1px; }
+.stat-n { font-family: var(--serif); font-weight: 450; letter-spacing: -.02em; font-variation-settings: "opsz" 60; }
+.legal { max-width: 760px; display: flex; flex-direction: column; gap: 36px; }
+.legal-s { display: flex; flex-direction: column; gap: 10px; padding-top: 28px; border-top: 1px solid var(--rule); }
+.legal-s:first-child { border-top: 0; padding-top: 0; }
+.legal-s .h3 { font-family: var(--serif); font-weight: 450; font-size: 24px; letter-spacing: -.01em; }
+.legal-s p, .legal-s ul { margin: 0; color: var(--text-2); }
+.legal-s ul { padding-left: 20px; display: grid; gap: 8px; }
+.mg-canvas:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }

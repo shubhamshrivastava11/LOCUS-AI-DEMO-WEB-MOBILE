@@ -109,7 +109,17 @@ export default function MemoryGraph() {
 
   return (
     <div className="mg">
-      <div className="mg-canvas" ref={box} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}>
+      <div className="mg-canvas" ref={box} onPointerMove={onMove} onPointerUp={onUp} onPointerLeave={onUp}
+        tabIndex={0} role="group" aria-label="Memory graph. Use the arrow keys to move between nodes."
+        onKeyDown={(e) => {
+          const vis = NODES.filter(shownNode).map((n) => n.id);
+          if (!vis.length) return;
+          const i = hot ? vis.indexOf(hot) : -1;
+          if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); setHot(vis[(i + 1) % vis.length]); }
+          else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); setHot(vis[(i - 1 + vis.length) % vis.length]); }
+          else if (e.key === 'Escape') setHot(null);
+        }}
+        onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node)) setHot(null); }}>
         <svg className="mg-edges" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
           {edges.map((e) => {
             const dim = neighbors && !(neighbors.has(e.from) && neighbors.has(e.to));
@@ -126,10 +136,10 @@ export default function MemoryGraph() {
           const superseded = n.id === 'd397' && step >= 3;
           const dim = neighbors && !neighbors.has(n.id);
           return (
-            <button key={n.id} type="button"
+            <button key={n.id} type="button" tabIndex={-1}
               className={`mg-n ${n.kind} ${superseded ? 'superseded' : ''} ${(n.appear ?? 0) === step && step > 0 ? 'new' : ''} ${dim ? 'dim' : ''} ${hot === n.id ? 'hot' : ''}`}
               style={{ left: `${p.x}%`, top: `${p.y}%` }}
-              onPointerDown={onDown(n.id)} onMouseEnter={() => setHot(n.id)} onMouseLeave={() => setHot(null)} onFocus={() => setHot(n.id)} onBlur={() => setHot(null)}
+              onPointerDown={onDown(n.id)} onMouseEnter={() => setHot(n.id)} onMouseLeave={() => setHot(null)}
               aria-label={`${n.label}. ${n.detail}`}>
               {n.kind === 'source' && <><ToolIcon slug={n.slug!} size={13} />{n.label}</>}
               {n.kind === 'person' && <><span className="mg-av">{n.sub}</span><span className="mg-pl">{n.label}</span></>}
@@ -142,6 +152,7 @@ export default function MemoryGraph() {
       </div>
       <div className="mg-bar">
         <span className="mg-log"><i />{STEPS[step]}</span>
+        <span className="sr-only" aria-live="polite">{hotNode ? `${hotNode.label}. ${hotNode.detail}` : ''}</span>
         <span className="mg-legend"><span className="l source">source</span><span className="l owner">owner</span><span className="l reads">agent read</span><span className="l supersedes">supersedes</span></span>
         <button type="button" className="mg-replay" onClick={() => setRun((r) => r + 1)}>Replay</button>
       </div>

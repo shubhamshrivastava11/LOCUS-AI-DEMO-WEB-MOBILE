@@ -17,9 +17,9 @@ export const NAV = [
 ];
 
 export const STATS = [
-  { n: '93%', t: 'of people we interviewed lose track of team decisions regularly.' },
-  { n: '80%', t: 'rely on docs and notes that only kind of work.' },
-  { n: '87%', t: 'would adopt a dedicated memory layer once their team signs off.' },
+  { n: 'Nearly all', t: 'of the people we interviewed lose track of team decisions regularly.' },
+  { n: 'Most', t: 'rely on docs and notes that only kind of work.' },
+  { n: 'Most', t: 'would adopt a dedicated memory layer once their team signs off.' },
 ];
 export const STATS_SOURCE = 'Source: Locus AI customer discovery, 2026. Based on 15+ interviews, mostly with engineers. Directional findings, not a market survey.';
 
@@ -103,7 +103,7 @@ export const FAQS = [
   { q: 'Who can see a decision?', a: 'Access follows role, scope and classification. Confidential records need an explicit grant, and personal sources stay private to their owner, including from Admins.' },
   { q: 'Do you support SSO and SCIM?', a: 'SAML SSO and SCIM provisioning are part of the Enterprise plan. Contact sales for availability for your identity provider.' },
   { q: 'Can our AI agents use it?', a: 'Yes. The Locus AI MCP server exposes search_decisions, get_decision_context and log_decision. Agents get the same permissions as the person they act for.' },
-  { q: 'How long until we see value?', a: 'Setup is mostly connecting tools. Locus AI then reads recent history, so first answers usually arrive the same day.' },
+  { q: 'How long until we see value?', a: 'Setup is mostly connecting tools. Locus AI then reads recent history, so your team doesn’t start from an empty memory.' },
 ];
 
 // Memory loom: what a raw message from each tool becomes once Locus AI captures it

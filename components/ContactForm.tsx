@@ -30,7 +30,7 @@ export default function ContactForm() {
   if (state === 'done') return (
     <div className="card card-lg stack gap-12 panel-in" role="status" style={{ color: 'var(--text)' }}>
       <span className="status status-ok" style={{ alignSelf: 'flex-start' }}>Almost there</span>
-      <h2 className="h3">Send this to us on LinkedIn and we’ll reply within one business day.</h2>
+      <h2 className="h3">Send this to us on LinkedIn and the founding team will reply.</h2>
       <p className="small" style={{ padding: 14, borderRadius: 10, background: 'var(--bg-page)', border: '1px solid var(--border)' }}>{summary}</p>
       <div className="row gap-12 wrap">
         <button type="button" className="btn btn-secondary" onClick={() => { navigator.clipboard?.writeText(summary).catch(() => {}); setCopied(true); }}>{copied ? 'Copied' : 'Copy message'}</button>
@@ -50,7 +50,7 @@ export default function ContactForm() {
     <form className="card card-lg stack gap-12" onSubmit={submit} noValidate style={{ boxShadow: 'var(--shadow-md)', color: 'var(--text)' }}>
       <h2 className="h3">{topic === 'integration' ? 'Request an integration' : topic === 'partner' ? 'Apply to be a design partner' : 'Book a demo'}</h2>
       {f('name', 'Full name', { autoComplete: 'name', required: true })}
-      {f('email', 'Work email', { type: 'email', autoComplete: 'email', required: true, placeholder: 'name@company.com' }, 'We’ll reply within one business day.')}
+      {f('email', 'Work email', { type: 'email', autoComplete: 'email', required: true, placeholder: 'name@company.com' }, 'We use this only to reply to you.')}
       {f('company', 'Company', { autoComplete: 'organization', required: true })}
       <div className="field">
         <label htmlFor="size">Company size</label>

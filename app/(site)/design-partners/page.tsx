@@ -28,7 +28,7 @@ const FIT = [
 const STEPS = [
   ['Apply', 'Tell us which team and which tools.'],
   ['Scope', 'A 30-minute call to pick sources and success measures.'],
-  ['Connect', 'Read-only OAuth. Locus AI reads recent history, so first answers usually arrive the same day.'],
+  ['Connect', 'Read-only OAuth. Locus AI reads recent history first, so your team doesn’t start from an empty memory.'],
   ['Review', 'At the end of the pilot, we review the results against the measures you picked.'],
 ];
 
@@ -67,7 +67,7 @@ export default function DesignPartners() {
           <ol className="dp-steps">{STEPS.map(([t, b], i) => <Reveal as="li" key={t} delay={i * 80}><span className="dp-n">{i + 1}</span><strong>{t}</strong><span className="small">{b}</span></Reveal>)}</ol>
         </div>
       </section>
-      <CtaBand title="Want a say in how your agents remember?" lead="Applications are reviewed by the founding team. We reply within one business day." />
+      <CtaBand title="Want a say in how your agents remember?" lead="Every application is read by the founding team." />
     </>
   );
 }
