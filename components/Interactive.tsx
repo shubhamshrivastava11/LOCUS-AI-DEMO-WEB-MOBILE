@@ -9,9 +9,17 @@ export function Reveal({ children, className = '', as: Tag = 'div', delay = 0 }:
     const el = ref.current;
     if (!el) return;
     if (!('IntersectionObserver' in window)) { setShown(true); return; }
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setShown(true); io.disconnect(); } }, { rootMargin: '0px 0px -10% 0px' });
+    let done = false;
+    const show = () => { if (done) return; done = true; setShown(true); io.disconnect(); window.removeEventListener('scroll', check); window.removeEventListener('resize', check); };
+    const io = new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) show(); }, { rootMargin: '0px 0px -10% 0px' });
+    // Failsafe: anything already at or above the bottom of the viewport is shown, even if the observer missed it.
+    let raf = 0;
+    const check = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { if (el.getBoundingClientRect().top < window.innerHeight * 0.95) show(); }); };
     io.observe(el);
-    return () => io.disconnect();
+    window.addEventListener('scroll', check, { passive: true });
+    window.addEventListener('resize', check);
+    check();
+    return () => { done = true; io.disconnect(); cancelAnimationFrame(raf); window.removeEventListener('scroll', check); window.removeEventListener('resize', check); };
   }, []);
   return <Tag ref={ref} className={`reveal ${shown ? 'in' : ''} ${className}`} style={delay ? { transitionDelay: `${delay}ms` } : undefined}>{children}</Tag>;
 }
