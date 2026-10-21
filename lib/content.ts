@@ -69,7 +69,7 @@ export const PILLARS = [
 
 export const SECURITY = [
   { title: 'Read-only access', body: 'Every integration uses read-only OAuth scopes. Locus AI never posts, edits or replies.' },
-  { title: '30-day raw content purge', body: 'Messages are encrypted at rest and deleted after 30 days. Only structured decisions persist.' },
+  { title: '30-day raw content purge', body: 'Raw messages are deleted after 30 days. Only structured decisions persist.' },
   { title: 'Five roles', body: 'Owner, Admin, Lead, Member and Guest. Guests see only what is shared with them and can expire.' },
   { title: 'Four classification levels', body: 'Public, Internal, Restricted and Confidential, checked on every search, digest and agent call.' },
   { title: 'Personal sources stay personal', body: 'Records from a person’s own Gmail are visible only to them, including from Admins.' },
@@ -98,7 +98,7 @@ export const PLANS = [
 ];
 
 export const FAQS = [
-  { q: 'What data does Locus AI store?', a: 'Raw messages are encrypted and purged after 30 days. Only structured decisions persist: the summary, owner, date, source link and classification.' },
+  { q: 'What data does Locus AI store?', a: 'Raw messages are purged after 30 days. Only structured decisions persist: the summary, owner, date, source link and classification.' },
   { q: 'Can Locus AI post or change anything in our tools?', a: 'No. Every integration uses read-only OAuth scopes, and you choose exactly which channels, labels, spaces and projects it can read.' },
   { q: 'Who can see a decision?', a: 'Access follows role, scope and classification. Confidential records need an explicit grant, and personal sources stay private to their owner, including from Admins.' },
   { q: 'Do you support SSO and SCIM?', a: 'SAML SSO and SCIM provisioning are part of the Enterprise plan. Contact sales for availability for your identity provider.' },
@@ -163,7 +163,6 @@ export const TRUST_CONTROLS: { area: string; items: { name: string; status: Trus
     { name: 'Mirror each source tool’s own permissions', status: 'Planned', note: 'Channel membership, shared drives and groups, re-checked at query time.' },
   ] },
   { area: 'Data', items: [
-    { name: 'Raw content encrypted at rest', status: 'In place', note: 'Encrypted until it is purged.' },
     { name: 'Raw content purged after 30 days', status: 'In place', note: 'Only structured decisions persist.' },
     { name: 'Personal sources private to their owner', status: 'In place', note: 'Including from Admins.' },
     { name: 'Source edits and deletions carried to decision records', status: 'Planned', note: 'A deleted source message updates or removes the record built from it.' },

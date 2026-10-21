@@ -46,7 +46,7 @@ export default function Security() {
             <h2 className="h2">Minimal by design.</h2>
             <ul className="body" style={{ display: 'grid', gap: 10, paddingLeft: 18, margin: 0 }}>
               <li>Read-only OAuth scopes, chosen per channel, label, space or project.</li>
-              <li>Raw messages encrypted at rest and purged after 30 days.</li>
+              <li>Raw messages purged after 30 days.</li>
               <li>Structured decisions kept until an Admin deletes them.</li>
               <li>Personal sources visible only to their owner, including from Admins.</li>
               <li>Agents get the same permissions as the person they act for.</li>

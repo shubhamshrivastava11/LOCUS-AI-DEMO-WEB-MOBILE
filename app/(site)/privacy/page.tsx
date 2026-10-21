@@ -23,7 +23,7 @@ const SECTIONS: { h: string; p?: string; li?: string[] }[] = [
     'Show personal sources, such as a person’s own Gmail, to anyone but their owner, including Admins.',
   ] },
   { h: 'How long we keep it', li: [
-    'Raw content from your sources is encrypted at rest and purged after 30 days.',
+    'Raw content from your sources is purged after 30 days.',
     'Structured decision records are kept until an Admin deletes them, or until your workspace is deleted.',
     'Admins can export the audit log at any time.',
   ] },
@@ -31,7 +31,6 @@ const SECTIONS: { h: string; p?: string; li?: string[] }[] = [
   { h: 'Your choices', li: [
     'Admins choose exactly which channels, labels, spaces and projects Locus AI can read, and can disconnect a source at any time.',
     'Admins can delete decision records and export the workspace.',
-    'You can ask us what we hold about you, or ask us to correct or delete it.',
   ] },
 ];
 
