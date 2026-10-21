@@ -34,7 +34,7 @@ function Visual({ k }: { k: string }) {
 export default function Product() {
   return (
     <>
-      <PageHero overline="Product" title={<>One governed memory.<br />Four ways to use it.</>} lead="Locus AI turns conversations into structured, cited, permission-aware decisions, then serves them in the app, in weekly digests and to your AI agents.">
+      <PageHero overline="Product" title={<>One governed memory.{' '}<br />Four ways to use it.</>} lead="Locus AI turns conversations into structured, cited, permission-aware decisions, then serves them in the app, in weekly digests and to your AI agents.">
         <div className="row gap-12 wrap" style={{ justifyContent: 'center' }}><Link className="btn btn-primary btn-lg" href="/demo">Try the live demo</Link><Link className="btn btn-secondary btn-lg" href="/contact">Book a demo</Link></div>
       </PageHero>
       <section className="section">

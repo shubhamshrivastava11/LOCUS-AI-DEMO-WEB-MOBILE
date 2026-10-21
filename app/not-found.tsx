@@ -1,13 +1,21 @@
+import type { Metadata } from 'next';
 import { asset } from '@/lib/base';
 import Link from 'next/link';
+
+export const metadata: Metadata = { title: 'Page not found', description: 'This page doesn’t exist or has moved.', robots: { index: false } };
+
 export default function NotFound() {
   return (
-    <main id="main" className="dark" style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', padding: 24 }}>
-      <div className="stack gap-16 center" style={{ maxWidth: 520 }}>
-        <img src={asset('/logo-dark.svg')} alt="Locus AI" width={160} height={34} />
-        <h1 className="h1">This page wasn’t remembered.</h1>
-        <p className="lead">The link may be old, or the page moved. Even our memory has boundaries.</p>
-        <Link className="btn btn-primary btn-lg" href="/">Back to home</Link>
+    <main id="main" className="nf">
+      <div className="nf-in">
+        <img src={asset('/logo-light.svg')} alt="Locus AI" width={160} height={34} />
+        <p className="pg-k">Error 404</p>
+        <h1 className="pg-title">This page wasn’t remembered.</h1>
+        <p className="pg-lead">The link may be old, or the page has moved.</p>
+        <div className="row gap-12 wrap">
+          <Link className="btn btn-ink btn-lg" href="/">Back to home</Link>
+          <Link className="ed-link" href="/contact">Contact the team</Link>
+        </div>
       </div>
     </main>
   );

@@ -43,7 +43,7 @@ export default function Home() {
       <section className="section vp">
         <div className="container">
           <Reveal className="vp-head">
-            <h2 className="h1">Search finds documents.<br />Memory knows what was decided.</h2>
+            <h2 className="h1">Search finds documents.{' '}<br />Memory knows what was decided.</h2>
           </Reveal>
           <Reveal><LedgerHero /></Reveal>
         </div>
